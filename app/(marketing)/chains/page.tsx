@@ -3,7 +3,7 @@ import matter from "gray-matter";
 import { promises as fs } from "fs";
 
 import Container from "@component/overall/Container";
-import ChainGrid from "@component/showcase/ChainGrid";
+import ChainGrid from "@/components/showcase/chain/ChainGrid";
 import HeroBanner from "@component/section/HeroBanner";
 
 export const metadata = {

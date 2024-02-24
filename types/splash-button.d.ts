@@ -4,3 +4,11 @@ export type SplashButtonProps = {
   className?: string;
   href: string;
 };
+
+export type StyledButtonProps = {
+  buttonEmoji: string;
+  buttonText: string;
+  buttonActive: boolean;
+  isDark: boolean;
+  classAdd: string;
+};

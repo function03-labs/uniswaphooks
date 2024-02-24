@@ -1,5 +1,5 @@
 import { ChainPost } from "@/types/chain";
-import ChainCard from "@component/showcase/ChainCard";
+import ChainCard from "@/components/showcase/chain/ChainCard";
 
 export default function ChainGrid({ chainPosts }: { chainPosts: ChainPost[] }) {
   return (
