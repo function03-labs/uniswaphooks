@@ -26,6 +26,7 @@ import {
   LucideIcon,
   Github,
   MoreHorizontal,
+  Equal,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -58,6 +59,7 @@ export const Icons = {
   check: Check,
   orderbook: BookOpenText,
   more: MoreHorizontal,
+  equal: Equal,
 };
 
 export default function IconMenu() {
