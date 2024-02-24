@@ -20,4 +20,5 @@ export type ResourcePost = {
   title: string;
   description: string;
   section: string;
+  status: string;
 };

@@ -11,9 +11,6 @@ export default async function CollectionLinks({
   activeCategory,
   componentsData,
 }: CollectionLinksProps) {
-  console.log("activeCategory", activeCategory);
-  console.log("activeCollection", activeCollection[0]);
-  console.log("componentsData", componentsData);
   return (
     <div>
       <ul className="flex gap-4">
@@ -34,7 +31,7 @@ export default async function CollectionLinks({
           const buttonText = componentData.count
             ? `${componentData.title} (${componentData.count})`
             : componentData.title;
-            
+
           const isActive =
             (activeCategory.category === "hooks" &&
               activeCollection === componentData.id) ||
@@ -71,7 +68,7 @@ export default async function CollectionLinks({
 
               {activeCategory.category === "Educational Resources" &&
                 activeCollection !== "new" && (
-                  <Link href={`/community-hub/${componentData.id}`}>
+                  <Link href={`/community/${componentData.id}`}>
                     <ButtonStyle
                       buttonEmoji={componentData.emoji}
                       buttonText={buttonText}

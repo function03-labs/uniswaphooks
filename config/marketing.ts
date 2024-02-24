@@ -16,7 +16,7 @@ export const marketingConfig: MarketingConfig = {
     },
     {
       title: "Community Hub",
-      href: "/community-hub",
+      href: "/community",
     },
   ],
   footerLinks: [
