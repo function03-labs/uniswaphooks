@@ -18,9 +18,25 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@component/*": ["./components/*"],
+      "@styles/*": ["./styles/*"],
+      "@utils/*": ["./utils/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@config/*": ["./config/*"],
+      "@data/*": ["./data/*"],
+      "@lib/*": ["./lib/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "styles/tailwind/site.config.js",
+    "styles/tailwind/components.config.js",
+    "styles/tailwind/extend.preset.js",
+    "styles/tailwind/blogs.config.js"
+  ],
   "exclude": ["node_modules"]
 }
