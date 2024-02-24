@@ -11,15 +11,27 @@ async function getCategories() {
   const categoriesFetch = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/category`
   );
+  const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hook`);
 
   if (!categoriesFetch.ok) {
     throw new Error("Failed to fetch categories");
   }
 
+  if (!hooksFetch.ok) {
+    throw new Error("Failed to fetch hooks");
+  }
+
   const categories = await categoriesFetch.json();
+  const hooks = await hooksFetch.json();
+
+  categories.data.forEach((category: CategoryType) => {
+    category.count = hooks.data.filter(
+      (hook: any) => hook.category.id === category.id
+    ).length;
+  });
 
   categories.data.push({
-    id: "community-hub",
+    id: "community",
     title: "Community Hub",
     description: "Educational resources, and more!",
     emoji: "🌱",

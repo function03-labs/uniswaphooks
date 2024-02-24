@@ -1,11 +1,9 @@
 import { prisma } from "@lib/prisma";
 import { readStream } from "@lib/utils";
 
-import type { NextRequest } from "next/server";
-
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const bodyAsString = await readStream(req.body);
+    const bodyAsString = await req.json();
     const body = JSON.parse(bodyAsString);
     let { title, description, creator, website, github, categoryId } = body;
 
@@ -40,7 +38,7 @@ export async function POST(req: NextRequest) {
         },
       }
     );
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     return new Response(
       JSON.stringify({
@@ -76,7 +74,7 @@ export async function GET() {
         },
       }
     );
-  } catch (err) {
+  } catch (err: any) {
     return new Response(
       JSON.stringify({
         message: "Something went wrong",
@@ -92,9 +90,9 @@ export async function GET() {
   }
 }
 
-export async function PUT(req) {
+export async function PUT(req: Request) {
   try {
-    const bodyAsString = await readStream(req.body);
+    const bodyAsString = await req.json();
     const body = JSON.parse(bodyAsString);
     const {
       id,
@@ -134,7 +132,7 @@ export async function PUT(req) {
         },
       }
     );
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     return new Response(
       JSON.stringify({
@@ -151,9 +149,9 @@ export async function PUT(req) {
   }
 }
 
-export async function DELETE(req) {
+export async function DELETE(req: Request) {
   try {
-    const bodyAsString = await readStream(req.body);
+    const bodyAsString = await req.json();
     const body = JSON.parse(bodyAsString);
     const { id } = body;
 
@@ -175,7 +173,7 @@ export async function DELETE(req) {
         },
       }
     );
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     return new Response(
       JSON.stringify({

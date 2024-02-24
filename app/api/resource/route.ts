@@ -1,11 +1,10 @@
-import { prisma } from '@lib/prisma'
-import { readStream } from '@lib/utils'
+import { prisma } from "@lib/prisma";
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
-    const bodyAsString = await readStream(req.body)
-    const body = JSON.parse(bodyAsString)
-    const { emoji, title, section, description, imageUrl, resourceUrl } = body
+    const bodyAsString = await req.json();
+    const body = JSON.parse(bodyAsString);
+    const { emoji, title, section, description, imageUrl, resourceUrl } = body;
 
     const newResource = await prisma.resource.create({
       data: {
@@ -16,34 +15,34 @@ export async function POST(req) {
         imageUrl,
         resourceUrl,
       },
-    })
+    });
 
     return new Response(
       JSON.stringify({
-        message: 'Resource created successfully',
+        message: "Resource created successfully",
         data: newResource,
       }),
       {
         status: 200,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
-    )
-  } catch (err) {
-    console.log(err)
+    );
+  } catch (err: any) {
+    console.log(err);
     return new Response(
       JSON.stringify({
-        message: 'Something went wrong',
+        message: "Something went wrong",
         error: err.message,
       }),
       {
         status: 500,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
-    )
+    );
   }
 }
 
@@ -51,45 +50,53 @@ export async function GET() {
   try {
     const resources = await prisma.resource.findMany({
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
-    })
+    });
 
     return new Response(
       JSON.stringify({
-        message: 'Resources fetched successfully',
+        message: "Resources fetched successfully",
         data: resources,
       }),
       {
         status: 200,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
-    )
-  } catch (err) {
-    console.log(err)
+    );
+  } catch (err: any) {
+    console.log(err);
     return new Response(
       JSON.stringify({
-        message: 'Something went wrong',
+        message: "Something went wrong",
         error: err.message,
       }),
       {
         status: 500,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
-    )
+    );
   }
 }
 
-export async function PUT(req) {
+export async function PUT(req: Request) {
   try {
-    const bodyAsString = await readStream(req.body)
-    const body = JSON.parse(bodyAsString)
-    const { id, emoji, title, section, description, imageUrl, resourceUrl, status } =
-      body
+    const bodyAsString = await req.json();
+    const body = JSON.parse(bodyAsString);
+    const {
+      id,
+      emoji,
+      title,
+      section,
+      description,
+      imageUrl,
+      resourceUrl,
+      status,
+    } = body;
 
     const updatedResource = await prisma.resource.update({
       where: {
@@ -104,74 +111,74 @@ export async function PUT(req) {
         resourceUrl,
         status,
       },
-    })
+    });
 
     return new Response(
       JSON.stringify({
-        message: 'Resource updated successfully',
+        message: "Resource updated successfully",
         data: updatedResource,
       }),
       {
         status: 200,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
-    )
-  } catch (err) {
-    console.log(err)
+    );
+  } catch (err: any) {
+    console.log(err);
     return new Response(
       JSON.stringify({
-        message: 'Something went wrong',
+        message: "Something went wrong",
         error: err.message,
       }),
       {
         status: 500,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
-    )
+    );
   }
 }
 
-export async function DELETE(req) {
+export async function DELETE(req: Request) {
   try {
-    const bodyAsString = await readStream(req.body)
-    const body = JSON.parse(bodyAsString)
-    const { id } = body
+    const bodyAsString = await req.json();
+    const body = JSON.parse(bodyAsString);
+    const { id } = body;
 
     const deletedResource = await prisma.resource.delete({
       where: {
         id,
       },
-    })
+    });
 
     return new Response(
       JSON.stringify({
-        message: 'Resource deleted successfully',
+        message: "Resource deleted successfully",
         data: deletedResource,
       }),
       {
         status: 200,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
-    )
-  } catch (err) {
-    console.log(err)
+    );
+  } catch (err: any) {
+    console.log(err);
     return new Response(
       JSON.stringify({
-        message: 'Something went wrong',
+        message: "Something went wrong",
         error: err.message,
       }),
       {
         status: 500,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
-    )
+    );
   }
 }
