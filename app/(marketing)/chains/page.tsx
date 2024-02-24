@@ -7,7 +7,7 @@ import ChainGrid from "@/components/showcase/chain/ChainGrid";
 import HeroBanner from "@component/section/HeroBanner";
 
 export const metadata = {
-  title: " Chains",
+  title: "Chains",
 };
 
 const chainsPath = join(process.cwd(), "/data/chains");

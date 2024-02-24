@@ -1,26 +1,46 @@
 import { join } from "path";
 import matter from "gray-matter";
 import { promises as fs } from "fs";
+import { Metadata } from "next";
 
 import Container from "@component/overall/Container";
 import CollectionLinks from "@component/ui/CollectionLinks";
 import ToolForm from "@component/showcase/tool/ToolForm";
 
-export async function generateMetadata(params: { slug: string }) {
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   try {
     const data = await getToolData(params);
 
     if (!data) {
       return {
-        status: 404,
+        title: "Not Found",
       };
     }
 
     return {
-      title: `${data.title} | UniswapHooks`,
+      title: data.title,
+      description: data.description,
+      openGraph: {
+        title: `${data.title} | UniswapHooks`,
+        description: data.description,
+      },
+      twitter: {
+        title: `${data.title} | UniswapHooks`,
+        description: data.description,
+      },
     };
   } catch (error) {
-    console.error("Error fetching collection data:", error);
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Internal Server Error",
+    };
   }
 }
 

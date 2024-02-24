@@ -15,10 +15,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@component/reusable/Form'
-import { Button } from '@component/reusable/Button'
-import { Input } from '@component/reusable/Input'
-import { Textarea } from '@component/reusable/Textarea'
+} from '@component/ui/Form'
+import { Button } from '@component/ui/Button'
+import { Input } from '@component/ui/Input'
+import { Textarea } from '@component/ui/Textarea'
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),

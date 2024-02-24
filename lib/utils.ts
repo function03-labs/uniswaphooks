@@ -17,3 +17,7 @@ export async function readStream(stream: ReadableStream<Uint8Array>) {
 
   return chunks;
 }
+
+export function extractCreator(github: string) {
+  return github.split("/")[3];
+}
