@@ -1,4 +1,3 @@
-// import Ad from '@component/Ad'
 import Container from "@component/overall/Container";
 
 export default function HeroBanner({
@@ -6,7 +5,7 @@ export default function HeroBanner({
   subtitle,
   title,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   subtitle: string;
   title: string;
 }) {

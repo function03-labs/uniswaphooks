@@ -1,7 +1,7 @@
 import { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
-  name: "Uniswap v4 Hooks Directory",
+  name: "UniswapHooks",
   description: "Curated Uniswap v4 Hooks.",
   url: "https://uniswaphooks.com",
   ogImage: "https://uniswaphooks.com/og.png",

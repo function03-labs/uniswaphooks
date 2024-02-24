@@ -27,7 +27,7 @@ interface RootLayoutProps {
 
 export const metadata = {
   title: {
-    default: siteConfig.name,
+    default: "Uniswap v4 Hooks Directory",
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,

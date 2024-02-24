@@ -25,7 +25,9 @@ export default function Header() {
     <header className="sticky inset-x-0 top-0 z-50 border-b border-gray-200 bg-white">
       <Container classNames="relative flex h-16 items-center justify-between gap-4 sm:gap-8">
         <div className="flex flex-1 items-center gap-4">
-          <BrandLogo fontSize="text-md" />
+          <Link href="/">
+            <BrandLogo fontSize="text-md" />
+          </Link>
           <HeaderMenuLinks
             menuLinks={marketingConfig.mainNav}
             navClass="hidden lg:block lg:flex-1"
