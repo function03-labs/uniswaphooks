@@ -22,3 +22,9 @@ export type ResourcePost = {
   section: string;
   status: string;
 };
+
+export type ResouceEmailType = {
+  title: string;
+  description: string;
+  section: string;
+};

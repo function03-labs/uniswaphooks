@@ -52,9 +52,7 @@ export default async function Page() {
         subtitle="Open Source Directory for Uniswap v4 Hooks"
       >
         <p>
-          A community-curated collection of hooks implementations for Uniswap v4
-          that can be used in your project. Each hook is self-contained and can
-          be used independently.
+          A community-curated collection of open-source hooks for Uniswap v4.
         </p>
 
         <HeaderSearch />

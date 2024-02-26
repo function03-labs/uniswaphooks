@@ -42,3 +42,12 @@ export type CollectionLinksProps = {
   activeCategory: ActiveCategory;
   componentsData: CollectionData[];
 };
+
+export type MagicLinkData = {
+  action_link: string;
+  email_otp: string;
+  hashed_token: string;
+  redirect_to: string;
+  verification_type: string;
+  email: string;
+};

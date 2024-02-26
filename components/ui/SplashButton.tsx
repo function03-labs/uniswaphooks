@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { cn } from "@lib/utils";
+
 import { emojisplosion } from "emojisplosion";
 import { SplashButtonProps } from "@/types/splash-button";
 
@@ -49,7 +51,10 @@ export default function SplashButton(props: SplashButtonProps) {
   return (
     <div className="flex justify-center">
       <Link
-        className="inline-flex items-center rounded-md border-2 border-current px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 focus:outline-none focus:ring active:text-pink-500"
+        className={cn(
+          props.className,
+          "inline-flex items-center rounded-md border-2 border-current px-3 py-1.5 text-xs font-semibold transition hover:-rotate-2 hover:scale-110 focus:outline-none focus:ring active:text-pink-500"
+        )}
         id={props.id}
         href={props.href}
         onClick={() => {

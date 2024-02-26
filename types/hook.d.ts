@@ -24,3 +24,11 @@ export type CategoryType = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type HookEmailType = {
+  title: string;
+  description: string;
+  creator: string;
+  website: string;
+  github: string;
+};

@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Views {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Hook {
   id Int @id @default(autoincrement())
 
@@ -44,10 +53,10 @@ model Category {
 model Resource {
   id Int @id @default(autoincrement())
 
-  title       String
+  title String
 
-  section     String
-  emoji       String
+  section String
+  emoji   String
 
   imageUrl    String?
   resourceUrl String

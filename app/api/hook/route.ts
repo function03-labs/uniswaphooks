@@ -1,5 +1,4 @@
 import { prisma } from "@lib/prisma";
-import { readStream } from "@lib/utils";
 
 export async function POST(req: Request) {
   try {

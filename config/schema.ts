@@ -24,3 +24,7 @@ export const resourceSchema = z.object({
     message: "You need to enter a valid URL for the resource.",
   }),
 });
+
+export const userAuthSchema = z.object({
+  email: z.string().email(),
+});

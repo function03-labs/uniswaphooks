@@ -1,4 +1,4 @@
-import IconMenu from "@component/overall/Icons";
+import { IconMenu } from "@component/overall/Icons";
 import MenuLinks from "@component/navigation/HeaderMenuLinks";
 
 import { MainNavItem } from "@/types";

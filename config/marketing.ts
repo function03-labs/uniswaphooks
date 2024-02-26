@@ -3,12 +3,8 @@ import { MarketingConfig } from "@/types";
 export const marketingConfig: MarketingConfig = {
   mainNav: [
     {
-      title: "EVM Chains",
+      title: "Chains",
       href: "/chains",
-    },
-    {
-      title: "Blog",
-      href: "/blog",
     },
     {
       title: "Tools",
@@ -17,6 +13,10 @@ export const marketingConfig: MarketingConfig = {
     {
       title: "Community Hub",
       href: "/community",
+    },
+    {
+      title: "Blog",
+      href: "/blog",
     },
   ],
   footerLinks: [

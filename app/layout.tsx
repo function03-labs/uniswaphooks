@@ -7,7 +7,7 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@lib/utils";
 import { siteConfig } from "@config/site";
 
-import { Toaster } from "@component/ui/Sonner";
+import { Toaster } from "@/components/ui/Toaster";
 import { Analytics } from "@component/config/Analytics";
 import { TailwindIndicator } from "@component/TailwindIndicator";
 
