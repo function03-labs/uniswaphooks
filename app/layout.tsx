@@ -9,7 +9,7 @@ import { siteConfig } from "@config/site";
 
 import { Toaster } from "@/components/ui/Toaster";
 import { Analytics } from "@component/config/Analytics";
-import { TailwindIndicator } from "@component/TailwindIndicator";
+import { TailwindIndicator } from "@/components/config/TailwindIndicator";
 
 const fontSans = FontSans({
   subsets: ["latin"],

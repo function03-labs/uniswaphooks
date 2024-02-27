@@ -8,6 +8,7 @@ export default function PreviewIframe({
   componentTitle,
   componentCreator,
   componentDescription,
+  previewWidth,
   refIframe,
   previewDark,
 }: PreviewIframeProps) {
@@ -44,12 +45,12 @@ export default function PreviewIframe({
             >
               📖
             </span>
-            <span className="text-md font-medium text-gray-900 ">
+            <span className="text-md font-medium text-gray-900">
               <ShowMoreText
                 lines={3}
                 more="Show more"
                 less="Show less"
-                className="content-css"
+                className="content-css cursor-pointer hover:underline"
                 anchorClass="show-more-less-clickable"
                 expanded={false}
                 truncatedEndingComponent={"... "}

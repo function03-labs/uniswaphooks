@@ -6,9 +6,9 @@ import { CollectionLinksProps } from "@/types";
 // activateCategory is an object with two properties: category and emoji
 // e.g. { category: 'hooks', emoji: '🪝' }
 
-export default async function CollectionLinks({
-  activeCollection,
+async function HooksCollection({
   activeCategory,
+  activeCollection,
   componentsData,
 }: CollectionLinksProps) {
   return (
@@ -28,6 +28,47 @@ export default async function CollectionLinks({
 
       <ul className="mt-4 flex flex-wrap gap-1 ">
         {componentsData.map((componentData) => {
+          const buttonText =
+            componentData.title + " (" + componentData.count + ")";
+
+          const isActive = activeCollection === componentData.id;
+
+          return (
+            <li key={componentData.id} className="shrink-0 md:shrink">
+              <Link href={`/hooks/${componentData.id}`}>
+                <ButtonStyle
+                  buttonEmoji={componentData.emoji}
+                  buttonText={buttonText}
+                  buttonActive={isActive}
+                  isDark={false}
+                  classAdd={""}
+                />
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+export default async function CollectionLinks({
+  activeCollection,
+  activeCategory,
+  componentsData,
+}: CollectionLinksProps) {
+  return (
+    <div>
+      <ul className="mt-4 flex flex-wrap gap-1 ">
+        {activeCategory.category === "hooks" && (
+          <HooksCollection
+            activeCategory={activeCategory}
+            activeCollection={activeCollection}
+            componentsData={componentsData}
+          />
+        )}
+
+        {componentsData.map((componentData) => {
           const buttonText = componentData.count
             ? `${componentData.title} (${componentData.count})`
             : componentData.title;
@@ -40,20 +81,6 @@ export default async function CollectionLinks({
 
           return (
             <li key={componentData.id} className="shrink-0 md:shrink">
-              {activeCategory.category === "hooks" && (
-                <Link
-                  href={`/components/${componentData.category}/${componentData.id}`}
-                >
-                  <ButtonStyle
-                    buttonEmoji={componentData.emoji}
-                    buttonText={buttonText}
-                    buttonActive={isActive}
-                    isDark={false}
-                    classAdd={""}
-                  />
-                </Link>
-              )}
-
               {activeCategory.category === "tools" && (
                 <Link href={`/tool/${componentData.id}`}>
                   <ButtonStyle

@@ -12,6 +12,7 @@ export type PreviewIframeProps = {
   componentTitle: string;
   componentCreator: string;
   componentDescription: string;
+  previewWidth: string;
   refIframe: any;
   previewDark: boolean;
 };

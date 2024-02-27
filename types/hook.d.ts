@@ -8,7 +8,7 @@ export type HookType = {
   github: string;
   status: string;
   category: CategoryType;
-  createdAt: string;
+  createdAt?: string;
   updatedAt: string;
 };
 
@@ -31,4 +31,13 @@ export type HookEmailType = {
   creator: string;
   website: string;
   github: string;
+};
+
+export type HookProps = {
+  id: string;
+  title: string;
+  description: string;
+  github: string;
+  website: string;
+  creator: string;
 };
