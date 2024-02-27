@@ -80,9 +80,15 @@ export default function BlogPreview({
             previewDark={isDarkMode}
             componentCreator={""}
             componentDescription={""}
+            previewWidth={""}
           />
 
-          <PreviewCode showPreview={showPreview} componentCode={previewCode} handleSetType={undefined} codeType={""} />
+          <PreviewCode
+            showPreview={showPreview}
+            componentCode={previewCode}
+            handleSetType={undefined}
+            codeType={""}
+          />
         </div>
       </div>
     </div>
