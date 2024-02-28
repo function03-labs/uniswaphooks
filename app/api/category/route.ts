@@ -1,4 +1,4 @@
-import { prisma } from "@lib/prisma";
+import { db } from "@lib/prisma";
 
 export async function POST(req: Request) {
   try {
@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const body = JSON.parse(bodyAsString);
     const { id, title, description, category, emoji, tag } = body;
 
-    const newCategory = await prisma.category.create({
+    const newCategory = await db.category.create({
       data: {
         id,
         title,
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const categories = await prisma.category.findMany();
+    const categories = await db.category.findMany();
     return new Response(
       JSON.stringify({
         message: "Categories fetched successfully",

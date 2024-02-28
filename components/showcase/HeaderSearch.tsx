@@ -72,6 +72,7 @@ export default function HeaderSearch() {
       },
     });
     const resultHooks = await searchHooks.json();
+    console.log(resultHooks);
     const publishedSearchJson = resultHooks.data.filter(
       (item: HookType) => item.status === "published"
     );

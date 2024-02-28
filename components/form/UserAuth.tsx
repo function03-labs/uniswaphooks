@@ -2,18 +2,20 @@
 
 import * as z from "zod";
 import * as React from "react";
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 
 import { cn } from "@lib/utils";
+import { MagicLinkData } from "@/types/auth";
 import { userAuthSchema } from "@config/schema";
-import { buttonVariants } from "@component/ui/Button";
+
 import { Input } from "@component/ui/Input";
 import { Label } from "@component/ui/Label";
 import { Icons } from "@component/overall/Icons";
+import { buttonVariants } from "@component/ui/Button";
 
 import { toast } from "@hooks/use-toast";
-import { supabaseAdmin } from "@lib/supabase";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -35,39 +37,23 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(data: FormData) {
     setIsLoading(true);
 
-    const { data: magicLinkData, error } =
-      await supabaseAdmin.auth.admin.generateLink({
-        type: "magiclink",
-        email: data.email.toLowerCase(),
-      });
-
-    const mailerResponse = await fetch("/api/mailer", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...magicLinkData.properties,
-        email: magicLinkData.user?.email,
-        type: "magic-link",
-      }),
+    const signInResult = await signIn("email", {
+      email: data.email.toLowerCase(),
+      redirect: false,
+      callbackUrl: searchParams?.get("from") || "/dashboard",
     });
-
-    setIsLoading(false);
 
     // TODO: Check the rate limit of the mailer
 
-    if (error) {
-      console.error("Error signing in with email:", error);
+    setIsLoading(false);
+
+    if (!signInResult?.ok) {
       return toast({
         title: "Something went wrong.",
         description: "Your sign in request failed. Please try again.",
         variant: "destructive",
       });
     }
-
-    // TODO: Show case that you can close this page and open the link in the email
-    // TODO: The link in the email should redirect to the dashboard
 
     return toast({
       title: "Check your email",
@@ -120,11 +106,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       <button
         type="button"
         className={cn(buttonVariants({ variant: "outline" }))}
-        onClick={async () => {
+        onClick={() => {
           setIsGitHubLoading(true);
-          await supabaseAdmin.auth.signInWithOAuth({
-            provider: "github",
-          });
+          signIn("github", { callbackUrl: "/dashboard" });
         }}
         disabled={isLoading || isGitHubLoading}
       >

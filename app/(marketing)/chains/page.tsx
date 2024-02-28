@@ -1,10 +1,13 @@
 import { join } from "path";
+import Link from "next/link";
 import matter from "gray-matter";
 import { promises as fs } from "fs";
 
+import { Label } from "@component/ui/Label";
+import { Toggle } from "@component/ui/Toggle";
 import Container from "@component/overall/Container";
-import ChainGrid from "@/components/showcase/chain/ChainGrid";
 import HeroBanner from "@component/section/HeroBanner";
+import ChainGrid from "@/components/showcase/chain/ChainGrid";
 
 export const metadata = {
   title: "Chains",
@@ -43,8 +46,16 @@ async function getChains() {
   );
 }
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const chainPosts = await getChains();
+  const showNew = searchParams.new === "false";
+
+  const newChains = chainPosts.filter((chain) => chain.tags?.includes("new"));
+  const oldChains = chainPosts.filter((chain) => !chain.tags?.includes("new"));
 
   return (
     <>
@@ -54,7 +65,12 @@ export default async function Page() {
       />
 
       <Container classNames="pb-8 lg:pb-12">
-        <ChainGrid chainPosts={chainPosts} />
+        <Toggle enabled={showNew} />
+        <Label className="font-semibold text-slate-600 text-3xl px-2">
+          Dencun Enabled
+        </Label>
+
+        <ChainGrid chainPosts={showNew ? newChains : oldChains} />
       </Container>
     </>
   );

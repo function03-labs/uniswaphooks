@@ -1,4 +1,4 @@
-/* "use client";
+"use client";
 
 import Link from "next/link";
 import { User } from "next-auth";
@@ -10,8 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { UserAvatar } from "@/components/user-avatar";
+} from "@component/ui/DropdownMenu";
+import { UserAvatar } from "@component/dashboard/UseAvatar";
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: Pick<User, "name" | "image" | "email">;
@@ -63,4 +63,3 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
     </DropdownMenu>
   );
 }
- */

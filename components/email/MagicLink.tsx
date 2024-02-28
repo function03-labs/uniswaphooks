@@ -12,7 +12,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { MagicLinkData } from "@/types/index";
+import { MagicLinkData } from "@/types/auth";
 import * as React from "react";
 
 export function MagicLink({ magicLink }: { magicLink: MagicLinkData }) {
@@ -32,7 +32,7 @@ export function MagicLink({ magicLink }: { magicLink: MagicLinkData }) {
           />
           <Heading style={heading}>Your login code for UniswapHooks</Heading>
           <Section style={buttonContainer}>
-            <Button style={button} href={`${magicLink.action_link}`}>
+            <Button style={button} href={`${magicLink.otp_link}`}>
               Login to UniswapHooks
             </Button>
           </Section>
@@ -41,7 +41,6 @@ export function MagicLink({ magicLink }: { magicLink: MagicLinkData }) {
             link does not work, you can use the login verification code
             directly:
           </Text>
-          <code style={code}>{magicLink.email_otp}</code>
           <Hr style={hr} />
           <Link href="https://www.uniswaphooks.com" style={reportLink}>
             UniswapHooks

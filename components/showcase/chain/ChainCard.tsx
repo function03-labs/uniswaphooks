@@ -112,11 +112,24 @@ export default function ChainCard(chainPost: ChainPost) {
               </h2>
             </div>
 
-            <InputCard
-              name="ChainID"
-              value={chainPost.chainID}
-              identifier={chainPost.currency}
-            />
+            <div className="mt-4 flex justify-between px-28">
+              <p className="sm:text-md flex flex-col items-center gap-2 text-sm">
+                <span className="text-md font-semibold text-slate-600">
+                  ChainID
+                </span>
+                <span className="overflow-hidden text-ellipsis text-lg font-bold text-slate-900">
+                  {chainPost.chainID}
+                </span>
+              </p>
+              <p className="sm:text-md flex flex-col items-center gap-2 text-sm">
+                <span className="text-md font-semibold text-slate-600">
+                  Currency
+                </span>
+                <span className="text-lg font-bold text-slate-900">
+                  {chainPost.currency}
+                </span>
+              </p>
+            </div>
 
             <InputCard
               name="PoolManager"
@@ -124,18 +137,25 @@ export default function ChainCard(chainPost: ChainPost) {
               copy={true}
             />
 
-            <div className="mt-2">
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger className="flex items-center w-full h-10 justify-center hover:bg-gray-200/30 hover:rounded-md">
-                    <Icons.chevronDown className="h-6 w-6 shrink-0 transition-transform duration-200 " />
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <SliderCard {...chainPost} />
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
+            {chainPost.poolInitializeTest &&
+            chainPost.poolModifyLiquitifyTest &&
+            chainPost.poolSwapTest ? (
+              <div className="mt-2">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger className="flex items-center w-full h-10 justify-center hover:bg-gray-200/30 hover:rounded-md">
+                      <span className="text-md font-semibold text-slate-600 -pt-1 px-2">
+                        See more
+                      </span>
+                      <Icons.chevronDown className="h-6 w-6 shrink-0 transition-transform duration-200 " />
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <SliderCard {...chainPost} />
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ const nextConfig = {
       "coinbase.com",
       "zsexknpkikhnetgdoayv.supabase.co",
       "placehold.co",
+      "assets.coingecko.com",
     ],
   },
 };

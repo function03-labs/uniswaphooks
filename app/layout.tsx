@@ -106,8 +106,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         {children}
-        <Analytics />
         <Toaster />
+        <Analytics />
         <TailwindIndicator />
       </body>
     </html>

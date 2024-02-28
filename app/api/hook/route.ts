@@ -1,4 +1,4 @@
-import { prisma } from "@lib/prisma";
+import { db } from "@lib/prisma";
 
 export async function POST(req: Request) {
   try {
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       categoryId = "from-the-community";
     }
 
-    const newHook = await prisma.hook.create({
+    const newHook = await db.hook.create({
       data: {
         title,
         description,
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const hooks = await prisma.hook.findMany({
+    const hooks = await db.hook.findMany({
       include: {
         category: true,
       },
@@ -104,7 +104,7 @@ export async function PUT(req: Request) {
       categoryId,
     } = body;
 
-    const updatedHook = await prisma.hook.update({
+    const updatedHook = await db.hook.update({
       where: {
         id,
       },
@@ -154,7 +154,7 @@ export async function DELETE(req: Request) {
     const body = JSON.parse(bodyAsString);
     const { id } = body;
 
-    const deletedHook = await prisma.hook.delete({
+    const deletedHook = await db.hook.delete({
       where: {
         id,
       },

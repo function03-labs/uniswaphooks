@@ -1,6 +1,6 @@
+import { MagicLinkData } from "@/types/auth";
 import { HookEmailType } from "@/types/hook";
 import { ResouceEmailType } from "@/types/post";
-import { MagicLinkData } from "@/types/index";
 import { render } from "@react-email/render";
 
 import { Hook } from "@/components/email/Hook";
@@ -13,7 +13,7 @@ export function selectMailOptions(
 ) {
   let html;
   const mailOptions = {
-    from: `UniswapHooks <${process.env.SENDER_EMAIL}>`,
+    from: `UniswapHooks <${process.env.EMAIL_SENDER}>`,
     to: process.env.MAIN_EMAIL,
     subject: "",
     html: "",
@@ -40,9 +40,7 @@ export function selectMailOptions(
       return {
         from: mailOptions.from,
         to: (body as MagicLinkData).email,
-        subject: `Your login code for UniswapHooks - #${
-          (body as MagicLinkData).email_otp
-        }`,
+        subject: `Your magic link for UniswapHooks`,
         html,
       };
     default:

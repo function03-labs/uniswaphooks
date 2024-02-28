@@ -1,4 +1,4 @@
-import { prisma } from "@lib/prisma";
+import { db } from "@lib/prisma";
 
 export async function POST(req: Request) {
   try {
@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const body = JSON.parse(bodyAsString);
     const { emoji, title, section, description, imageUrl, resourceUrl } = body;
 
-    const newResource = await prisma.resource.create({
+    const newResource = await db.resource.create({
       data: {
         emoji,
         title,
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const resources = await prisma.resource.findMany({
+    const resources = await db.resource.findMany({
       orderBy: {
         createdAt: "desc",
       },
@@ -98,7 +98,7 @@ export async function PUT(req: Request) {
       status,
     } = body;
 
-    const updatedResource = await prisma.resource.update({
+    const updatedResource = await db.resource.update({
       where: {
         id,
       },
@@ -148,7 +148,7 @@ export async function DELETE(req: Request) {
     const body = JSON.parse(bodyAsString);
     const { id } = body;
 
-    const deletedResource = await prisma.resource.delete({
+    const deletedResource = await db.resource.delete({
       where: {
         id,
       },
