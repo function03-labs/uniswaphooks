@@ -6,7 +6,7 @@ export default function BrandLogo({ fontSize = "text-md" }) {
       <span aria-hidden="true" role="img">
         <Logo className="h-8 w-8" />
       </span>
-      <span className="font-medium text-gray-900 mt-1">UniswapHooks</span>
+      <span className="font-medium text-gray-900 mt-[6px]">UniswapHooks</span>
     </div>
   );
 }
