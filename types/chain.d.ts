@@ -4,6 +4,9 @@ export type ChainPost = {
   logo: string;
   chainID: string;
   currency: string;
-  poolManager: string;
   docs: string;
+  poolManager: string;
+  poolInitializeTest: string;
+  poolModifyLiquitifyTest: string;
+  poolSwapTest: string;
 };

@@ -67,7 +67,7 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        borderAnimation: {
+        "animate-background": {
           "0%": {
             backgroundSize: "200% 200%",
             backgroundPosition: "left center",
@@ -79,7 +79,7 @@ const config = {
         },
       },
       animation: {
-        borderAnimation: "borderAnimation 2s linear infinite",
+        "animate-background": "borderAnimation 2s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },

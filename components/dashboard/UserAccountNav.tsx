@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import Link from "next/link";
 import { User } from "next-auth";
@@ -63,3 +63,4 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
     </DropdownMenu>
   );
 }
+ */

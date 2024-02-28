@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   ArrowRight,
+  ChevronDown,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -27,6 +28,7 @@ import {
   Github,
   MoreHorizontal,
   Equal,
+  Copy,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -62,6 +64,8 @@ export const Icons = {
   more: MoreHorizontal,
   equal: Equal,
   image: ImageIcon,
+  copy: Copy,
+  chevronDown: ChevronDown,
 };
 
 export function IconMenu() {
