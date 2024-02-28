@@ -37,19 +37,22 @@ export default function Header() {
 
         <div className="flex items-center justify-end gap-2 sm:gap-4">
           <div className="hidden sm:block">
-            <SplashButton id="submit-button" href="/add-new-hook">
+            <SplashButton
+              id="submit-button"
+              href="https://uniswaphooks.com/add-new-hook"
+            >
               <span className="mr-2">🎉</span> Submit Hook
             </SplashButton>
           </div>
 
-          <SplashButton
+          {/*           <SplashButton
             id="submit-button"
             href="/register"
             className="bg-black text-white border-black hover:bg-white hover:text-black hover:border-black"
           >
             <span className="mr-2">🔒</span>
             Register
-          </SplashButton>
+          </SplashButton> */}
 
           <HeaderMenu
             showMenu={showMenu}
