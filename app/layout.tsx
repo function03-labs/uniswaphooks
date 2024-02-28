@@ -31,6 +31,7 @@ export const metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  viewport: "width=device-width, initial-scale=1.0",
   keywords: [
     "Uniswap",
     "Uniswap v4",

@@ -58,23 +58,8 @@ export default function Footer() {
               ))}
             </ul>
 
-            <div>
-              <p className="mt-4 text-sm text-gray-600 lg:mt-0">
-                Created by{" "}
-                <Link
-                  href={siteConfig.links.twitter}
-                  rel="noreferrer"
-                  target="_blank"
-                  className="inline-block font-medium text-gray-700 hover:text-gray-900"
-                >
-                  Aiden
-                </Link>
-                .
-              </p>
-
-              <div className="mt-2">
-                <SponsorLink />
-              </div>
+            <div className="mt-2">
+              <SponsorLink />
             </div>
           </div>
         </div>

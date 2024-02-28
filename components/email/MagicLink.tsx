@@ -19,7 +19,9 @@ export function MagicLink({ magicLink }: { magicLink: MagicLinkData }) {
   return (
     <Html>
       <Head />
-      <Preview>Your login code for UniswapHooks</Preview>
+      <Preview>
+        Confirm your e-mail for UniswapHooks by clicking the button below.
+      </Preview>
       <Body style={main}>
         <Container style={container}>
           <Img
@@ -30,7 +32,7 @@ export function MagicLink({ magicLink }: { magicLink: MagicLinkData }) {
           />
           <Heading style={heading}>Your login code for UniswapHooks</Heading>
           <Section style={buttonContainer}>
-            <Button style={button} href={magicLink.action_link}>
+            <Button style={button} href={`${magicLink.action_link}`}>
               Login to UniswapHooks
             </Button>
           </Section>

@@ -40,7 +40,9 @@ export function selectMailOptions(
       return {
         from: mailOptions.from,
         to: (body as MagicLinkData).email,
-        subject: "Your login code for UniswapHooks",
+        subject: `Your login code for UniswapHooks - #${
+          (body as MagicLinkData).email_otp
+        }`,
         html,
       };
     default:
