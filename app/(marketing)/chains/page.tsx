@@ -3,11 +3,10 @@ import Link from "next/link";
 import matter from "gray-matter";
 import { promises as fs } from "fs";
 
-import { Label } from "@component/ui/Label";
-import { Toggle } from "@component/ui/Toggle";
 import Container from "@component/overall/Container";
 import HeroBanner from "@component/section/HeroBanner";
 import ChainGrid from "@/components/showcase/chain/ChainGrid";
+import CollectionLinks from "@component/ui/CollectionLinks";
 
 export const metadata = {
   title: "Chains",
@@ -57,6 +56,27 @@ export default async function Page({
   const newChains = chainPosts.filter((chain) => chain.tags?.includes("new"));
   const oldChains = chainPosts.filter((chain) => !chain.tags?.includes("new"));
 
+  const activeCategory = {
+    category: "Chains",
+    emoji: "🔗",
+  };
+  const sections = [
+    {
+      id: "false",
+      title: "New Chains",
+      count: newChains.length,
+      description: "New chains that have been added to the list.",
+      emoji: "🆕",
+    },
+    {
+      id: "true",
+      title: "Old Chains",
+      count: oldChains.length,
+      description: "Chains that have been around for a while.",
+      emoji: "🕰",
+    },
+  ];
+
   return (
     <>
       <HeroBanner
@@ -65,11 +85,13 @@ export default async function Page({
       />
 
       <Container classNames="pb-8 lg:pb-12">
-        <Toggle enabled={showNew} />
-        <Label className="font-semibold text-slate-600 text-3xl px-2">
-          Dencun Enabled
-        </Label>
-
+        <CollectionLinks
+          activeCollection={showNew ? "false" : "true"}
+          activeCategory={activeCategory}
+          // @ts-ignore: Showcases the CollectionLinks component
+          componentsData={sections}
+        />
+        <div className="h-8" />
         <ChainGrid chainPosts={showNew ? newChains : oldChains} />
       </Container>
     </>

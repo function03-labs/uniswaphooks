@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import HeroBanner from "@component/section/HeroBanner";
 import Container from "@component/overall/Container";
-import ResourceGrid from "@component/showcase/resource/ResourceGrid";
+import HeroBanner from "@component/section/HeroBanner";
 import CollectionLinks from "@component/ui/CollectionLinks";
+import ResourceGrid from "@component/showcase/resource/ResourceGrid";
 
 import { ResourcePost } from "@/types/post";
 import { sections } from "@config/community";

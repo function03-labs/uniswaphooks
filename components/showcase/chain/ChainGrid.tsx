@@ -3,12 +3,16 @@ import ChainCard from "@/components/showcase/chain/ChainCard";
 
 export default function ChainGrid({ chainPosts }: { chainPosts: ChainPost[] }) {
   return (
-    <ul className="grid gap-4 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-      {chainPosts.map((chainPost) => (
-        <li key={chainPost.slug}>
-          <ChainCard {...chainPost} />
-        </li>
-      ))}
-    </ul>
+<div className="flex flex-wrap gap-4 justify-center items-center">
+  {chainPosts.map((chainPost) => (
+    <div
+      key={chainPost.slug}
+      className="w-[370px] flex-none" 
+    >
+      <ChainCard {...chainPost} />
+    </div>
+  ))}
+</div>
+
   );
 }

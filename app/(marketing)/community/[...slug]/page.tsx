@@ -35,6 +35,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       category: "New Resource",
       emoji: "📝",
     };
+
     return (
       <>
         <HeroBanner
@@ -70,7 +71,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
       category: "Educational Resources",
       emoji: "📚",
     };
-
+    console.log(params.slug);
+    console.log(activeCategory);
+    console.log(sections);
     return (
       <>
         <HeroBanner
