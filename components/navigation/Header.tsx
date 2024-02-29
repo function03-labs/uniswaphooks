@@ -41,7 +41,7 @@ export default function Header() {
               id="submit-button"
               href="https://uniswaphooks.com/add-new-hook"
             >
-              <span className="mr-2">🎉</span> Submit Hook
+              <span className="mr-2">🎉</span> Submit A Hook
             </SplashButton>
           </div>
 

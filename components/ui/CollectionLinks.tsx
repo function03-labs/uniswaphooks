@@ -59,7 +59,7 @@ async function ChainCollection({
 }: CollectionLinksProps) {
   return (
     <div>
-      <ul className="flex gap-4">
+      {/* <ul className="flex gap-4">
         <li className="inline-flex items-center gap-1.5">
           <span aria-hidden="true" role="img" className="text-sm">
             {activeCategory.emoji}
@@ -70,7 +70,7 @@ async function ChainCollection({
               activeCategory.category.slice(1)}
           </span>
         </li>
-      </ul>
+      </ul> */}
 
       <ul className="mt-4 flex flex-wrap gap-1 ">
         {componentsData.map((componentData) => {
@@ -81,7 +81,7 @@ async function ChainCollection({
 
           return (
             <li key={componentData.id} className="shrink-0 md:shrink">
-              <Link href={`/chains?new=${componentData.id}`}>
+              <Link href={`/chains?dencun=${componentData.id}`}>
                 <ButtonStyle
                   buttonEmoji={componentData.emoji}
                   buttonText={buttonText}

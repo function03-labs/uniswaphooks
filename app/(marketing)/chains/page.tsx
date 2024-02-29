@@ -50,7 +50,7 @@ export default async function Page({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const chainPosts = await getChains();
-  const showNew = searchParams.new === "true";
+  const showNew = searchParams.dencun !== "false";
 
   const newChains = chainPosts.filter((chain) => chain.tags?.includes("new"));
   const oldChains = chainPosts.filter((chain) => !chain.tags?.includes("new"));
@@ -61,14 +61,14 @@ export default async function Page({
   };
   const sections = [
     {
-      id: "false",
+      id: "true",
       title: "Dencun Tesnets",
       count: newChains.length,
       description: "New chains that have been added to the list.",
       emoji: "🆕",
     },
     {
-      id: "true",
+      id: "false",
       title: "Old Chains",
       count: oldChains.length,
       description: "Chains that have been around for a while.",
@@ -83,15 +83,15 @@ export default async function Page({
         subtitle="List of EVM networks where Uniswap v4 is deployed."
       />
 
-      <Container classNames="pb-8 lg:pb-12">
+      <Container classNames="mx-auto max-w-screen-xl px-4 pb-8 lg:pb-12">
         <CollectionLinks
-          activeCollection={showNew ? "true" : "false"}
+          activeCollection={showNew == true ? "true" : "false"}
           activeCategory={activeCategory}
           // @ts-ignore: Showcases the CollectionLinks component
           componentsData={sections}
         />
         <div className="h-8" />
-        <ChainGrid chainPosts={showNew ? oldChains : newChains} />
+        <ChainGrid chainPosts={showNew ? newChains : oldChains} />
       </Container>
     </>
   );
