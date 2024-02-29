@@ -9,7 +9,8 @@ import { siteConfig } from "@config/site";
 
 import { Toaster } from "@/components/ui/Toaster";
 import { Analytics } from "@component/config/Analytics";
-import { TailwindIndicator } from "@/components/config/TailwindIndicator";
+import GeistProviderUI from "@component/config/GeistProviderUI";
+import { TailwindIndicator } from "@component/config/TailwindIndicator";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -102,7 +103,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontHeading.variable
         )}
       >
-        {children}
+        <GeistProviderUI>
+          {children}
+        </GeistProviderUI>
         <Toaster />
         <Analytics />
         <TailwindIndicator />
