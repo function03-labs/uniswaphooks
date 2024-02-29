@@ -38,7 +38,6 @@ export async function POST(req: Request) {
       }
     );
   } catch (err: any) {
-    console.log(err);
     return new Response(
       JSON.stringify({
         message: "Something went wrong",

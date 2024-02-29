@@ -1,12 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-
-import { cn } from "@lib/utils";
 import { SidebarNavItem } from "@/types";
+import { usePathname, useRouter } from "next/navigation";
 
-import { Tabs } from '@geist-ui/core'
+import { Tabs } from "@geist-ui/core";
 import { Icons } from "@component/overall/Icons";
 
 interface DashboardNavProps {
@@ -15,16 +12,37 @@ interface DashboardNavProps {
 
 export function DashboardNav({ items }: DashboardNavProps) {
   const path = usePathname();
+  const router = useRouter();
 
   if (!items?.length) {
     return null;
   }
 
+  let activeIndex = items.findIndex((item) => item.href === path);
+
   return (
-    <Tabs initialValue="1">
-      <Tabs.Item label={<><Icons.post /> Hooks</>} value="1" />
-      <Tabs.Item label={<><Icons.book /> Resources</>} value="2" />
-      <Tabs.Item label={<><Icons.user /> Profile</>} value="3" />
+    <Tabs
+      initialValue={activeIndex.toString()}
+      activeClassName="font-semibold"
+      onChange={(value) => {
+        const item = items[parseInt(value)];
+        router.push(item.href!);
+      }}
+    >
+      {items.map((item, index) => {
+        const Icon = Icons[item.icon as keyof typeof Icons];
+        return (
+          <Tabs.Item
+            key={index}
+            value={index.toString()}
+            label={
+              <>
+                <Icon src="" alt={item.title} /> {item.title}
+              </>
+            }
+          />
+        );
+      })}
     </Tabs>
   );
 }

@@ -8,6 +8,11 @@ import { MainNav } from "@component/navigation/DashboardNav";
 import { DashboardNav } from "@component/dashboard/Navigation";
 import { UserAccountNav } from "@component/dashboard/UserAccountNav";
 
+export const metadata = {
+  title: "Hooks",
+  description: "Manage your hooks with ease.",
+};
+
 interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
@@ -44,18 +49,12 @@ export default async function DashboardLayout({
             />
           </div>
         </div>
-        <nav className="container sticky top-16 z-30 bg-background ">
+        <nav className="container sticky top-16 z-30 bg-background">
           <DashboardNav items={dashboardConfig.sidebarNav} />
         </nav>
       </header>
 
-      <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] flex-col md:flex">
-        </aside>
-        <main className="flex w-full flex-1 flex-col overflow-hidden">
-          {children}
-        </main>
-      </div>
+      <main className="container overflow-hidden">{children}</main>
     </div>
   );
 }

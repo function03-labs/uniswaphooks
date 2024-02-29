@@ -14,7 +14,7 @@ export default function PreviewTitle({
     >
       <span
         aria-hidden="true"
-        className="hidden group-hover:opacity-25 lg:inline-block lg:-ml-4 lg:mr-2 lg:mt-10 lg:opacity-0 lg:transition"
+        className="hidden group-hover:opacity-25 text-xl lg:inline-block lg:-ml-4 lg:mr-2 lg:mt-0 lg:opacity-0 lg:transition"
       >
         #
       </span>
