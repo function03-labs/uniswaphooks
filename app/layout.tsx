@@ -47,10 +47,6 @@ export const metadata = {
       name: "Aiden",
       url: "https://github.com/0xaaiden",
     },
-    {
-      name: "FindMalek",
-      url: "https://findmalek.com",
-    },
   ],
   creator: "0xaaiden",
   themeColor: [
