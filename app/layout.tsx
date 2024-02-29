@@ -71,7 +71,7 @@ export const metadata = {
     title: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
     description: siteConfig.description,
-    images: [`${siteConfig.url}/og.jpg`],
+    images: [`${siteConfig.url}/og.png`],
     creator: "@aiden0x4",
   },
   icons: {

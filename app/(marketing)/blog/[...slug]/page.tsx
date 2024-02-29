@@ -71,7 +71,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     "@context": "http://schema.org",
     "@type": "NewsArticle",
     headline: `${blogData.title}`,
-    image: "https://www.uniswaphooks.com/og.jpg",
+    image: "https://www.uniswaphooks.com/og.png",
     datePublished: `${blogData.date}`,
   };
 
