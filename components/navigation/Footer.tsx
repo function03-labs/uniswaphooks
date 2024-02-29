@@ -57,10 +57,9 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-
-            <div className="mt-2">
+            <div className="mt-3 max-w-[162px]">
               <SponsorLink />
-            </div>
+            </div>{" "}
           </div>
         </div>
       </Container>

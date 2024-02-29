@@ -1,5 +1,4 @@
 import { join } from "path";
-import Link from "next/link";
 import matter from "gray-matter";
 import { promises as fs } from "fs";
 
