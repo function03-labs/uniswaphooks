@@ -45,14 +45,14 @@ export default function Header() {
             </SplashButton>
           </div>
 
-          {/*           <SplashButton
+          <SplashButton
             id="submit-button"
             href="/register"
             className="bg-black text-white border-black hover:bg-white hover:text-black hover:border-black"
           >
             <span className="mr-2">🔒</span>
             Register
-          </SplashButton> */}
+          </SplashButton>
 
           <HeaderMenu
             showMenu={showMenu}

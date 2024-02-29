@@ -3,13 +3,12 @@ import { DashboardConfig } from "@/types";
 export const dashboardConfig: DashboardConfig = {
   mainNav: [
     {
-      title: "Documentation",
-      href: "/docs",
+      title: "Community Hub",
+      href: "/community",
     },
     {
-      title: "Support",
-      href: "/support",
-      disabled: true,
+      title: "Change Logs",
+      href: "https://uniswap-changelog.vercel.app",
     },
   ],
   sidebarNav: [

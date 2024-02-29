@@ -30,6 +30,8 @@ import {
   Equal,
   Copy,
   Check as CheckIcon,
+  BookCheck,
+  UserRound
 } from "lucide-react";
 import Image from "next/image";
 
@@ -50,7 +52,6 @@ export const Icons = {
   ellipsis: MoreVertical,
   add: Plus,
   warning: AlertTriangle,
-  user: User,
   arrowRight: ArrowRight,
   help: HelpCircle,
   pizza: Pizza,
@@ -68,6 +69,8 @@ export const Icons = {
   copy: Copy,
   checkIcon: CheckIcon,
   chevronDown: ChevronDown,
+  book: BookCheck,
+  user: UserRound
 };
 
 export function IconMenu() {
@@ -90,6 +93,19 @@ export function IconMenu() {
 }
 
 export function Logo({ className }: { className?: string }) {
+  return (
+    <Image
+      src="/uniswap-hooks-logo.png"
+      alt="UniswapHooks Logo"
+      className={className}
+      width={64}
+      height={64}
+      quality={100}
+    />
+  );
+}
+
+export function LogoImage({ className }: { className?: string }) {
   return (
     <Image
       src="/uniswap-hooks-logo.png"
