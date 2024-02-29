@@ -50,7 +50,7 @@ export default async function Page({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const chainPosts = await getChains();
-  const showNew = searchParams.new === "false";
+  const showNew = searchParams.new === "true";
 
   const newChains = chainPosts.filter((chain) => chain.tags?.includes("new"));
   const oldChains = chainPosts.filter((chain) => !chain.tags?.includes("new"));
@@ -62,7 +62,7 @@ export default async function Page({
   const sections = [
     {
       id: "false",
-      title: "New Chains",
+      title: "Dencun Tesnets",
       count: newChains.length,
       description: "New chains that have been added to the list.",
       emoji: "🆕",
@@ -85,13 +85,13 @@ export default async function Page({
 
       <Container classNames="pb-8 lg:pb-12">
         <CollectionLinks
-          activeCollection={showNew ? "false" : "true"}
+          activeCollection={showNew ? "true" : "false"}
           activeCategory={activeCategory}
           // @ts-ignore: Showcases the CollectionLinks component
           componentsData={sections}
         />
         <div className="h-8" />
-        <ChainGrid chainPosts={showNew ? newChains : oldChains} />
+        <ChainGrid chainPosts={showNew ? oldChains : newChains} />
       </Container>
     </>
   );
