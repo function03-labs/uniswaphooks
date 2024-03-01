@@ -5,8 +5,8 @@ export async function POST(req: Request) {
   const body = await req.json();
 
   if (
-    !process.env.SENDER_EMAIL ||
-    !process.env.SENDER_PASSWORD ||
+    !process.env.EMAIL_SENDER ||
+    !process.env.EMAIL_SERVER_PASSWORD ||
     !process.env.MAIN_EMAIL
   ) {
     return new Response(
@@ -22,8 +22,8 @@ export async function POST(req: Request) {
     host: "smtp-relay.brevo.com",
     port: 587,
     auth: {
-      user: process.env.SENDER_EMAIL,
-      pass: process.env.SENDER_PASSWORD,
+      user: process.env.EMAIL_SENDER,
+      pass: process.env.EMAIL_SERVER_PASSWORD,
     },
   });
 
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       }
     );
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.log("Error sending email:", error);
     return new Response(JSON.stringify({ error: "Failed to send email" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

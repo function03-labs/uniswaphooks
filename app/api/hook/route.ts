@@ -2,8 +2,7 @@ import { db } from "@lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const bodyAsString = await req.json();
-    const body = JSON.parse(bodyAsString);
+    const body = await req.json();
     let { title, description, creator, website, github, categoryId } = body;
 
     if (!categoryId || categoryId === "") {
@@ -38,6 +37,7 @@ export async function POST(req: Request) {
       }
     );
   } catch (err: any) {
+    console.log(err);
     return new Response(
       JSON.stringify({
         message: "Something went wrong",

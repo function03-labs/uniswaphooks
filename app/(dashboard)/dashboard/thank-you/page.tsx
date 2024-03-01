@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "Thank you!",
+  description: "Your hook has been submitted and will be reviewed by our team.",
+};
+
 export default function Page() {
   return (
     <div className="py-36">
@@ -8,5 +13,5 @@ export default function Page() {
         We gratefully appreciate your contribution to the community!
       </p>
     </div>
-  )
+  );
 }

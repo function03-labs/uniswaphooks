@@ -18,7 +18,18 @@ export function DashboardNav({ items }: DashboardNavProps) {
     return null;
   }
 
-  let activeIndex = items.findIndex((item) => item.href === path);
+  let activeIndex;
+  switch (path) {
+    case "/dashboard/hook/submit":
+      activeIndex = 0;
+      break;
+    case "/dashboard/resources/submit":
+      activeIndex = 1;
+      break;
+    default:
+      activeIndex = items.findIndex((item) => item.href === path);
+      break;
+  }
 
   return (
     <Tabs

@@ -128,7 +128,7 @@ export function PreviewConfig({ componentData }: { componentData: HookType }) {
           <DropdownMenuLabel>Hook menu</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem disabled={componentData.status === "declined"}>
-            <Link target="_blank" href={componentData.website}>
+            <Link target="_blank" href={componentData.github}>
               Open GitHub
             </Link>
           </DropdownMenuItem>

@@ -8,11 +8,6 @@ import { MainNav } from "@component/navigation/DashboardNav";
 import { DashboardNav } from "@component/dashboard/Navigation";
 import { UserAccountNav } from "@component/dashboard/UserAccountNav";
 
-export const metadata = {
-  title: "Hooks",
-  description: "Manage your hooks with ease.",
-};
-
 interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
@@ -33,10 +28,7 @@ export default async function DashboardLayout({
           <MainNav items={dashboardConfig.mainNav} />
           <div className="flex items-center justify-end gap-2 sm:gap-4">
             <div className="hidden sm:block">
-              <SplashButton
-                id="submit-button"
-                href="https://uniswaphooks.com/add-new-hook"
-              >
+              <SplashButton id="submit-button" href="/dashboard/hook/submit">
                 <span className="mr-2">🎉</span> Submit A Hook
               </SplashButton>
             </div>

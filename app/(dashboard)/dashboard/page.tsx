@@ -8,6 +8,11 @@ import { DashboardHeader } from "@component/dashboard/Header";
 import SplashButton from "@component/ui/SplashButton";
 import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
 
+export const metadata = {
+  title: "Hooks",
+  description: "Manage your hooks with ease.",
+};
+
 async function getHooks({ email }: { email?: string | null | undefined }) {
   // Using the URL we would fetch Hooks per user
   const hooksFetch = await fetch(
@@ -42,13 +47,8 @@ export default async function Home() {
         heading="Manage your hooks with ease."
         text="Create, edit, and manage your hooks."
       >
-        <SplashButton
-          href="https://uniswaphooks.com/add-new-hook"
-          id={"add-hook"}
-        >
-
-            <span>➕ </span> Add a new hook
-        
+        <SplashButton href="/dashboard/hook/submit" id={"add-hook"}>
+          <span>➕ </span> Add a new hook
         </SplashButton>
       </DashboardHeader>
 
