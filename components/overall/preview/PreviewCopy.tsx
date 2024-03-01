@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState } from "react";
 import { useCopyToClipboard } from "react-use";
 
@@ -10,6 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@component/ui/DropdownMenu";
 import ButtonStyle from "@component/ui/ButtonStyle";
+
+import { HookType } from "@/types/hook";
 
 export default function PreviewCopy({ componentCode = "" }) {
   const [buttonText, setButtonText] = useState("Copy");
@@ -70,6 +73,7 @@ export function PreviewGithub({ repoUrl = "" }) {
     </button>
   );
 }
+
 export function PreviewWebsite({ websiteUrl = "" }) {
   const [buttonText, setButtonText] = useState("Website");
   const [buttonEmoji, setButtonEmoji] = useState("🌐");
@@ -91,9 +95,22 @@ export function PreviewWebsite({ websiteUrl = "" }) {
   );
 }
 
-export function PreviewConfig({ tagType = "published" }) {
+export function PreviewConfig({ componentData }: { componentData: HookType }) {
   const [buttonText, setButtonText] = useState("Menu");
   const [buttonEmoji, setButtonEmoji] = useState("🔁");
+
+  // create the function that would make an API call to delete the hook
+  const deleteHook = async () => {
+    /*     const response = await fetch(`/api/hook/${componentData.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json(); */
+    console.log("Hook deleted");
+  };
 
   return (
     <button className="block">
@@ -110,14 +127,16 @@ export function PreviewConfig({ tagType = "published" }) {
         <DropdownMenuContent>
           <DropdownMenuLabel>Hook menu</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem disabled={tagType === "declined"}>
-            Open website
+          <DropdownMenuItem disabled={componentData.status === "declined"}>
+            <Link target="_blank" href={componentData.website}>
+              Open GitHub
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem disabled={tagType === "published"}>
+          <DropdownMenuItem disabled={componentData.status === "published"}>
             Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Delete</DropdownMenuItem>
+          <DropdownMenuItem onClick={deleteHook}>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </button>
@@ -146,6 +165,27 @@ export function PreviewStatus({ tagType = "published" }) {
           {tagType.charAt(0).toUpperCase() + tagType.slice(1)}
         </span>
       </span>
+    </button>
+  );
+}
+
+export function PreviewFolder({ repoUrl = "" }) {
+  const [buttonText, setButtonText] = useState("Files");
+  const [buttonEmoji, setButtonEmoji] = useState("📂");
+
+  function handleButtonClick() {
+    window.open(repoUrl, "_blank");
+  }
+
+  return (
+    <button className="block" onClick={handleButtonClick}>
+      <ButtonStyle
+        buttonEmoji={buttonEmoji}
+        buttonText={buttonText}
+        buttonActive={false}
+        isDark={false}
+        classAdd={""}
+      />
     </button>
   );
 }

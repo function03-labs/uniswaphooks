@@ -18,6 +18,7 @@ export function selectMailOptions(
     subject: "",
     html: "",
   };
+  
   switch (type) {
     case "hooks":
       html = render(Hook({ hook: body as HookEmailType }));

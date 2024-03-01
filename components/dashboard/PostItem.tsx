@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Hook } from "@prisma/client";
 
 import { formatDate } from "@lib/utils";
-import { Skeleton } from "@/components/ui/Skeleton";
+import { Skeleton } from "@component/ui/Skeleton";
 
 interface PostItemProps {
   post: Pick<Hook, "id" | "title" | "createdAt">;

@@ -5,12 +5,13 @@ import { useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 import {
-  PreviewGithub,
+  PreviewFolder,
   PreviewStatus,
   PreviewConfig,
 } from "@component/overall/preview/PreviewCopy";
 import PreviewIframe from "@component/overall/preview/PreviewIframe";
 import PreviewTitle from "@component/overall/preview/PreviewTitle";
+import { Skeleton } from "@component/ui/Skeleton";
 import { HookType } from "@/types/hook";
 
 export default function HookOwned({
@@ -47,8 +48,8 @@ export default function HookOwned({
 
         <div className="lg:flex lg:items-start lg:justify-between gap-2 w-full">
           <div className="flex flex-wrap items-end gap-2">
-            <PreviewConfig tagType={componentStatus} />
-            <PreviewGithub repoUrl={componentGithub} />
+            <PreviewConfig componentData={componentData} />
+            <PreviewFolder repoUrl={componentGithub} />
           </div>
           <div className="flex justify-end">
             <PreviewStatus tagType={componentStatus} />
@@ -74,3 +75,27 @@ export default function HookOwned({
     </div>
   );
 }
+
+HookOwned.Skeleton = function HookOwnedSkeleton() {
+  return (
+    <div className="max-w-md p-2">
+      <div className="space-y-2">
+        <Skeleton />
+        <div className="lg:flex lg:items-start lg:justify-between gap-2 w-full">
+          <div className="flex flex-wrap items-end gap-2">
+            <Skeleton />
+            <Skeleton />
+          </div>
+          <div className="flex justify-end">
+            <Skeleton />
+          </div>
+        </div>
+        <div className="relative">
+          <div>
+            <Skeleton />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
