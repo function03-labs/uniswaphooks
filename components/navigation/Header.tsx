@@ -38,7 +38,7 @@ export default function Header() {
           <div className="hidden sm:block">
             <SplashButton
               id="submit-button"
-              href="https://uniswaphooks.com/add-new-hook"
+              href="/dashboard/hook/submit"
             >
               <span className="mr-2">🎉</span> Submit A Hook
             </SplashButton>

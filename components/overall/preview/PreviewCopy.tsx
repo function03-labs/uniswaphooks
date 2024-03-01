@@ -10,7 +10,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@component/ui/DropdownMenu";
+import { Dialog, DialogTrigger } from "@component/ui/Dialog";
 import ButtonStyle from "@component/ui/ButtonStyle";
+import { AlertDialog, AlertDialogTrigger } from "@component/ui/AlertDialog";
+
+import EditHook from "@component/form/EditHook";
+import DeleteHook from "@component/form/DeleteHook";
 
 import { HookType } from "@/types/hook";
 
@@ -99,47 +104,42 @@ export function PreviewConfig({ componentData }: { componentData: HookType }) {
   const [buttonText, setButtonText] = useState("Menu");
   const [buttonEmoji, setButtonEmoji] = useState("🔁");
 
-  // create the function that would make an API call to delete the hook
-  const deleteHook = async () => {
-    /*     const response = await fetch(`/api/hook/${componentData.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json(); */
-    console.log("Hook deleted");
-  };
-
   return (
-    <button className="block">
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <ButtonStyle
-            buttonEmoji={buttonEmoji}
-            buttonText={buttonText}
-            buttonActive={false}
-            isDark={false}
-            classAdd={""}
-          />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>Hook menu</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem disabled={componentData.status === "declined"}>
-            <Link target="_blank" href={componentData.github}>
-              Open GitHub
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled={componentData.status === "published"}>
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={deleteHook}>Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </button>
+    <Dialog>
+      <AlertDialog>
+        <button className="block">
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <ButtonStyle
+                buttonEmoji={buttonEmoji}
+                buttonText={buttonText}
+                buttonActive={false}
+                isDark={false}
+                classAdd={""}
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Hook menu</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem disabled={componentData.status === "declined"}>
+                <Link target="_blank" href={componentData.github}>
+                  Open GitHub
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled={componentData.status === "published"}>
+                <DialogTrigger>Edit</DialogTrigger>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <AlertDialogTrigger>Delete</AlertDialogTrigger>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </button>
+        <DeleteHook id={componentData.id.toString()} />
+      </AlertDialog>
+      <EditHook hookData={componentData} />
+    </Dialog>
   );
 }
 

@@ -1,14 +1,90 @@
-export async function POST(req: Request) {
-  return new Response(
-    JSON.stringify({
-      message: "Hook created successfully",
-      data: {},
-    }),
-    {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
+import * as z from "zod";
+import { getServerSession } from "next-auth";
+
+import { db } from "@lib/prisma";
+import { authOptions } from "@lib/auth";
+
+const routeContextSchema = z.object({
+  params: z.object({
+    hookId: z.string(),
+  }),
+});
+
+export async function DELETE(
+  req: Request,
+  context: z.infer<typeof routeContextSchema>
+) {
+  try {
+    const { params } = routeContextSchema.parse(context);
+
+    if (!(await verifyCurrentUserHasAccessToPost(params.hookId))) {
+      return new Response(null, { status: 403 });
     }
-  );
+
+    await db.hook.delete({
+      where: {
+        id: parseInt(params.hookId),
+      },
+    });
+
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(JSON.stringify(error.issues), { status: 422 });
+    }
+
+    return new Response(null, { status: 500 });
+  }
+}
+
+export async function PUT(
+  req: Request,
+  context: z.infer<typeof routeContextSchema>
+) {
+  try {
+    const { params } = routeContextSchema.parse(context);
+    const { title, description, github, creator } = await req.json();
+
+    if (!(await verifyCurrentUserHasAccessToPost(params.hookId))) {
+      return new Response(null, { status: 403 });
+    }
+
+    await db.hook.update({
+      where: {
+        id: parseInt(params.hookId),
+      },
+      data: {
+        title,
+        description,
+        github,
+        creator,
+      },
+    });
+
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(JSON.stringify(error.issues), { status: 422 });
+    }
+
+    return new Response(null, { status: 500 });
+  }
+}
+
+async function verifyCurrentUserHasAccessToPost(hookId: string) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return false;
+  }
+
+  const count = await db.hook.count({
+    where: {
+      id: parseInt(hookId),
+      // @ts-ignore: id is not undefined
+      userId: session.user!.id,
+    },
+  });
+
+  return count > 0;
 }

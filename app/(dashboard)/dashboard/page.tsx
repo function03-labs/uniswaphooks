@@ -15,7 +15,7 @@ export const metadata = {
 
 async function getHooks({ id }: { id?: string | null | undefined }) {
   const hooksFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/hook`,
+    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/hook`,
     {
       method: "GET",
       headers: {
@@ -30,6 +30,7 @@ async function getHooks({ id }: { id?: string | null | undefined }) {
   }
 
   const hooks = await hooksFetch.json();
+  hooks.data = hooks.data.filter((hook: any) => hook.user.id === id);
 
   return hooks.data;
 }
@@ -40,7 +41,8 @@ export default async function Home() {
     return notFound();
   }
 
-  const hooks = await getHooks({ id: user.email });
+  // @ts-ignore: ID is not undefined
+  const hooks = await getHooks({ id: user.id });
 
   return (
     <main>
@@ -49,7 +51,7 @@ export default async function Home() {
         text="Create, edit, and manage your hooks."
       >
         <SplashButton href="/dashboard/hook/submit" id={"add-hook"}>
-          <span>➕ </span> Add a new hook
+          <span>➕</span> Add a new hook
         </SplashButton>
       </DashboardHeader>
 
