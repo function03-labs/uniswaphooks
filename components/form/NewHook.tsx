@@ -31,7 +31,7 @@ export default function NewHookForm() {
     const creator = extractCreator(values.github);
 
     try {
-      await fetch("/api/hook", {
+      const hookPosted = await fetch("/api/hook", {
         method: "POST",
         body: JSON.stringify({
           ...values,
@@ -43,6 +43,8 @@ export default function NewHookForm() {
         },
       });
 
+      console.log(hookPosted);
+
       router.push("/dashboard/thank-you");
 
       await fetch("/api/mailer", {
@@ -53,7 +55,7 @@ export default function NewHookForm() {
         },
       });
     } catch (error) {
-      console.error("Submission error:", error);
+      console.log("Submission error:", error);
       router.push("/error");
     }
   }

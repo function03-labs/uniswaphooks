@@ -1,9 +1,27 @@
 import { db } from "@lib/prisma";
+import { authOptions } from "@lib/auth";
+import { getServerSession } from "next-auth";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    let { title, description, creator, website, github, categoryId } = body;
+    let { title, description, creator, github, website, categoryId } = body;
+
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.user) {
+      return new Response(
+        JSON.stringify({
+          message: "You are not authorized to perform this action",
+        }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
 
     if (!categoryId || categoryId === "") {
       categoryId = "from-the-community";
@@ -14,13 +32,11 @@ export async function POST(req: Request) {
         title,
         description,
         creator,
-        website,
         github,
-        category: {
-          connect: {
-            id: categoryId,
-          },
-        },
+        website,
+        // @ts-ignore: Unreachable code error
+        userId: session.user.id,
+        categoryId,
       },
     });
 
@@ -58,6 +74,7 @@ export async function GET() {
     const hooks = await db.hook.findMany({
       include: {
         category: true,
+        user: true,
       },
     });
     return new Response(
@@ -97,7 +114,6 @@ export async function PUT(req: Request) {
       title,
       description,
       creator,
-      website,
       github,
       status,
       categoryId,
@@ -111,7 +127,6 @@ export async function PUT(req: Request) {
         title,
         description,
         creator,
-        website,
         github,
         status,
         categoryId,

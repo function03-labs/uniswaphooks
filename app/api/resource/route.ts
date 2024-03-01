@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   try {
     const bodyAsString = await req.json();
     const body = JSON.parse(bodyAsString);
-    const { emoji, title, section, description, imageUrl, resourceUrl } = body;
+    const { emoji, title, section, description, resourceUrl } = body;
 
     const newResource = await db.resource.create({
       data: {
@@ -12,8 +12,9 @@ export async function POST(req: Request) {
         title,
         section,
         description,
-        imageUrl,
         resourceUrl,
+        // @ts-ignore: Unreachable code error
+        userId: session.user.id,
       },
     });
 
@@ -93,7 +94,6 @@ export async function PUT(req: Request) {
       title,
       section,
       description,
-      imageUrl,
       resourceUrl,
       status,
     } = body;
@@ -107,7 +107,6 @@ export async function PUT(req: Request) {
         title,
         section,
         description,
-        imageUrl,
         resourceUrl,
         status,
       },

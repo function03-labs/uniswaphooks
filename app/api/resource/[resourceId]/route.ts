@@ -1,7 +1,7 @@
 export async function POST(req: Request) {
   return new Response(
     JSON.stringify({
-      message: "Hook created successfully",
+      message: "Resource created successfully",
       data: {},
     }),
     {

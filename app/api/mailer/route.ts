@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   }
 
   const mailTransporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
+    host: "smtp.gmail.com",
     port: 587,
     auth: {
       user: process.env.EMAIL_SENDER,

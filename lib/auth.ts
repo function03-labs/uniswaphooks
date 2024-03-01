@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         provider: { server, from },
       }) => {
         const mailTransporter = nodemailer.createTransport({
-          host: "smtp-relay.brevo.com",
+          host: "smtp.gmail.com",
           port: 587,
           auth: {
             user: process.env.EMAIL_SENDER,
@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
           });
           await mailTransporter.sendMail(mailOptions);
         } catch (error) {
-          console.error("Error sending email:", error);
+          console.log("Error sending email:", error);
         }
       },
     }),

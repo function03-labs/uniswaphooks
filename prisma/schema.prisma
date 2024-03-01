@@ -110,7 +110,6 @@ model Resource {
   section String
   emoji   String
 
-  imageUrl    String?
   resourceUrl String
   description String  @db.Text
 

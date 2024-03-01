@@ -13,14 +13,14 @@ export const metadata = {
   description: "Manage your hooks with ease.",
 };
 
-async function getHooks({ email }: { email?: string | null | undefined }) {
-  // Using the URL we would fetch Hooks per user
+async function getHooks({ id }: { id?: string | null | undefined }) {
   const hooksFetch = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/hook`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
       },
     }
   );
@@ -30,6 +30,7 @@ async function getHooks({ email }: { email?: string | null | undefined }) {
   }
 
   const hooks = await hooksFetch.json();
+
   return hooks.data;
 }
 
@@ -39,7 +40,7 @@ export default async function Home() {
     return notFound();
   }
 
-  const hooks = await getHooks({ email: user.email });
+  const hooks = await getHooks({ id: user.email });
 
   return (
     <main>
@@ -53,7 +54,6 @@ export default async function Home() {
       </DashboardHeader>
 
       <Container classNames="py-8 lg:py-6 space-y-8 lg:space-y-0">
-        <HookGrid hookPosts={hooks} owned={true} />
         {hooks?.length ? (
           <HookGrid hookPosts={hooks} owned={true} />
         ) : (
@@ -63,11 +63,8 @@ export default async function Home() {
               You don&apos;t have any hooks created yet. Get started by adding a
               new
             </EmptyPlaceholder.Description>
-            <SplashButton
-              href="https://uniswaphooks.com/add-new-hook"
-              id={"add-hook"}
-            >
-              <span className="mr-2">➕</span> Add a new hook
+            <SplashButton href="/dashboard/hook/submit" id={"add-new-hook"}>
+              <span>➕ </span> Add a new hook
             </SplashButton>
           </EmptyPlaceholder>
         )}
