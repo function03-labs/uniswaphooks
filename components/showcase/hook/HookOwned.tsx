@@ -46,7 +46,7 @@ export default function HookOwned({
           componentId={componentId.toString()}
         />
 
-        <div className="lg:flex lg:items-start lg:justify-between gap-2 w-full">
+        <div className="flex tems-start justify-between gap-2 w-full">
           <div className="flex flex-wrap items-end gap-2">
             <PreviewConfig componentData={componentData} />
             <PreviewFolder repoUrl={componentGithub} />

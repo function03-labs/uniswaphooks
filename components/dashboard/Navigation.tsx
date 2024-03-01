@@ -46,11 +46,3 @@ export function DashboardNav({ items }: DashboardNavProps) {
     </Tabs>
   );
 }
-
-DashboardNav.Skeleton = function DashboardNavSkeleton() {
-  return (
-    <Tabs initialValue="0">
-      <Tabs.Item value="0" label="Loading" />
-    </Tabs>
-  );
-};

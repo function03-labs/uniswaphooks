@@ -48,9 +48,11 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
-  accounts Account[]
-  sessions Session[]
-  //hooks         Hook[]
+  accounts  Account[]
+  sessions  Session[]
+
+  //hooks     Hook[]
+  //resources Resource[]
 
   @@map(name: "users")
 }
@@ -74,8 +76,8 @@ model Hook {
   github      String
   status      String @default("pending")
 
-  //authorId String
-  //author   User @relation(fields: [authorId], references: [id])
+  //userId String 
+  //user   User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -114,6 +116,9 @@ model Resource {
 
   status String @default("pending")
   tag    String @default("community")
+
+  //userId String
+  //user   User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

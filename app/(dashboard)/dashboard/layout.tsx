@@ -49,12 +49,11 @@ export default async function DashboardLayout({
             />
           </div>
         </div>
-        <nav className="container sticky top-16 z-30 bg-background">
+        <nav className="container">
           <DashboardNav items={dashboardConfig.sidebarNav} />
         </nav>
       </header>
-
-      <main className="container overflow-hidden">{children}</main>
+      <main className="container overflow-hidden py-2">{children}</main>
     </div>
   );
 }

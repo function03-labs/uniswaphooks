@@ -2,8 +2,10 @@ import { notFound } from "next/navigation";
 import { getCurrentUser } from "@lib/session";
 
 import Container from "@component/overall/Container";
-import SplashButton from "@component/ui/SplashButton";
 import HookGrid from "@component/showcase/hook/HookGrid";
+import { DashboardHeader } from "@component/dashboard/Header";
+
+import SplashButton from "@component/ui/SplashButton";
 import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
 
 async function getHooks({ email }: { email?: string | null | undefined }) {
@@ -35,21 +37,41 @@ export default async function Home() {
   const hooks = await getHooks({ email: user.email });
 
   return (
-    <Container classNames="py-8 lg:py-4 space-y-8 lg:space-y-0">
-      <HookGrid hookPosts={hooks} owned={true} />
-      {hooks?.length ? (
+    <main>
+      <DashboardHeader
+        heading="Manage your hooks with ease."
+        text="Create, edit, and manage your hooks."
+      >
+        <SplashButton
+          href="https://uniswaphooks.com/add-new-hook"
+          id={"add-hook"}
+        >
+
+            <span>➕ </span> Add a new hook
+        
+        </SplashButton>
+      </DashboardHeader>
+
+      <Container classNames="py-8 lg:py-6 space-y-8 lg:space-y-0">
         <HookGrid hookPosts={hooks} owned={true} />
-      ) : (
-        <EmptyPlaceholder>
-          <EmptyPlaceholder.Title>No hooks created</EmptyPlaceholder.Title>
-          <EmptyPlaceholder.Description>
-            You don&apos;t have any hooks created yet. Get started by adding a new
-          </EmptyPlaceholder.Description>
-          <SplashButton href="https://uniswaphooks.com/add-new-hook" id={""}>
-            <span className="mr-2">➕</span> Add a new hook
-          </SplashButton>
-        </EmptyPlaceholder>
-      )}
-    </Container>
+        {hooks?.length ? (
+          <HookGrid hookPosts={hooks} owned={true} />
+        ) : (
+          <EmptyPlaceholder>
+            <EmptyPlaceholder.Title>No hooks created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Description>
+              You don&apos;t have any hooks created yet. Get started by adding a
+              new
+            </EmptyPlaceholder.Description>
+            <SplashButton
+              href="https://uniswaphooks.com/add-new-hook"
+              id={"add-hook"}
+            >
+              <span className="mr-2">➕</span> Add a new hook
+            </SplashButton>
+          </EmptyPlaceholder>
+        )}
+      </Container>
+    </main>
   );
 }

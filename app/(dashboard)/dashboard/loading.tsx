@@ -11,6 +11,10 @@ export default function DashboardLoading() {
         <Skeleton className="h-8 w-32" />
         <Skeleton className="h-8 w-32" />
       </nav>
+      <DashboardHeader
+        heading="Manage your hooks with ease."
+        text="Create, edit, and manage your hooks."
+      />
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <PostItem.Skeleton />
         <PostItem.Skeleton />
