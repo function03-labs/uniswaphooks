@@ -4,16 +4,16 @@ import { useRef, useState } from "react";
 
 import { useInView } from "react-intersection-observer";
 
-import PreviewCreator from "@component/overall/preview/PreviewCreator";
-import PreviewCopy, {
+import {
   PreviewGithub,
-  PreviewWebsite,
+  PreviewStatus,
+  PreviewConfig,
 } from "@component/overall/preview/PreviewCopy";
 import PreviewIframe from "@component/overall/preview/PreviewIframe";
 import PreviewTitle from "@component/overall/preview/PreviewTitle";
 import { HookType } from "@/types/hook";
 
-export default function ComponentPreview({
+export default function HookOwned({
   componentData,
 }: {
   componentData: HookType;
@@ -33,8 +33,8 @@ export default function ComponentPreview({
     title: componentTitle,
     description: componentDescription,
     github: componentGithub,
-    website: componentWebsite,
     creator: componentCreator,
+    status: componentStatus,
   } = componentData;
 
   return (
@@ -45,14 +45,13 @@ export default function ComponentPreview({
           componentId={componentId.toString()}
         />
 
-        <div className="lg:flex lg:items-end">
+        <div className="lg:flex lg:items-start lg:justify-between gap-2 w-full">
           <div className="flex flex-wrap items-end gap-2">
-            <PreviewCopy
-              componentCode={componentTitle + "\n" + componentDescription}
-            />
-
+            <PreviewConfig tagType={componentStatus} />
             <PreviewGithub repoUrl={componentGithub} />
-            <PreviewWebsite websiteUrl={componentWebsite} />
+          </div>
+          <div className="flex justify-end">
+            <PreviewStatus tagType={componentStatus} />
           </div>
         </div>
 
@@ -71,13 +70,6 @@ export default function ComponentPreview({
             />
           </div>
         </div>
-
-        {componentCreator && (
-          <PreviewCreator
-            creatorGithub={componentCreator}
-            creatorWebsite={componentWebsite}
-          />
-        )}
       </div>
     </div>
   );

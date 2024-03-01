@@ -90,7 +90,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
       />
 
       <h3 className="text-3xl font-bold">{data[0].category.title}</h3>
-      <HookGrid hookPosts={data} />
+      <HookGrid hookPosts={data} owned={false} />
     </Container>
   );
 }

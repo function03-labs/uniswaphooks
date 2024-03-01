@@ -9,6 +9,7 @@ export type PreviewCodeProps = {
 export type PreviewIframeProps = {
   showPreview: boolean;
   componentHtml: string;
+  componentId: string;
   componentTitle: string;
   componentCreator: string;
   componentDescription: string;

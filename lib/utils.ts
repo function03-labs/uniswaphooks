@@ -21,3 +21,12 @@ export async function readStream(stream: ReadableStream<Uint8Array>) {
 export function extractCreator(github: string) {
   return github.split("/")[3];
 }
+
+export function formatDate(input: string | number): string {
+  const date = new Date(input);
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
