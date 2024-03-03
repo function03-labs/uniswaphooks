@@ -82,7 +82,7 @@ export default function ReviewHook({ hook }: { hook: HookType }) {
                   <SelectItem value="published">✅Approved</SelectItem>
                   <SelectItem value="pending">🟨Pending</SelectItem>
                   <SelectItem value="draft">⬛Draft</SelectItem>
-                  <SelectItem value="rejected">❌Rejected</SelectItem>
+                  <SelectItem value="declined">❌Declined</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
