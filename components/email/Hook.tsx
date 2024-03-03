@@ -107,7 +107,7 @@ export function Hook({ hook }: { hook: HookEmailType }) {
 
             <Button
               style={button}
-              href={`${process.env.NEXT_PUBLIC_API_URL_DEV}/dashboard/hook/review/${hook.id}`}
+              href={`${process.env.NEXT_PUBLIC_URL}/dashboard/hook/review/${hook.id}`}
             >
               Review the hook
             </Button>
