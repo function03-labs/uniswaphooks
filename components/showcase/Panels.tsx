@@ -1,48 +1,41 @@
 import { Icons } from "@component/overall/Icons";
 
-const steps = [
-  { id: "01", name: "Hook details", href: "#", status: "current" },
-  { id: "02", name: "Hook deployment", href: "#", status: "upcoming" },
-  { id: "03", name: "Submission", href: "#", status: "upcoming" },
-];
-
-function CurrentStep({ step }: { step: (typeof steps)[0] }) {
+function CurrentStep({ step }: { step: (typeof stepse)[0] }) {
   return (
-    <a
-      href={step.href}
+    <div
       className="flex items-center px-6 py-4 text-sm font-medium"
       aria-current="step"
     >
       <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-blue-600">
-        <span className="text-blue-600">{step.id}</span>
+        <span className="text-blue-600">0{step.id}</span>
       </span>
       <span className="ml-4 text-sm font-medium text-blue-600">
         {step.name}
       </span>
-    </a>
+    </div>
   );
 }
 
-function UpcomingStep({ step }: { step: (typeof steps)[0] }) {
+function UpcomingStep({ step }: { step: (typeof stepse)[0] }) {
   return (
-    <a href={step.href} className="group flex items-center">
+    <div className="group flex items-center">
       <span className="flex items-center px-6 py-4 text-sm font-medium">
         <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300 group-hover:border-gray-400">
           <span className="text-gray-500 group-hover:text-gray-900">
-            {step.id}
+            0{step.id}
           </span>
         </span>
         <span className="ml-4 text-sm font-medium text-gray-500 group-hover:text-gray-900">
           {step.name}
         </span>
       </span>
-    </a>
+    </div>
   );
 }
 
-function CompleteStep({ step }: { step: (typeof steps)[0] }) {
+function CompleteStep({ step }: { step: (typeof stepse)[0] }) {
   return (
-    <a href={step.href} className="group flex w-full items-center">
+    <div className="group flex w-full items-center">
       <span className="flex items-center px-6 py-4 text-sm font-medium">
         <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 group-hover:bg-blue-800">
           <Icons.check className="h-6 w-6 text-white" aria-hidden="true" />
@@ -51,11 +44,27 @@ function CompleteStep({ step }: { step: (typeof steps)[0] }) {
           {step.name}
         </span>
       </span>
-    </a>
+    </div>
   );
 }
 
-export default function Panels() {
+const stepse = [
+  { id: 1, name: "Hook details", status: "" },
+  { id: 2, name: "Hook deployment", status: "" },
+  { id: 3, name: "Submission", status: "" },
+];
+
+export default function Panels({ currentStep }: { currentStep: number }) {
+  const steps = stepse.map((s) => {
+    if (s.id === currentStep) {
+      return { ...s, status: "current" };
+    } else if (s.id < currentStep) {
+      return { ...s, status: "complete" };
+    } else {
+      return { ...s, status: "upcoming" };
+    }
+  });
+
   return (
     <nav aria-label="Progress">
       <ol

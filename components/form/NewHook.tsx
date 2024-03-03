@@ -1,6 +1,7 @@
 "use client";
 
 import * as z from "zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,21 +18,23 @@ import {
   FormLabel,
   FormMessage,
 } from "@component/ui/Form";
-import { Button } from "@component/ui/Button";
 import { Input } from "@component/ui/Input";
+import { Button } from "@component/ui/Button";
 import { Textarea } from "@component/ui/Textarea";
 
 export default function NewHookForm() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
   });
 
   async function onSubmit(values: z.infer<typeof hookSchema>) {
+    setLoading(true);
     const creator = extractCreator(values.github);
 
     try {
-      const hookPosted = await fetch("/api/hook", {
+      const data = await fetch("/api/hook", {
         method: "POST",
         body: JSON.stringify({
           ...values,
@@ -42,22 +45,18 @@ export default function NewHookForm() {
           "Content-Type": "application/json",
         },
       });
+      const response = await data.json();
 
-      console.log(hookPosted);
+      router.push(
+        `/dashboard/hook/submit?id=${response.data.id}&step=deployment`
+      );
 
-      router.push("/dashboard/thank-you");
-
-      await fetch("/api/mailer", {
-        method: "POST",
-        body: JSON.stringify({ ...values, creator, type: "hooks" }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
     } catch (error) {
-      console.log("Submission error:", error);
+      console.error("Submission error:", error);
       router.push("/error");
     }
+
+    setLoading(false);
   }
 
   return (
@@ -118,12 +117,21 @@ export default function NewHookForm() {
           )}
         />
 
-        <Button
-          className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
-          type="submit"
-        >
-          Submit
-        </Button>
+        {loading ? (
+          <Button
+            className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+            type="submit"
+          >
+            🔃Submitting...
+          </Button>
+        ) : (
+          <Button
+            className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+            type="submit"
+          >
+            ☑️Submit hook details
+          </Button>
+        )}
       </form>
     </Form>
   );

@@ -136,36 +136,10 @@ export function PreviewConfig({ componentData }: { componentData: HookType }) {
             </DropdownMenuContent>
           </DropdownMenu>
         </button>
-        <DeleteHook id={componentData.id.toString()} />
+        <DeleteHook id={componentData.id} />
       </AlertDialog>
       <EditHook hookData={componentData} />
     </Dialog>
-  );
-}
-
-export function PreviewStatus({ tagType = "published" }) {
-  const isPublished = tagType === "published";
-  const isPending = tagType === "pending";
-  const isDeclined = tagType === "declined";
-
-  if (!isPublished && !isPending && !isDeclined) {
-    return <></>;
-  }
-
-  return (
-    <button className="block mt-1">
-      <span
-        className={`inline-flex items-center gap-1.5 rounded-lg border-2 px-3 py-1.5 border-gray-900 ${
-          isPublished && "bg-green-700 text-green-100"
-        } ${isPending && "bg-yellow-700 text-yellow-100"} ${
-          isDeclined && "bg-red-700 text-red-100"
-        }`}
-      >
-        <span className="text-xs font-medium">
-          {tagType.charAt(0).toUpperCase() + tagType.slice(1)}
-        </span>
-      </span>
-    </button>
   );
 }
 

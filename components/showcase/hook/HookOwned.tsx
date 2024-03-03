@@ -6,9 +6,9 @@ import { useInView } from "react-intersection-observer";
 
 import {
   PreviewFolder,
-  PreviewStatus,
   PreviewConfig,
 } from "@component/overall/preview/PreviewCopy";
+import { PreviewStatus } from "@component/overall/preview/PreviewStatus";
 import PreviewIframe from "@component/overall/preview/PreviewIframe";
 import PreviewTitle from "@component/overall/preview/PreviewTitle";
 import { Skeleton } from "@component/ui/Skeleton";
@@ -39,11 +39,11 @@ export default function HookOwned({
   } = componentData;
 
   return (
-    <div ref={ref} id={componentId.toString()} className="max-w-md p-2">
+    <div ref={ref} id={componentId} className="p-2">
       <div className="space-y-2">
         <PreviewTitle
           componentTitle={componentTitle}
-          componentId={componentId.toString()}
+          componentId={componentId}
         />
 
         <div className="flex tems-start justify-between gap-2 w-full">
@@ -60,7 +60,7 @@ export default function HookOwned({
           <div>
             <PreviewIframe
               showPreview={showPreview}
-              componentId={componentId.toString()}
+              componentId={componentId}
               componentTitle={componentTitle}
               componentDescription={componentDescription}
               componentCreator={componentCreator}

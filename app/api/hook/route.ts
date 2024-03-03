@@ -75,6 +75,9 @@ export async function GET() {
       include: {
         category: true,
         user: true,
+        network: true,
+        contract: true,
+        deploymentDate: true,
       },
     });
     return new Response(

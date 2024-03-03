@@ -6,9 +6,9 @@ export default function DashboardLoading() {
   return (
     <DashboardShell>
       <DashboardHeader
-        heading="Hooks"
-        text="See all the hooks you've created."
-      ></DashboardHeader>
+        heading="Resources"
+        text="Where you can find your resources and manage them."
+      />
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <PostItem.Skeleton />
         <PostItem.Skeleton />

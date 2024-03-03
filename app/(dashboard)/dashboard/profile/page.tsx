@@ -1,3 +1,5 @@
+import { DashboardHeader } from "@component/dashboard/Header";
+
 export const metadata = {
   title: "Profile",
   description: "Your profile settings.",
@@ -5,8 +7,11 @@ export const metadata = {
 
 export default function Profile() {
   return (
-    <div>
-      <h1>Profile</h1>
-    </div>
+    <main>
+      <DashboardHeader
+        heading="Profile"
+        text="Manage your profile and account settings."
+      />
+    </main>
   );
 }

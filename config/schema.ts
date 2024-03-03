@@ -34,3 +34,8 @@ export const hookSchema = z.object({
   description: z.string().min(2),
   github: z.string().url(),
 });
+
+export const deployHookSchema = z.object({
+  deploymentAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
+  network: z.string().min(1),
+});

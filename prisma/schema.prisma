@@ -67,23 +67,65 @@ model VerificationToken {
 }
 
 model Hook {
-  id Int @id @default(autoincrement())
+  id             String   @id @default(uuid())
+  title          String
+  description    String
+  creator        String
+  website        String
+  github         String
+  status         String   @default("draft")
 
-  title       String
-  description String
-  creator     String
-  website     String
-  github      String
-  status      String @default("pending")
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
 
-  userId String 
-  user   User   @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  categoryId     String
+  category       Category @relation(fields: [categoryId], references: [id])
 
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
+  networkId      String?
+  network        Network?  @relation(fields: [networkId], references: [id])
+  
+  contractId     String?
+  contract       Contract? @relation(fields: [contractId], references: [id])
+
+  deploymentDateId String?
+  deploymentDate DeploymentDate? @relation(fields: [deploymentDateId], references: [id])
+
+  @@map(name: "hook")
+}
+
+model Network {
+  id             String   @id @default(uuid())
+  name           String
+  imageUrl       String
+  verified       Boolean  @default(false)
+
+  hooks          Hook[]
+
+  @@map(name: "network")
+}
+
+model Contract {
+  id             String   @id @default(uuid())
+  contractName    String
+  compilerVersion String
+  creator         String?
+  transactionHash String?
+
+  hooks           Hook[]
+
+  @@map(name: "contract")
+}
+
+model DeploymentDate {
+  id             String   @id @default(uuid())
+  date      String
+  dateTime  String
+  hooks     Hook[]
+
+  @@map(name: "deploymentDate")
 }
 
 model Category {
@@ -100,10 +142,12 @@ model Category {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map(name: "category")
 }
 
 model Resource {
-  id Int @id @default(autoincrement())
+  id             String   @id @default(uuid())
 
   title String
 
@@ -121,4 +165,6 @@ model Resource {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map(name: "resource")
 }

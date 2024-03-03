@@ -1,4 +1,4 @@
-import { CategoryType } from "@/types/hook";
+import { CategoryType, HookType } from "@/types/hook";
 
 import Container from "@component/overall/Container";
 import HeroBanner from "@component/section/HeroBanner";
@@ -7,25 +7,31 @@ import HeaderSearch from "@component/showcase/HeaderSearch";
 import VerifiedHooks from "@component/showcase/VerifiedHooks";
 import CollectionCard from "@component/showcase/CollectionCard";
 
-async function getCategories() {
-  const categoriesFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/category`
-  );
+async function getHooks() {
   const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hook`);
-
-  if (!categoriesFetch.ok) {
-    throw new Error("Failed to fetch categories");
-  }
 
   if (!hooksFetch.ok) {
     throw new Error("Failed to fetch hooks");
   }
 
-  const categories = await categoriesFetch.json();
   const hooks = await hooksFetch.json();
 
+  return hooks.data;
+}
+
+async function getCategories(hooks: HookType[]) {
+  const categoriesFetch = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/category`
+  );
+
+  if (!categoriesFetch.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+
+  const categories = await categoriesFetch.json();
+
   categories.data.forEach((category: CategoryType) => {
-    category.count = hooks.data.filter(
+    category.count = hooks.filter(
       (hook: any) => hook.category.id === category.id
     ).length;
   });
@@ -43,7 +49,8 @@ async function getCategories() {
 }
 
 export default async function Page() {
-  const categories = await getCategories();
+  const hooks = await getHooks() as HookType[];
+  const categories = await getCategories(hooks);
 
   return (
     <main>
@@ -55,7 +62,7 @@ export default async function Page() {
           A community-curated collection of open-source hooks for Uniswap v4.
         </p>
 
-        <HeaderSearch />
+        <HeaderSearch hooks={hooks} />
         <VerifiedHooks />
       </HeroBanner>
 

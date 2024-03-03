@@ -31,6 +31,9 @@ async function getHooks({ id }: { id?: string | null | undefined }) {
 
   const hooks = await hooksFetch.json();
   hooks.data = hooks.data.filter((hook: any) => hook.user.id === id);
+  hooks.data.sort((a: any, b: any) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
 
   return hooks.data;
 }

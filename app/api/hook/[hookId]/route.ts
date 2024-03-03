@@ -10,6 +10,38 @@ const routeContextSchema = z.object({
   }),
 });
 
+export async function GET(
+  req: Request,
+  context: z.infer<typeof routeContextSchema>
+) {
+  try {
+    const { params } = routeContextSchema.parse(context);
+
+    const hook = await db.hook.findUnique({
+      where: {
+        id: params.hookId,
+      },
+      include: {
+        network: true,
+        contract: true,
+        deploymentDate: true,
+      },
+    });
+
+    if (!hook) {
+      return new Response(null, { status: 404 });
+    }
+
+    return new Response(JSON.stringify(hook), {
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+  } catch (error) {
+    return new Response(null, { status: 500 });
+  }
+}
+
 export async function DELETE(
   req: Request,
   context: z.infer<typeof routeContextSchema>
@@ -23,7 +55,7 @@ export async function DELETE(
 
     await db.hook.delete({
       where: {
-        id: parseInt(params.hookId),
+        id: params.hookId,
       },
     });
 
@@ -43,7 +75,16 @@ export async function PUT(
 ) {
   try {
     const { params } = routeContextSchema.parse(context);
-    const { title, description, github, creator } = await req.json();
+    const {
+      title,
+      description,
+      github,
+      creator,
+      website,
+      network,
+      contract,
+      deploymentDate,
+    } = await req.json();
 
     if (!(await verifyCurrentUserHasAccessToPost(params.hookId))) {
       return new Response(null, { status: 403 });
@@ -51,18 +92,42 @@ export async function PUT(
 
     await db.hook.update({
       where: {
-        id: parseInt(params.hookId),
+        id: params.hookId,
       },
       data: {
         title,
         description,
         github,
         creator,
+        status: "pending",
+        website,
+        network: {
+          create: {
+            name: network.name,
+            imageUrl: network.imageUrl,
+            verified: network.verified,
+          },
+        },
+        contract: {
+          create: {
+            contractName: contract.name,
+            compilerVersion: contract.compilerVersion,
+            creator: contract.creator,
+            transactionHash: contract.transactionHash,
+          },
+        },
+        deploymentDate: {
+          create: {
+            date: deploymentDate.date,
+            dateTime: deploymentDate.dateTime,
+          },
+        },
       },
     });
 
     return new Response(null, { status: 204 });
   } catch (error) {
+    console.log(error);
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
@@ -80,7 +145,7 @@ async function verifyCurrentUserHasAccessToPost(hookId: string) {
 
   const count = await db.hook.count({
     where: {
-      id: parseInt(hookId),
+      id: hookId,
       // @ts-ignore: id is not undefined
       userId: session.user!.id,
     },
