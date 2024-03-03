@@ -1,6 +1,7 @@
 import "@styles/globals.css";
 
 import Script from "next/script";
+import type { Viewport, Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter as FontSans } from "next/font/google";
 
@@ -26,13 +27,22 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export const metadata = {
+export const viewport: Viewport = {
+  width: "device-width",
+  height: "device-height",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 5,
+  userScalable: false,
+  viewportFit: "cover",
+};
+
+export const metadata: Metadata = {
   title: {
     default: "Uniswap v4 Hooks Directory",
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  viewport: "width=device-width, initial-scale=1.0",
   keywords: [
     "Uniswap",
     "Uniswap v4",
@@ -50,16 +60,11 @@ export const metadata = {
     },
   ],
   creator: "0xaaiden",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteConfig.url,
     title: siteConfig.name,
-    template: `%s | ${siteConfig.name}`,
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [`${siteConfig.url}/og.png`],
@@ -67,7 +72,6 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
-    template: `%s | ${siteConfig.name}`,
     description: siteConfig.description,
     images: [`${siteConfig.url}/og.png`],
     creator: "@aiden0x4",
@@ -78,6 +82,7 @@ export const metadata = {
     apple: "/favicon/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
+  metadataBase: new URL(siteConfig.url),
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
@@ -103,9 +108,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontHeading.variable
         )}
       >
-        <GeistProviderUI>
-          {children}
-        </GeistProviderUI>
+        <GeistProviderUI>{children}</GeistProviderUI>
         <Toaster />
         <Analytics />
         <TailwindIndicator />
