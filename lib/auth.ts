@@ -3,6 +3,7 @@ import EmailProvider from "next-auth/providers/email";
 import GitHubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
+import { JWT } from "next-auth/jwt";
 import nodemailer from "nodemailer";
 import { selectMailOptions } from "@lib/email-template";
 
@@ -53,16 +54,16 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ token, session }) {
       if (token) {
-        // @ts-ignore: Property 'id' does not exist on type 'Session'.
-        session.user!.id = token.id;
-        session.user!.name = token.name;
-        session.user!.email = token.email;
-        session.user!.image = token.picture;
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.image;
+        session.user.role = token.role;
       }
 
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user }): Promise<JWT> {
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email,
@@ -80,7 +81,11 @@ export const authOptions: NextAuthOptions = {
         id: dbUser.id,
         name: dbUser.name,
         email: dbUser.email,
-        picture: dbUser.image,
+        emailVerified: dbUser.emailVerified,
+        image: dbUser.image,
+        createdAt: dbUser.createdAt,
+        updatedAt: dbUser.updatedAt,
+        role: dbUser.role,
       };
     },
   },

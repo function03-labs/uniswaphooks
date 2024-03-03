@@ -40,6 +40,7 @@ async function getHooks({ id }: { id?: string | null | undefined }) {
 
 export default async function Home() {
   const user = await getCurrentUser();
+
   if (!user) {
     return notFound();
   }
