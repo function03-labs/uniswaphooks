@@ -105,7 +105,10 @@ export function Hook({ hook }: { hook: HookEmailType }) {
               Status: <strong>Under review</strong>
             </Text>
 
-            <Button style={button} href="https://uniswaphooks.com/">
+            <Button
+              style={button}
+              href={`${process.env.NEXT_PUBLIC_API_URL_DEV}/dashboard/hook/review/${hook.id}`}
+            >
               Review the hook
             </Button>
           </Section>

@@ -33,6 +33,7 @@ export const hookSchema = z.object({
   title: z.string().min(2).max(50),
   description: z.string().min(2),
   github: z.string().url(),
+  status: z.string().optional(),
 });
 
 export const deployHookSchema = z.object({

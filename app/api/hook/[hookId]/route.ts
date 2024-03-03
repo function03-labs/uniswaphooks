@@ -82,6 +82,7 @@ export async function PUT(
       creator,
       website,
       network,
+      status,
       contract,
       deploymentDate,
     } = await req.json();
@@ -99,7 +100,7 @@ export async function PUT(
         description,
         github,
         creator,
-        status: "pending",
+        status,
         website,
         network: {
           create: {
@@ -110,7 +111,8 @@ export async function PUT(
         },
         contract: {
           create: {
-            contractName: contract.name,
+            contractName: contract.contractName,
+            deploymentAddress: contract.deploymentAddress,
             compilerVersion: contract.compilerVersion,
             creator: contract.creator,
             transactionHash: contract.transactionHash,
@@ -127,7 +129,7 @@ export async function PUT(
 
     return new Response(null, { status: 204 });
   } catch (error) {
-    console.log(error);
+    console.log("Error", error);
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
@@ -146,10 +148,9 @@ async function verifyCurrentUserHasAccessToPost(hookId: string) {
   const count = await db.hook.count({
     where: {
       id: hookId,
-      // @ts-ignore: id is not undefined
-      userId: session.user!.id,
+      userId: session.user.id,
     },
   });
 
-  return count > 0;
+  return count > 0 || session.user.role === "admin";
 }

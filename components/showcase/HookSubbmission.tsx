@@ -3,8 +3,8 @@ import SplashButton from "@component/ui/SplashButton";
 import HookOwned from "@component/showcase/hook/HookOwned";
 
 async function getHook(id: string) {
-  const hooksFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/hook`,
+  const hookFetch = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/hook/${id}`,
     {
       method: "GET",
       headers: {
@@ -14,14 +14,12 @@ async function getHook(id: string) {
     }
   );
 
-  if (!hooksFetch.ok) {
+  if (!hookFetch.ok) {
     throw new Error("Failed to fetch hooks");
   }
 
-  const hooks = await hooksFetch.json();
-  hooks.data = hooks.data.filter((hook: any) => hook.id === id);
-
-  return hooks.data[0];
+  const hook = await hookFetch.json();
+  return hook;
 }
 
 export default async function HookSubbmission({ id }: { id: string }) {

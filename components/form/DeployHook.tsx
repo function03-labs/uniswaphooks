@@ -93,15 +93,15 @@ export default function DeployHook({ id }: { id: string }) {
         networkName: values.network === "api" ? "Mainnet" : "Sepolia",
         verified,
         contract: {
-          contractName: sourceCode.contractName,
-          compilerVersion: sourceCode.compilerVersion,
-          creator: creator.creator,
-          transactionHash: creator.transactionHash,
+          deploymentAddress: values.deploymentAddress,
+          contractName: sourceCode.contractName || "Unknown contract",
+          compilerVersion: sourceCode.compilerVersion || "Unknown version",
+          creator: creator.creator || "Unknown creator",
+          transactionHash: creator.transactionHash || "Unknown transaction",
         },
         date: date,
       });
     } catch (error) {
-      console.log("Submission error:", error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
@@ -121,14 +121,16 @@ export default function DeployHook({ id }: { id: string }) {
       const requestUpdate = await fetch(`/api/hook/${id}`, {
         method: "PUT",
         body: JSON.stringify({
+          status: "pending",
           network: {
             name: deployementData.networkName,
             imageUrl: deployementData.imageUrl,
             verified: deployementData.verified,
           },
           contract: {
-            name: deployementData.contract!.contractName,
-            compilerVersion: deployementData.contract!.compilerVersion,
+            contractName: deployementData.contract?.contractName,
+            deploymentAddress: deployementData.contract?.deploymentAddress,
+            compilerVersion: deployementData.contract?.compilerVersion,
             creator: deployementData.contract?.creator,
             transactionHash: deployementData.contract?.transactionHash,
           },
@@ -161,6 +163,7 @@ export default function DeployHook({ id }: { id: string }) {
       await fetch("/api/mailer", {
         method: "POST",
         body: JSON.stringify({
+          id: hookData.id,
           title: hookData.title,
           description: hookData.description,
           creator: hookData.creator,

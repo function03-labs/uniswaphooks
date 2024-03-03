@@ -111,6 +111,7 @@ model Network {
 model Contract {
   id             String   @id @default(uuid())
   contractName    String
+  deploymentAddress String
   compilerVersion String
   creator         String?
   transactionHash String?

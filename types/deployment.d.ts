@@ -14,6 +14,7 @@ export type InputType = {
 
 export type ContractType = {
   contractName: string;
+  deploymentAddress: string;
   compilerVersion: string;
   creator: string;
   transactionHash: string;

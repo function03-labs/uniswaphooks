@@ -14,6 +14,7 @@ export default function DeploymentDetails({
 }: {
   deployment: DeploymentType;
 }) {
+  
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200">
       <div className="flex items-center justify-between gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
