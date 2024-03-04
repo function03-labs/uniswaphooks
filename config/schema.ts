@@ -40,3 +40,9 @@ export const deployHookSchema = z.object({
   deploymentAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
   network: z.string().min(1),
 });
+
+export const userSchema = z.object({
+  name: z.string().min(2).max(50).optional(),
+  email: z.string().email(),
+  image: z.string().url().optional(),
+});

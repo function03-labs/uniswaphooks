@@ -1,3 +1,7 @@
+import { notFound } from "next/navigation";
+import { getCurrentUser } from "@lib/session";
+
+import ProfileForm from "@component/form/ProfileForm";
 import { DashboardHeader } from "@component/dashboard/Header";
 
 export const metadata = {
@@ -5,13 +9,20 @@ export const metadata = {
   description: "Your profile settings.",
 };
 
-export default function Profile() {
+export default async function Profile() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return notFound();
+  }
+
   return (
     <main>
       <DashboardHeader
         heading="Profile"
         text="Manage your profile and account settings."
       />
+      <ProfileForm user={user} />
     </main>
   );
 }

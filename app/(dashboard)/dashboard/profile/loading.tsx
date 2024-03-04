@@ -9,10 +9,7 @@ export default function DashboardLoading() {
         heading="Profile"
         text="Manage your profile and account settings."
       />
-      <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <PostItem.Skeleton />
-        <PostItem.Skeleton />
-        <PostItem.Skeleton />
+      <ul>
         <PostItem.Skeleton />
         <PostItem.Skeleton />
       </ul>

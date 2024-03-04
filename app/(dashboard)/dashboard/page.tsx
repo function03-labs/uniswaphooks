@@ -45,7 +45,6 @@ export default async function Home() {
     return notFound();
   }
 
-  // @ts-ignore: ID is not undefined
   const hooks = await getHooks({ id: user.id });
 
   return (
