@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { getCurrentUser } from "@lib/session";
 
 import Container from "@component/overall/Container";
-import HookGrid from "@component/showcase/hook/HookGrid";
 import { DashboardHeader } from "@component/dashboard/Header";
+import ResourceGrid from "@component/showcase/resource/ResourceGrid";
 
 import SplashButton from "@component/ui/SplashButton";
 import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
@@ -14,16 +14,37 @@ export const metadata = {
 };
 
 async function getResources({ id }: { id?: string | null | undefined }) {
-  return [];
+  const resourceFetch = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/resource`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
+      },
+    }
+  );
+
+  if (!resourceFetch.ok) {
+    throw new Error("Failed to fetch Resources");
+  }
+
+  const resources = await resourceFetch.json();
+
+  const userResources = resources.data.filter(
+    (resource: any) => resource.userId === id
+  );
+
+  return userResources;
 }
 
 export default async function Resources() {
   const user = await getCurrentUser();
+
   if (!user) {
     return notFound();
   }
 
-  // @ts-ignore: ID is not undefined
   const resources = await getResources({ id: user.id });
 
   return (
@@ -39,7 +60,7 @@ export default async function Resources() {
 
       <Container classNames="py-8 lg:py-6 space-y-8 lg:space-y-0">
         {resources?.length ? (
-          <HookGrid hookPosts={resources} owned={true} />
+          <ResourceGrid resourcePosts={resources} owned={true} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Title>
@@ -53,7 +74,7 @@ export default async function Resources() {
               href="/dashboard/resource/submit"
               id={"add-new-resource"}
             >
-              <span>➕ </span> Add a new hook
+              <span>➕ </span> Submit your first resource
             </SplashButton>
           </EmptyPlaceholder>
         )}

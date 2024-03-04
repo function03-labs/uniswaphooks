@@ -19,7 +19,7 @@ export const dashboardConfig: DashboardConfig = {
     },
     {
       title: "Resources",
-      href: "/dashboard/resources",
+      href: "/dashboard/resource",
       icon: "book",
     },
     {

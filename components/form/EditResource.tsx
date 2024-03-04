@@ -29,25 +29,45 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/Command";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@component/ui/Dialog";
 import { Input } from "@component/ui/Input";
 import { Button } from "@component/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import EmojiPicker from "@component/emoji-picker/EmojiPicker";
 
+import { ResourcePost } from "@/types/post";
 import { sections } from "@config/community";
 import { resourceSchema } from "@config/schema";
 
 import { Check, ChevronsUpDown, SmilePlus } from "lucide-react";
 
-export default function NewResourceForm({ user }: { user: any }) {
+export default function EditResource({
+  resourceData,
+}: {
+  resourceData: ResourcePost;
+}) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof resourceSchema>>({
     resolver: zodResolver(resourceSchema),
+    defaultValues: {
+      emoji: resourceData.emoji,
+      title: resourceData.title,
+      section: resourceData.section,
+      description: resourceData.description,
+      resourceUrl: resourceData.resourceUrl,
+    },
   });
 
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
 
   async function onSubmit(values: z.infer<typeof resourceSchema>) {
+    setLoading(true);
     if (!values.emoji) {
       values.emoji = sections.find(
         (section) => section.id === values.section
@@ -55,40 +75,32 @@ export default function NewResourceForm({ user }: { user: any }) {
     }
 
     try {
-      const requestResource = await fetch("/api/resource", {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const response = await requestResource.json();
-
-      router.push("/dashboard/thank-you");
-
-      await fetch("/api/mailer", {
-        method: "POST",
+       await fetch(`/api/resource/${resourceData.id}`, {
+        method: "PUT",
         body: JSON.stringify({
           ...values,
-          id: response.data.id,
-          user: user.email,
-          type: "resources",
+          status: "pending",
         }),
         headers: {
           "Content-Type": "application/json",
         },
       });
+
     } catch (error) {
       console.log("Submission error:", error);
       router.push("/error");
     }
+    setLoading(false);
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="grid sm:grid-cols-1 xl:grid-cols-6 xl:gap-4">
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Edit Resource</DialogTitle>
+        <DialogDescription>Edit your resource with ease.</DialogDescription>
+      </DialogHeader>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
             name="title"
@@ -199,58 +211,68 @@ export default function NewResourceForm({ user }: { user: any }) {
               </FormItem>
             )}
           />
-        </div>
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Description <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="A short description of the educational resource..."
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                The content of the educational resource.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
-        <FormField
-          control={form.control}
-          name="resourceUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Resource URL <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="URL of the educational resource..."
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Please provide the URL of the educational resource.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Description <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="A short description of the educational resource..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  The content of the educational resource.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button
-          className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
-          type="submit"
-        >
-          Submit
-        </Button>
-      </form>
-    </Form>
+          <FormField
+            control={form.control}
+            name="resourceUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Resource URL <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="URL of the educational resource..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Please provide the URL of the educational resource.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {loading ? (
+            <Button
+              className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+              type="submit"
+            >
+              🔃Submitting...
+            </Button>
+          ) : (
+            <Button
+              className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+              type="submit"
+            >
+              ☑️Submit
+            </Button>
+          )}
+        </form>
+      </Form>
+    </DialogContent>
   );
 }

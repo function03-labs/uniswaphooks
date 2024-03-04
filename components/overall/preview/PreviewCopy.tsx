@@ -10,14 +10,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@component/ui/DropdownMenu";
-import { Dialog, DialogTrigger } from "@component/ui/Dialog";
 import ButtonStyle from "@component/ui/ButtonStyle";
+import { Dialog, DialogTrigger } from "@component/ui/Dialog";
 import { AlertDialog, AlertDialogTrigger } from "@component/ui/AlertDialog";
 
 import EditHook from "@component/form/EditHook";
 import DeleteHook from "@component/form/DeleteHook";
 
+import EditResource from "@component/form/EditResource";
+import DeleteResource from "@component/form/DeleteResource";
+
 import { HookType } from "@/types/hook";
+import { ResourcePost } from "@/types/post";
 
 export default function PreviewCopy({ componentCode = "" }) {
   const [buttonText, setButtonText] = useState("Copy");
@@ -100,47 +104,107 @@ export function PreviewWebsite({ websiteUrl = "" }) {
   );
 }
 
-export function PreviewConfig({ componentData }: { componentData: HookType }) {
+export function PreviewConfig({
+  componentData,
+  type,
+}: {
+  componentData: HookType | ResourcePost;
+  type: string;
+}) {
   const [buttonText, setButtonText] = useState("Menu");
   const [buttonEmoji, setButtonEmoji] = useState("🔁");
 
-  return (
-    <Dialog>
-      <AlertDialog>
-        <button className="block">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <ButtonStyle
-                buttonEmoji={buttonEmoji}
-                buttonText={buttonText}
-                buttonActive={false}
-                isDark={false}
-                classAdd={""}
-              />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Hook menu</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem disabled={componentData.status === "declined"}>
-                <Link target="_blank" href={componentData.github}>
-                  Open GitHub
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled={componentData.status === "published"}>
-                <DialogTrigger>Edit</DialogTrigger>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <AlertDialogTrigger>Delete</AlertDialogTrigger>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </button>
-        <DeleteHook id={componentData.id} />
-      </AlertDialog>
-      <EditHook hookData={componentData} />
-    </Dialog>
-  );
+  if (type === "hook") {
+    return (
+      <Dialog>
+        <AlertDialog>
+          <button className="block">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <ButtonStyle
+                  buttonEmoji={buttonEmoji}
+                  buttonText={buttonText}
+                  buttonActive={false}
+                  isDark={false}
+                  classAdd={""}
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Hook menu</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  disabled={componentData.status === "declined"}
+                >
+                  <Link
+                    target="_blank"
+                    href={(componentData as HookType).github}
+                  >
+                    Open GitHub
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  disabled={componentData.status === "published"}
+                >
+                  <DialogTrigger>Edit</DialogTrigger>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </button>
+          <DeleteHook id={componentData.id} />
+        </AlertDialog>
+        <EditHook hookData={componentData as HookType} />
+      </Dialog>
+    );
+  } else {
+    return (
+      <Dialog>
+        <AlertDialog>
+          <button className="block">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <ButtonStyle
+                  buttonEmoji={buttonEmoji}
+                  buttonText={buttonText}
+                  buttonActive={false}
+                  isDark={false}
+                  classAdd={""}
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Resource menu</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  disabled={componentData.status === "declined"}
+                >
+                  <Link
+                    target="_blank"
+                    href={(componentData as ResourcePost).resourceUrl}
+                  >
+                    Open link
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  disabled={componentData.status === "published"}
+                >
+                  <DialogTrigger>Edit</DialogTrigger>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </button>
+          <DeleteResource id={componentData.id} />
+        </AlertDialog>
+        <EditResource resourceData={componentData as ResourcePost} />
+      </Dialog>
+    );
+  }
 }
 
 export function PreviewFolder({ repoUrl = "" }) {

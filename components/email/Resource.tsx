@@ -26,11 +26,6 @@ const container = {
   padding: "20px 0 48px",
 };
 
-const title = {
-  fontSize: "24px",
-  lineHeight: 1.25,
-};
-
 const section = {
   padding: "24px",
   border: "solid 1px #dedede",
@@ -52,10 +47,6 @@ const button = {
   padding: "12px 24px",
 };
 
-const links = {
-  textAlign: "center" as const,
-};
-
 const link = {
   color: "#0366d6",
   fontSize: "12px",
@@ -68,47 +59,56 @@ const footer = {
   marginTop: "60px",
 };
 
-// TODO: Change the content of this template
 export function Resource({ resource }: { resource: ResouceEmailType }) {
+  console.log(resource);
   return (
     <Html>
       <Head />
-      <Preview>
-        A fine-grained personal access token has been added to your account
-      </Preview>
+      <Preview>New resource have been submitted by @{resource.user}</Preview>
       <Body style={main}>
         <Container style={container}>
           <Img
-            src="https://react-email-demo-bdj5iju9r-resend.vercel.app/static/github.png"
+            src="https://uniswaphooks.com/_next/image?url=%2Funiswap-hooks-logo.png&w=64&q=100"
             width="32"
             height="32"
-            alt="Github"
+            alt="UniswapHooks"
           />
 
-          <Text style={title}>
-            <strong>@{resource.title}</strong>, a personal access was created on
-            your account.
+          <Text style={text}>
+            A new resource submit by <strong>@{resource.user}</strong>,
           </Text>
 
           <Section style={section}>
             <Text style={text}>
-              Hey <strong>{resource.section}</strong>!
+              Hey <strong>admins</strong>! You can open the resource by clicking{" "}
+              <Link
+                href={resource.resourceUrl}
+                style={link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                here
+              </Link>
+              .
             </Text>
             <Text style={text}>
-              A fine-grained personal access token (<Link>resend</Link>) was
-              recently added to your account.
+              <strong>
+                {resource.emoji}
+                {resource.title}
+              </strong>
             </Text>
-
-            <Button style={button}>View your token</Button>
+            <Text style={text}>{resource.description}</Text>
+            <Text style={text}>
+              Status: <strong>Under review</strong>
+            </Text>
+            <Button
+              style={button}
+              href={`${process.env.NEXT_PUBLIC_URL}/dashboard/resource/review/${resource.id}`}
+            >
+              Review the resource
+            </Button>{" "}
           </Section>
-          <Text style={links}>
-            <Link style={link}>Your security audit log</Link> ・{" "}
-            <Link style={link}>Contact support</Link>
-          </Text>
-
-          <Text style={footer}>
-            GitHub, Inc. ・88 Colin P Kelly Jr Street ・San Francisco, CA 94107
-          </Text>
+          <Text style={footer}>UniswapHooks, Inc.</Text>
         </Container>
       </Body>
     </Html>

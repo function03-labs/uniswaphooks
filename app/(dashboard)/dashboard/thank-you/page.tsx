@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Thank you!",
-  description: "Your hook has been submitted and will be reviewed by our team.",
+  description: "We gratefully appreciate your contribution to the community!",
 };
 
 export default function Page() {
@@ -8,7 +8,7 @@ export default function Page() {
     <div className="py-36">
       <h1 className="text-center text-7xl font-bold">Thank you!</h1>
       <p className="mt-4 text-center text-xl pb-20">
-        Your hook has been submitted and will be reviewed by our team.
+        Thank you for your submission.
         <br />
         We gratefully appreciate your contribution to the community!
       </p>

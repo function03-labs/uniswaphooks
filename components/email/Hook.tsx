@@ -84,7 +84,7 @@ export function Hook({ hook }: { hook: HookEmailType }) {
 
           <Section style={section}>
             <Text style={text}>
-              Hey <strong>Aiden</strong>! You can open the hook by clicking{" "}
+              Hey <strong>admins</strong>! You can open the hook by clicking{" "}
               <Link
                 href={hook.github}
                 style={link}

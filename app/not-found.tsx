@@ -16,7 +16,7 @@ const links = [
   },
   {
     name: "Blogs",
-    href: "/blogs",
+    href: "/blog",
     description: "Read our latest news and articles.",
     icon: Icons.post,
   },

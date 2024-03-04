@@ -23,6 +23,7 @@ export const resourceSchema = z.object({
   resourceUrl: z.string().url({
     message: "You need to enter a valid URL for the resource.",
   }),
+  status: z.string().optional(),
 });
 
 export const userAuthSchema = z.object({

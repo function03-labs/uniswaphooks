@@ -34,7 +34,6 @@ export async function POST(req: Request) {
         creator,
         github,
         website,
-        // @ts-ignore: Unreachable code error
         userId: session.user.id,
         categoryId,
       },
