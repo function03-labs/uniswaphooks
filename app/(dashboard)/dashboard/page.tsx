@@ -13,7 +13,13 @@ export const metadata = {
   description: "Manage your hooks with ease.",
 };
 
-async function getHooks({ id }: { id?: string | null | undefined }) {
+async function getHooks({
+  id,
+  isAdmin,
+}: {
+  id?: string | null | undefined;
+  isAdmin: boolean;
+}) {
   const hooksFetch = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/hook`,
     {
@@ -30,6 +36,11 @@ async function getHooks({ id }: { id?: string | null | undefined }) {
   }
 
   const hooks = await hooksFetch.json();
+
+  if (isAdmin) {
+    return hooks.data;
+  }
+
   hooks.data = hooks.data.filter((hook: any) => hook.user.id === id);
   hooks.data.sort((a: any, b: any) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -45,7 +56,7 @@ export default async function Home() {
     return notFound();
   }
 
-  const hooks = await getHooks({ id: user.id });
+  const hooks = await getHooks({ id: user.id, isAdmin: user.role === "admin" });
 
   return (
     <main>

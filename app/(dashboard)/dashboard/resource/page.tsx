@@ -13,7 +13,13 @@ export const metadata = {
   description: "Where your resources are.",
 };
 
-async function getResources({ id }: { id?: string | null | undefined }) {
+async function getResources({
+  id,
+  isAdmin,
+}: {
+  id?: string | null | undefined;
+  isAdmin: boolean;
+}) {
   const resourceFetch = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/resource`,
     {
@@ -31,6 +37,10 @@ async function getResources({ id }: { id?: string | null | undefined }) {
 
   const resources = await resourceFetch.json();
 
+  if (isAdmin) {
+    return resources.data;
+  }
+
   const userResources = resources.data.filter(
     (resource: any) => resource.userId === id
   );
@@ -45,7 +55,10 @@ export default async function Resources() {
     return notFound();
   }
 
-  const resources = await getResources({ id: user.id });
+  const resources = await getResources({
+    id: user.id,
+    isAdmin: user.role === "admin",
+  });
 
   return (
     <main>
