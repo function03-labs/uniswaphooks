@@ -44,5 +44,4 @@ export const deployHookSchema = z.object({
 export const userSchema = z.object({
   name: z.string().min(2).max(50).optional(),
   email: z.string().email(),
-  image: z.string().url().optional(),
 });
