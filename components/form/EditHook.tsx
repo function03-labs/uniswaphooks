@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { extractCreator } from "@lib/utils";
 import { hookSchema } from "@config/schema";
+import { formatDeploymentDetails } from "@lib/utils";
 
 import {
   DialogContent,
@@ -27,11 +28,18 @@ import {
 import { Input } from "@component/ui/Input";
 import { Button } from "@component/ui/Button";
 import { Textarea } from "@component/ui/Textarea";
+import DeploymentDetails from "@component/showcase/DeploymentDetails";
 
 import { HookType } from "@/types/hook";
 
+// TODO: Add the 'deploymentAddress' field to the hookSchema
+// TODO: Add the 'network' field to the hookSchema
+
+// TODO: Users can edit and deploy their hooks
+
 export default function EditHook({ hookData }: { hookData: HookType }) {
   const [loading, setLoading] = useState(false);
+  const deploymentDetails = formatDeploymentDetails(hookData);
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
     defaultValues: {
@@ -55,7 +63,7 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
         headers: {
           "Content-Type": "application/json",
         },
-      });      
+      });
 
       setLoading(false);
     } catch (error) {
@@ -63,70 +71,82 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
     }
   }
   return (
-    <DialogContent>
+    <DialogContent className="max-w-[1200px]">
       <DialogHeader>
         <DialogTitle>Edit Hook</DialogTitle>
         <DialogDescription>Edit your hook with ease.</DialogDescription>
       </DialogHeader>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Hook name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter the name of your hook."
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>Enter the name of your hook.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-auto h-[80vh] md:h-auto">
+            <div>
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Hook name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter the name of your hook."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Enter the name of your hook.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Write a description for your hook. This will be displayed in the marketplace."
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Provide a description for your hook.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Write a description for your hook. This will be displayed in the marketplace."
+                        className="h-32 md:h-48"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Provide a description for your hook.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-          <FormField
-            control={form.control}
-            name="github"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>GitHub Repository</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="https://github.com/author/repo..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Enter the URL of your GitHub repository.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <div>
+              <FormField
+                control={form.control}
+                name="github"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>GitHub Repository</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="https://github.com/author/repo..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Enter the URL of your GitHub repository.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="h-6" />
+              <DeploymentDetails deployment={deploymentDetails} />
+            </div>
+          </div>
 
           {loading ? (
             <Button
