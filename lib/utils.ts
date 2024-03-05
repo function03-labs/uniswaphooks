@@ -37,23 +37,23 @@ export function formatDeploymentDetails(hook: HookType): DeploymentType {
   const { network, contract, deploymentDate } = hook;
 
   const deploymentDetails: DeploymentType = {
-    networkName: network.name,
-    imageUrl: network.imageUrl,
-    verified: network.verified,
+    networkName: network?.name ?? "",
+    imageUrl: network?.imageUrl ?? "",
+    verified: network?.verified ?? false,
     input: {
-      deploymentAddress: contract.deploymentAddress || "",
-      network: network.id,
+      deploymentAddress: contract?.deploymentAddress ?? "",
+      network: network?.id ?? "",
     },
     contract: {
-      contractName: contract.contractName,
-      deploymentAddress: contract.deploymentAddress,
-      compilerVersion: contract.compilerVersion,
-      creator: contract.creator,
-      transactionHash: contract.transactionHash,
+      contractName: contract?.contractName ?? "",
+      deploymentAddress: contract?.deploymentAddress ?? "",
+      compilerVersion: contract?.compilerVersion ?? "",
+      creator: contract?.creator ?? "",
+      transactionHash: contract?.transactionHash ?? "",
     },
     date: {
-      date: deploymentDate.date,
-      dateTime: deploymentDate.datetime,
+      date: deploymentDate?.date ?? "",
+      dateTime: deploymentDate?.datetime ?? "",
     },
   };
 
