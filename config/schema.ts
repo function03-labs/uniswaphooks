@@ -35,6 +35,7 @@ export const hookSchema = z.object({
   description: z.string().min(2),
   github: z.string().url(),
   status: z.string().optional(),
+  categoryId: z.string().optional(),
 });
 
 export const deployHookSchema = z.object({

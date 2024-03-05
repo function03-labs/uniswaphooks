@@ -31,7 +31,8 @@ import {
   Copy,
   Check as CheckIcon,
   BookCheck,
-  UserRound
+  UserRound,
+  LibrarySquare
 } from "lucide-react";
 import Image from "next/image";
 
@@ -70,7 +71,8 @@ export const Icons = {
   checkIcon: CheckIcon,
   chevronDown: ChevronDown,
   book: BookCheck,
-  user: UserRound
+  user: UserRound,
+  library: LibrarySquare
 };
 
 export function IconMenu() {

@@ -2,11 +2,12 @@
 
 import * as z from "zod";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { extractCreator } from "@lib/utils";
+import { ResourcePost } from "@/types/post";
 import { hookSchema } from "@config/schema";
 import { formatDeploymentDetails } from "@lib/utils";
 
@@ -25,6 +26,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@component/ui/Form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@component/ui/Select";
 import { Input } from "@component/ui/Input";
 import { Button } from "@component/ui/Button";
 import { Textarea } from "@component/ui/Textarea";
@@ -34,6 +42,7 @@ import { HookType } from "@/types/hook";
 
 export default function EditHook({ hookData }: { hookData: HookType }) {
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<ResourcePost[]>([]);
   const deploymentDetails = formatDeploymentDetails(hookData);
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
@@ -41,19 +50,34 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
       title: hookData.title,
       description: hookData.description,
       github: hookData.github,
+      categoryId: hookData.categoryId,
     },
   });
 
-  async function onSubmit(values: z.infer<typeof hookSchema>) {
-    const creator = extractCreator(values.github);
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const data = await fetch("/api/category");
+        const response = await data.json();
 
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Category fetch error:", error);
+      }
+    }
+
+    fetchCategories();
+  }, []);
+
+  async function onSubmit(values: z.infer<typeof hookSchema>) {
     try {
       setLoading(true);
       await fetch(`/api/hook/${hookData.id}`, {
         method: "PUT",
         body: JSON.stringify({
           ...values,
-          creator,
+          ...hookData,
+          categoryId: values.categoryId,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -113,6 +137,34 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
                     <FormDescription>
                       Provide a description for your hook.
                     </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.emoji} {category.title}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

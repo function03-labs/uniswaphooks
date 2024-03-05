@@ -23,10 +23,6 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!categoryId || categoryId === "") {
-      categoryId = "from-the-community";
-    }
-
     const newHook = await db.hook.create({
       data: {
         title,

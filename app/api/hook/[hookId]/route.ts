@@ -80,6 +80,7 @@ export async function PUT(
       description,
       github,
       creator,
+      categoryId,
       website,
       network,
       status,
@@ -101,27 +102,32 @@ export async function PUT(
         github,
         creator,
         status,
+        category: {
+          connect: {
+            id: categoryId,
+          },
+        },
         website,
         network: {
           create: {
-            name: network.name,
-            imageUrl: network.imageUrl,
-            verified: network.verified,
+            name: network?.name,
+            imageUrl: network?.imageUrl,
+            verified: network?.verified,
           },
         },
         contract: {
           create: {
-            contractName: contract.contractName,
-            deploymentAddress: contract.deploymentAddress,
-            compilerVersion: contract.compilerVersion,
-            creator: contract.creator,
-            transactionHash: contract.transactionHash,
+            contractName: contract?.contractName,
+            deploymentAddress: contract?.deploymentAddress,
+            compilerVersion: contract?.compilerVersion,
+            creator: contract?.creator,
+            transactionHash: contract?.transactionHash,
           },
         },
         deploymentDate: {
           create: {
-            date: deploymentDate.date,
-            dateTime: deploymentDate.dateTime,
+            date: deploymentDate?.date,
+            dateTime: deploymentDate?.dateTime,
           },
         },
       },

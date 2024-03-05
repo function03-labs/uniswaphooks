@@ -1,13 +1,14 @@
 "use client";
 
 import * as z from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { extractCreator } from "@lib/utils";
 import { hookSchema } from "@config/schema";
+import { ResourcePost } from "@/types/post";
 
 import {
   Form,
@@ -18,6 +19,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@component/ui/Form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@component/ui/Select";
 import { Input } from "@component/ui/Input";
 import { Button } from "@component/ui/Button";
 import { Textarea } from "@component/ui/Textarea";
@@ -25,9 +33,28 @@ import { Textarea } from "@component/ui/Textarea";
 export default function NewHookForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<ResourcePost[]>([]);
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
+    defaultValues: {
+      categoryId: "from-the-community",
+    },
   });
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const data = await fetch("/api/category");
+        const response = await data.json();
+
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Category fetch error:", error);
+      }
+    }
+
+    fetchCategories();
+  }, []);
 
   async function onSubmit(values: z.infer<typeof hookSchema>) {
     setLoading(true);
@@ -50,7 +77,6 @@ export default function NewHookForm() {
       router.push(
         `/dashboard/hook/submit?id=${response.data.id}&step=deployment`
       );
-
     } catch (error) {
       console.error("Submission error:", error);
       router.push("/error");
@@ -62,20 +88,54 @@ export default function NewHookForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Hook name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter the name of your hook." {...field} />
-              </FormControl>
-              <FormDescription>Enter the name of your hook.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="md:flex md:items-center md:space-x-2 xs:space-y-4">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="flex-grow">
+                <FormLabel>Hook name</FormLabel>
+                <FormControl className="flex">
+                  <Input
+                    placeholder="Enter the name of your hook."
+                    className="flex-grow"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Enter the name of your hook.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="categoryId"
+            render={({ field }) => (
+              <FormItem className="mt-4 md:-mt-7">
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="md:w-[210px]">
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.emoji} {category.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
