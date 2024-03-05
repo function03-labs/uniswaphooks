@@ -75,7 +75,7 @@ export default function EditResource({
     }
 
     try {
-       await fetch(`/api/resource/${resourceData.id}`, {
+      await fetch(`/api/resource/${resourceData.id}`, {
         method: "PUT",
         body: JSON.stringify({
           ...values,
@@ -85,6 +85,8 @@ export default function EditResource({
           "Content-Type": "application/json",
         },
       });
+
+      window.location.reload();
 
     } catch (error) {
       console.log("Submission error:", error);

@@ -16,14 +16,16 @@ export default function DeleteHook({ id }: { id: string }) {
         "Content-Type": "application/json",
       },
     });
+    window.location.reload();
   };
+  
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
         <AlertDialogDescription>
-          This action cannot be undone. This will permanently delete your
-          hook from our database.
+          This action cannot be undone. This will permanently delete your hook
+          from our database.
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>

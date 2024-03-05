@@ -16,7 +16,9 @@ export default function DeleteResource({ id }: { id: string }) {
         "Content-Type": "application/json",
       },
     });
+    window.location.reload();
   };
+  
   return (
     <AlertDialogContent>
       <AlertDialogHeader>

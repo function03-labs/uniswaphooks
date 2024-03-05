@@ -32,11 +32,6 @@ import DeploymentDetails from "@component/showcase/DeploymentDetails";
 
 import { HookType } from "@/types/hook";
 
-// TODO: Add the 'deploymentAddress' field to the hookSchema
-// TODO: Add the 'network' field to the hookSchema
-
-// TODO: Users can edit and deploy their hooks
-
 export default function EditHook({ hookData }: { hookData: HookType }) {
   const [loading, setLoading] = useState(false);
   const deploymentDetails = formatDeploymentDetails(hookData);
@@ -65,10 +60,11 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
         },
       });
 
-      setLoading(false);
+      window.location.reload();
     } catch (error) {
       console.error("Submission error:", error);
     }
+    setLoading(false);
   }
   return (
     <DialogContent className="max-w-[1200px]">
