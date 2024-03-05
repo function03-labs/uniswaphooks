@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@lib/session";
 
 import Container from "@component/overall/Container";
@@ -53,7 +53,7 @@ export default async function Home() {
   const user = await getCurrentUser();
 
   if (!user) {
-    return notFound();
+    redirect("/login");
   }
 
   const hooks = await getHooks({ id: user.id, isAdmin: user.role === "admin" });
