@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@lib/session";
 import { dashboardConfig } from "@config/dashboard";
 
+import { Badge } from "@component/ui/Badge";
 import SplashButton from "@component/ui/SplashButton";
 import { MainNav } from "@component/navigation/DashboardNav";
 import { DashboardNav } from "@component/dashboard/Navigation";
@@ -27,11 +28,17 @@ export default async function DashboardLayout({
         <div className="container flex h-16 items-center justify-between py-4">
           <MainNav items={dashboardConfig.mainNav} />
           <div className="flex items-center justify-end gap-2 sm:gap-4">
+            {user.role === "admin" && (
+              <Badge className="hidden sm:block bg-red-200 text-red-700 hover:bg-red-400">
+                Admin
+              </Badge>
+            )}
             <div className="hidden sm:block">
               <SplashButton id="submit-button" href="/dashboard/hook/submit">
                 <span className="mr-2">🎉</span> Submit A Hook
               </SplashButton>
             </div>
+
             <UserAccountNav
               user={{
                 name: user.name,
