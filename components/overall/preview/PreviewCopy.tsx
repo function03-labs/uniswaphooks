@@ -137,6 +137,7 @@ export function PreviewConfig({
                 >
                   <Link
                     target="_blank"
+                    className="w-full text-left"
                     href={(componentData as HookType).github}
                   >
                     Open GitHub
@@ -145,11 +146,15 @@ export function PreviewConfig({
                 <DropdownMenuItem
                   disabled={componentData.status === "published"}
                 >
-                  <DialogTrigger>Edit</DialogTrigger>
+                  <DialogTrigger className="w-full text-left">
+                    Edit
+                  </DialogTrigger>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                  <AlertDialogTrigger className="w-full text-left">
+                    Delete
+                  </AlertDialogTrigger>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -182,6 +187,7 @@ export function PreviewConfig({
                 >
                   <Link
                     target="_blank"
+                    className="w-full text-left"
                     href={(componentData as ResourcePost).resourceUrl}
                   >
                     Open link
@@ -190,11 +196,15 @@ export function PreviewConfig({
                 <DropdownMenuItem
                   disabled={componentData.status === "published"}
                 >
-                  <DialogTrigger>Edit</DialogTrigger>
+                  <DialogTrigger className="w-full text-left">
+                    Edit
+                  </DialogTrigger>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                  <AlertDialogTrigger className="w-full text-left">
+                    Delete
+                  </AlertDialogTrigger>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
