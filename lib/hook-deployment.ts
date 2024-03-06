@@ -99,5 +99,9 @@ export async function getCreatorTx({
 
 // TODO: Get Deployment Date -> 'date'
 export async function getDeploymentDate() {
-  return { date: "January 22, 2024", dateTime: "2024-01-22" };
+  return {
+    //get today date
+    date: new Date().toLocaleDateString(),
+    dateTime: new Date().toLocaleString(),
+  };
 }

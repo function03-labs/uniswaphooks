@@ -41,7 +41,6 @@ export default function ReviewHook({ hook }: { hook: HookType }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...hook,
           status: data.status,
         }),
       });
@@ -55,6 +54,7 @@ export default function ReviewHook({ hook }: { hook: HookType }) {
         description: "The hook has been updated.",
       });
     } catch (error) {
+      console.log(error);
       toast({
         title: "Failed to update hook",
         description: "Please try again",

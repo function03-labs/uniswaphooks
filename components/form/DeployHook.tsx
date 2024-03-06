@@ -86,20 +86,20 @@ export default function DeployHook({ id }: { id: string }) {
       setDeploymentData({
         ...deployementData,
         input: {
-          deploymentAddress: values.deploymentAddress,
-          network: values.network,
+          deploymentAddress: values.deploymentAddress || "Unknown address",
+          network: values.network || "Unknown network",
         },
         imageUrl: "/uniswap-hooks-logo.png",
         networkName: values.network === "api" ? "Mainnet" : "Sepolia",
         verified,
         contract: {
-          deploymentAddress: values.deploymentAddress,
+          deploymentAddress: values.deploymentAddress || "Unknown address",
           contractName: sourceCode.contractName || "Unknown contract",
           compilerVersion: sourceCode.compilerVersion || "Unknown version",
           creator: creator.creator || "Unknown creator",
           transactionHash: creator.transactionHash || "Unknown transaction",
         },
-        date: date,
+        date: date || "Unknown date",
       });
     } catch (error) {
       toast({
@@ -187,6 +187,64 @@ export default function DeployHook({ id }: { id: string }) {
     setUpdating("visible");
   }
 
+  async function deployLater() {
+    setLoading(true);
+    setUpdating("loading");
+
+    try {
+      const requestUpdate = await fetch(`/api/hook/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          status: "pending",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (requestUpdate.status !== 204) {
+        toast({
+          title: "Error",
+          description: "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+        throw new Error("Error updating hook");
+      }
+
+      toast({
+        title: "Success",
+        description: "Your hook has been submitted successfully.",
+      });
+
+      router.push(`/dashboard/hook/submit?id=${id}&step=submission`);
+
+      const hook = await fetch(`/api/hook/${id}`);
+      const hookData = await hook.json();
+
+      await fetch("/api/mailer", {
+        method: "POST",
+        body: JSON.stringify({
+          id: hookData.id,
+          title: hookData.title,
+          description: hookData.description,
+          creator: hookData.creator,
+          github: hookData.github,
+          type: "hooks",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.log("Update error:", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -220,7 +278,9 @@ export default function DeployHook({ id }: { id: string }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="api">Mainnet</SelectItem>
+                  <SelectItem disabled value="api">
+                    Mainnet (Soon...)
+                  </SelectItem>
                   <SelectItem value="api-sepolia">Sepolia</SelectItem>
                 </SelectContent>
               </Select>
@@ -236,22 +296,31 @@ export default function DeployHook({ id }: { id: string }) {
           <DeploymentDetails deployment={deployementData} />
         )}
 
-        {loading ? (
+        <div className="md:grid md:grid-cols-3 gap-4 space-y-4 lg:space-y-0">
           <Button
-            disabled
-            className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
-            type="submit"
+            className="md:col-span-1 inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+            onClick={() => deployLater()}
           >
-            🔃Deploying...
+            ➡️Deploy later
           </Button>
-        ) : (
-          <Button
-            className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
-            type="submit"
-          >
-            ☑️Deploy Hook
-          </Button>
-        )}
+
+          {loading ? (
+            <Button
+              disabled
+              className="md:col-span-2 inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+              type="submit"
+            >
+              🔃Deploying...
+            </Button>
+          ) : (
+            <Button
+              className="md:col-span-2 inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+              type="submit"
+            >
+              ☑️Deploy Hook
+            </Button>
+          )}
+        </div>
 
         {updating === "visible" && (
           <Button

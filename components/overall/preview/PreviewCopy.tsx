@@ -217,12 +217,12 @@ export function PreviewConfig({
   }
 }
 
-export function PreviewFolder({ repoUrl = "" }) {
+export function PreviewFolder({ url = "" }) {
   const [buttonText, setButtonText] = useState("Files");
   const [buttonEmoji, setButtonEmoji] = useState("📂");
 
   function handleButtonClick() {
-    window.open(repoUrl, "_blank");
+    window.open(url);
   }
 
   return (

@@ -92,46 +92,57 @@ export async function PUT(
       return new Response(null, { status: 403 });
     }
 
-    await db.hook.update({
-      where: {
-        id: params.hookId,
-      },
-      data: {
-        title,
-        description,
-        github,
-        creator,
-        status,
-        category: {
-          connect: {
-            id: categoryId,
+    if (status && !title && !description && !github && !creator && !categoryId) {
+      await db.hook.update({
+        where: {
+          id: params.hookId,
+        },
+        data: {
+          status,
+        },
+      });
+    } else {
+      await db.hook.update({
+        where: {
+          id: params.hookId,
+        },
+        data: {
+          title,
+          description,
+          github,
+          creator,
+          status,
+          category: {
+            connect: {
+              id: categoryId,
+            },
+          },
+          website,
+          network: {
+            create: {
+              name: network?.name,
+              imageUrl: network?.imageUrl,
+              verified: network?.verified,
+            },
+          },
+          contract: {
+            create: {
+              contractName: contract?.contractName,
+              deploymentAddress: contract?.deploymentAddress,
+              compilerVersion: contract?.compilerVersion,
+              creator: contract?.creator,
+              transactionHash: contract?.transactionHash,
+            },
+          },
+          deploymentDate: {
+            create: {
+              date: deploymentDate?.date,
+              dateTime: deploymentDate?.dateTime,
+            },
           },
         },
-        website,
-        network: {
-          create: {
-            name: network?.name,
-            imageUrl: network?.imageUrl,
-            verified: network?.verified,
-          },
-        },
-        contract: {
-          create: {
-            contractName: contract?.contractName,
-            deploymentAddress: contract?.deploymentAddress,
-            compilerVersion: contract?.compilerVersion,
-            creator: contract?.creator,
-            transactionHash: contract?.transactionHash,
-          },
-        },
-        deploymentDate: {
-          create: {
-            date: deploymentDate?.date,
-            dateTime: deploymentDate?.dateTime,
-          },
-        },
-      },
-    });
+      });
+    }
 
     return new Response(null, { status: 204 });
   } catch (error) {

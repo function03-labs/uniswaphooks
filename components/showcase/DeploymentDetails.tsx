@@ -14,13 +14,12 @@ export default function DeploymentDetails({
 }: {
   deployment: DeploymentType;
 }) {
-  
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200">
       <div className="flex items-center justify-between gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
         <div className="flex items-center gap-x-4">
           <Image
-            src={deployment.imageUrl}
+            src={deployment.imageUrl || "/uniswap-hooks-logo.png"}
             alt={deployment.networkName}
             width={48}
             height={48}
@@ -36,7 +35,7 @@ export default function DeploymentDetails({
             "rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset"
           )}
         >
-          {deployment.verified ? "Verified" : "Unverified"}
+          {deployment.verified ? "Verified" : "Not deployed"}
         </div>
       </div>
 

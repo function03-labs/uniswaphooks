@@ -49,7 +49,7 @@ export default function HookOwned({
         <div className="flex tems-start justify-between gap-2 w-full">
           <div className="flex flex-wrap items-end gap-2">
             <PreviewConfig type="hook" componentData={componentData} />
-            <PreviewFolder repoUrl={componentGithub} />
+            <PreviewFolder url={`/dashboard/hook/view/${componentId}`} />
           </div>
           <div className="flex justify-end">
             <PreviewStatus tagType={componentStatus} />
