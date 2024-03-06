@@ -41,6 +41,7 @@ async function getRepository({
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `token ${process.env.GITHUB_TOKEN}`,
       },
     }
   );
