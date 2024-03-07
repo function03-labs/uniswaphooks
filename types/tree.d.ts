@@ -4,6 +4,7 @@ type TreeFile = {
   path: string;
   download_url: string;
   extra?: string;
+  code?: string;
 };
 
 type TreeDirectory = {

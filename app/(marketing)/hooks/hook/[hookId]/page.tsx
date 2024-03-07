@@ -1,9 +1,25 @@
 import { findFile } from "@lib/utils";
 import { HookType } from "@/types/hook";
+import { TreeFile } from "@/types/tree";
 import { notFound } from "next/navigation";
 
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/Resizable";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@component/ui/Card";
 import { FileTree } from "@component/ui/Tree";
+import { Separator } from "@component/ui/Separator";
+import Container from "@component/overall/Container";
 import { SyntaxHighler } from "@component/ui/SyntaxHighler";
+import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
 
 async function getHook({ hookId }: { hookId: string }) {
   const hookFetch = await fetch(
@@ -100,13 +116,14 @@ export default async function ViewHook({
 
   const tree = await buildTree({ github: hook.github, path: "" });
 
-  let code;
+  let file = {} as TreeFile;
   if (searchParams.path) {
-    const file = findFile(tree, searchParams.path as string);
-    if (file) {
+    const fileFound = findFile(tree, searchParams.path as string);
+    file = fileFound as TreeFile;
+    if (fileFound) {
       try {
-        const fileFetch = await fetch(file.download_url);
-        code = await fileFetch.text();
+        const fileFetch = await fetch(fileFound.download_url);
+        file.code = await fileFetch.text();
       } catch (error) {
         console.error("Failed to fetch file content:", error);
       }
@@ -114,11 +131,56 @@ export default async function ViewHook({
   }
 
   return (
-    <main>
-      <FileTree nodes={tree} hookId={hook.id} />
+    <Container>
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={25}>
+          <Card className="m-4 sticky top-0">
+            <CardHeader>
+              <CardTitle>File explorer</CardTitle>
+              <CardDescription>
+                {hook.title} - {hook.description}
+              </CardDescription>
+              <Separator />
+            </CardHeader>
+            <CardContent>
+              <FileTree nodes={tree} hookId={hook.id} />
+            </CardContent>
+          </Card>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel>
+          <Card className="m-4">
+            {!file.code && (
+              <div className="flex items-center justify-center h-[665px]">
+                <EmptyPlaceholder className="text-center">
+                  <EmptyPlaceholder.Title>Open a file</EmptyPlaceholder.Title>
+                  <EmptyPlaceholder.Description>
+                    Select a file from the tree to view its content
+                  </EmptyPlaceholder.Description>
+                </EmptyPlaceholder>
+              </div>
+            )}
 
-      {!code && <>Select a file</>}
-      {code && <SyntaxHighler code={code} />}
-    </main>
+            {file.code && (
+              <div>
+                <CardHeader>
+                  <CardTitle>
+                    {file.name}{" "}
+                    <span className="text-sm text-gray-400">{file.extra}</span>
+                  </CardTitle>
+                  <CardDescription></CardDescription>
+                  <Separator />
+                </CardHeader>
+                <CardContent>
+                  <div className="min-w-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-300">
+                    <SyntaxHighler code={file.code} />
+                  </div>
+                </CardContent>
+              </div>
+            )}
+          </Card>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </Container>
   );
 }

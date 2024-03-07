@@ -28,6 +28,7 @@
     "@radix-ui/react-navigation-menu": "^1.1.4",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toast": "^1.1.5",
@@ -59,6 +60,7 @@
     "react-email": "2.1.0",
     "react-hook-form": "^7.50.1",
     "react-intersection-observer": "^9.8.1",
+    "react-resizable-panels": "^2.0.12",
     "react-show-more-text": "^1.7.1",
     "react-syntax-highlighter": "^15.5.0",
     "react-use": "^17.5.0",
@@ -85,6 +87,7 @@
     "eslint-config-next": "14.1.0",
     "postcss": "^8",
     "prisma": "^5.10.2",
+    "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.3.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
