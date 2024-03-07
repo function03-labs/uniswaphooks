@@ -12,7 +12,7 @@ const routeContextSchema = z.object({
 
 export async function GET(
   req: Request,
-  context: z.infer<typeof routeContextSchema>,
+  context: z.infer<typeof routeContextSchema>
 ) {
   try {
     const { params } = routeContextSchema.parse(context);
@@ -44,7 +44,7 @@ export async function GET(
 
 export async function DELETE(
   req: Request,
-  context: z.infer<typeof routeContextSchema>,
+  context: z.infer<typeof routeContextSchema>
 ) {
   try {
     const { params } = routeContextSchema.parse(context);
@@ -71,7 +71,7 @@ export async function DELETE(
 
 export async function PUT(
   req: Request,
-  context: z.infer<typeof routeContextSchema>,
+  context: z.infer<typeof routeContextSchema>
 ) {
   try {
     const { params } = routeContextSchema.parse(context);
@@ -92,52 +92,39 @@ export async function PUT(
       return new Response(null, { status: 403 });
     }
 
-    console.log(title);
-    console.log(description);
-    console.log(github);
-    console.log(creator);
-    console.log(categoryId);
-    console.log(website);
-    console.log(network);
-    console.log(status);
-    console.log(contract);
-    console.log(deploymentDate);
-
-    if (
-      status &&
-      !title &&
-      !description &&
-      !github &&
-      !creator &&
-      !categoryId
-    ) {
-      await db.hook.update({
-        where: {
-          id: params.hookId,
-        },
-        data: {
-          status,
-        },
-      });
-    } else {
-      await db.hook.update({
-        where: {
-          id: params.hookId,
-        },
-        data: {
-          title,
-          description,
-          github,
-          creator,
-          categoryId,
-          website,
-          network,
-          status,
-          contract,
-          deploymentDate,
-        },
-      });
-    }
+    await db.hook.update({
+      where: { id: params.hookId },
+      data: {
+        title,
+        description,
+        github,
+        creator,
+        website,
+        status,
+        ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
+        ...(network
+          ? {
+              network: {
+                create: network,
+              },
+            }
+          : {}),
+        ...(contract
+          ? {
+              contract: {
+                create: contract,
+              },
+            }
+          : {}),
+        ...(deploymentDate
+          ? {
+              deploymentDate: {
+                create: deploymentDate,
+              },
+            }
+          : {}),
+      },
+    });
 
     return new Response(null, { status: 204 });
   } catch (error) {

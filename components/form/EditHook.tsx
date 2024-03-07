@@ -6,9 +6,8 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { extractCreator } from "@lib/utils";
 import { ResourcePost } from "@/types/post";
-import { hookSchema } from "@config/schema";
+import { hookEditSchema } from "@config/schema";
 import { formatDeploymentDetails } from "@lib/utils";
 
 import {
@@ -42,11 +41,10 @@ import { HookType } from "@/types/hook";
 
 export default function EditHook({ hookData }: { hookData: HookType }) {
   const [loading, setLoading] = useState(false);
-  console.log(hookData);
   const [categories, setCategories] = useState<ResourcePost[]>([]);
   const deploymentDetails = formatDeploymentDetails(hookData);
-  const form = useForm<z.infer<typeof hookSchema>>({
-    resolver: zodResolver(hookSchema),
+  const form = useForm<z.infer<typeof hookEditSchema>>({
+    resolver: zodResolver(hookEditSchema),
     defaultValues: {
       ...hookData,
     },
@@ -67,9 +65,9 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
     fetchCategories();
   }, []);
 
-  async function onSubmit(values: z.infer<typeof hookSchema>) {
+  async function onSubmit(values: z.infer<typeof hookEditSchema>) {
+    setLoading(true);
     try {
-      setLoading(true);
       await fetch(`/api/hook/${hookData.id}`, {
         method: "PUT",
         body: JSON.stringify({
@@ -80,12 +78,13 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
         },
       });
 
-      window.location.reload();
+      window.location.href = "/dashboard";
     } catch (error) {
       console.error("Submission error:", error);
     }
     setLoading(false);
   }
+
   return (
     <DialogContent className="max-w-[1200px]">
       <DialogHeader>
@@ -94,7 +93,13 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
       </DialogHeader>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit(onSubmit)();
+          }}
+          className="space-y-8"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-auto h-[80vh] md:h-auto">
             <div>
               <FormField

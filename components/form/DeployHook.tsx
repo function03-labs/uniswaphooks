@@ -101,6 +101,7 @@ export default function DeployHook({ id }: { id: string }) {
         },
         date: date || "Unknown date",
       });
+
     } catch (error) {
       toast({
         title: "Error",
@@ -301,7 +302,7 @@ export default function DeployHook({ id }: { id: string }) {
             className="md:col-span-1 inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
             onClick={() => deployLater()}
           >
-            ➡️Deploy later
+            ➡️Skip for now
           </Button>
 
           {loading ? (

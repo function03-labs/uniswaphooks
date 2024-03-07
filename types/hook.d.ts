@@ -1,6 +1,5 @@
 export type HookType = {
   id: string;
-  categoryId: string;
   title: string;
   description: string;
   creator: string;
