@@ -10,7 +10,7 @@ type TreeDirectory = {
   type: "directory";
   name: string;
   path: string;
-  children: Tree[];
+  files: Tree[];
   extra?: string;
 };
 

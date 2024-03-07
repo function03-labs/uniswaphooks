@@ -1,7 +1,9 @@
-import { notFound } from "next/navigation";
+import { findFile } from "@lib/utils";
 import { HookType } from "@/types/hook";
+import { notFound } from "next/navigation";
 
 import { FileTree } from "@component/ui/Tree";
+import { SyntaxHighler } from "@component/ui/SyntaxHighler";
 
 async function getHook({ hookId }: { hookId: string }) {
   const hookFetch = await fetch(
@@ -63,7 +65,7 @@ async function buildTree({ github, path }: { github: string; path: string }) {
           type: "directory",
           name: item.name,
           path: item.path,
-          children :await buildTree({ github, path: item.path }),
+          files: await buildTree({ github, path: item.path }),
         };
       } else {
         return {
@@ -71,6 +73,7 @@ async function buildTree({ github, path }: { github: string; path: string }) {
           name: item.name,
           path: item.path,
           download_url: item.download_url,
+          extra: `${Math.floor(item.size / 102.4) / 10} kb`,
         };
       }
     })
@@ -80,8 +83,10 @@ async function buildTree({ github, path }: { github: string; path: string }) {
 
 export default async function ViewHook({
   params,
+  searchParams,
 }: {
   params: { hookId: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const hook = (await getHook({ hookId: params.hookId })) as HookType;
 
@@ -95,9 +100,25 @@ export default async function ViewHook({
 
   const tree = await buildTree({ github: hook.github, path: "" });
 
+  let code;
+  if (searchParams.path) {
+    const file = findFile(tree, searchParams.path as string);
+    if (file) {
+      try {
+        const fileFetch = await fetch(file.download_url);
+        code = await fileFetch.text();
+      } catch (error) {
+        console.error("Failed to fetch file content:", error);
+      }
+    }
+  }
+
   return (
     <main>
-      <FileTree nodes={tree} />
+      <FileTree nodes={tree} hookId={hook.id} />
+
+      {!code && <>Select a file</>}
+      {code && <SyntaxHighler code={code} />}
     </main>
   );
 }

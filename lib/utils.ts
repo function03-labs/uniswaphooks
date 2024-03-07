@@ -1,4 +1,6 @@
 import { HookType } from "@/types/hook";
+import { TreeType, TreeFile } from "@/types/tree";
+
 import { twMerge } from "tailwind-merge";
 import { type ClassValue, clsx } from "clsx";
 import { DeploymentType } from "@/types/deployment";
@@ -58,4 +60,18 @@ export function formatDeploymentDetails(hook: HookType): DeploymentType {
   };
 
   return deploymentDetails;
+}
+
+export function findFile(
+  nodes: TreeType[],
+  path: string
+): TreeFile | undefined {
+  for (let node of nodes) {
+    if (node.type === "directory") {
+      const found = findFile(node.files, path);
+      if (found) return found;
+    } else if (node.path === path) {
+      return node;
+    }
+  }
 }
