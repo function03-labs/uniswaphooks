@@ -35,7 +35,7 @@ async function HooksCollection({
 
           return (
             <li key={componentData.id} className="shrink-0 md:shrink">
-              <Link href={`/hooks/${componentData.id}`}>
+              <Link href={`/hooks/collection/${componentData.id}`}>
                 <ButtonStyle
                   buttonEmoji={componentData.emoji}
                   buttonText={buttonText}

@@ -12,7 +12,7 @@ const routeContextSchema = z.object({
 
 export async function GET(
   req: Request,
-  context: z.infer<typeof routeContextSchema>
+  context: z.infer<typeof routeContextSchema>,
 ) {
   try {
     const { params } = routeContextSchema.parse(context);
@@ -44,7 +44,7 @@ export async function GET(
 
 export async function DELETE(
   req: Request,
-  context: z.infer<typeof routeContextSchema>
+  context: z.infer<typeof routeContextSchema>,
 ) {
   try {
     const { params } = routeContextSchema.parse(context);
@@ -71,7 +71,7 @@ export async function DELETE(
 
 export async function PUT(
   req: Request,
-  context: z.infer<typeof routeContextSchema>
+  context: z.infer<typeof routeContextSchema>,
 ) {
   try {
     const { params } = routeContextSchema.parse(context);
@@ -92,7 +92,25 @@ export async function PUT(
       return new Response(null, { status: 403 });
     }
 
-    if (status && !title && !description && !github && !creator && !categoryId) {
+    console.log(title);
+    console.log(description);
+    console.log(github);
+    console.log(creator);
+    console.log(categoryId);
+    console.log(website);
+    console.log(network);
+    console.log(status);
+    console.log(contract);
+    console.log(deploymentDate);
+
+    if (
+      status &&
+      !title &&
+      !description &&
+      !github &&
+      !creator &&
+      !categoryId
+    ) {
       await db.hook.update({
         where: {
           id: params.hookId,
@@ -111,35 +129,12 @@ export async function PUT(
           description,
           github,
           creator,
-          status,
-          category: {
-            connect: {
-              id: categoryId,
-            },
-          },
+          categoryId,
           website,
-          network: {
-            create: {
-              name: network?.name,
-              imageUrl: network?.imageUrl,
-              verified: network?.verified,
-            },
-          },
-          contract: {
-            create: {
-              contractName: contract?.contractName,
-              deploymentAddress: contract?.deploymentAddress,
-              compilerVersion: contract?.compilerVersion,
-              creator: contract?.creator,
-              transactionHash: contract?.transactionHash,
-            },
-          },
-          deploymentDate: {
-            create: {
-              date: deploymentDate?.date,
-              dateTime: deploymentDate?.dateTime,
-            },
-          },
+          network,
+          status,
+          contract,
+          deploymentDate,
         },
       });
     }

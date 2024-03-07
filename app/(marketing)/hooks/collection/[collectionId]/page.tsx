@@ -52,12 +52,10 @@ async function getCategoryData(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: {
-    slug: string[];
-  };
+  params: { collectionId: string };
 }) {
   try {
-    const data = await getCategoryData(params.slug[0]);
+    const data = await getCategoryData(params.collectionId);
 
     return {
       title: `${data.title} | UniswapHooks`,
@@ -70,8 +68,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
-  const data = await getHooks(params.slug[0]);
+export default async function Page({
+  params,
+}: {
+  params: { collectionId: string };
+}) {
+  const data = await getHooks(params.collectionId);
   const collections = await getCategories();
 
   const activeCategory = {
@@ -82,7 +84,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   return (
     <Container classNames="py-8 lg:py-12 space-y-8 lg:space-y-12">
       <CollectionLinks
-        activeCollection={params.slug[0]}
+        activeCollection={params.collectionId}
         activeCategory={activeCategory}
         componentsData={collections.sort((a: CategoryType, b: CategoryType) =>
           a.createdAt < b.createdAt ? 1 : -1

@@ -42,15 +42,13 @@ import { HookType } from "@/types/hook";
 
 export default function EditHook({ hookData }: { hookData: HookType }) {
   const [loading, setLoading] = useState(false);
+  console.log(hookData);
   const [categories, setCategories] = useState<ResourcePost[]>([]);
   const deploymentDetails = formatDeploymentDetails(hookData);
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
     defaultValues: {
-      title: hookData.title,
-      description: hookData.description,
-      github: hookData.github,
-      categoryId: hookData.categoryId,
+      ...hookData,
     },
   });
 
@@ -76,8 +74,6 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
         method: "PUT",
         body: JSON.stringify({
           ...values,
-          ...hookData,
-          categoryId: values.categoryId,
         }),
         headers: {
           "Content-Type": "application/json",
