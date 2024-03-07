@@ -1,40 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { Tree } from "@geist-ui/core";
+import { TreeType } from "@/types/repo";
 
-export function Tree({ nodes }: { nodes: any[] }) {
-  const [openPaths, setOpenPaths] = useState<string[]>([]);
-
-  const toggleOpen = (path: string) => {
-    setOpenPaths((currentPaths) =>
-      currentPaths.includes(path)
-        ? currentPaths.filter((p) => p !== path)
-        : [...currentPaths, path]
-    );
+export function FileTree({ nodes }: { nodes: TreeType[] }) {
+  const renderTreeNodes = (nodes: TreeType[] = []) => {
+    return nodes.map((node) => {
+      if (node.type === "directory") {
+        return (
+          <Tree.Folder name={node.name} key={node.path}>
+            {renderTreeNodes(node.children)}
+          </Tree.Folder>
+        );
+      } else {
+        return <Tree.File name={node.name} key={node.path} />;
+      }
+    });
   };
 
-  return (
-    <ul className="tree">
-      {nodes.map((node) => (
-        <li
-          key={node.path}
-          className={node.type === "directory" ? "directory" : "file"}
-        >
-          {node.type === "directory" ? (
-            <>
-              <div
-                className="directory-name"
-                onClick={() => toggleOpen(node.path)}
-              >
-                {openPaths.includes(node.path) ? "📂" : "📁"} {node.name}
-              </div>
-              {openPaths.includes(node.path) && <Tree nodes={node.children} />}
-            </>
-          ) : (
-            <span className="file-name">{node.name}</span>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
+  return <Tree>{renderTreeNodes(nodes)}</Tree>;
 }
