@@ -1,13 +1,13 @@
 import { findFile } from "@lib/utils";
-import { HookType } from "@/types/hook";
 import { TreeFile } from "@/types/tree";
+import { HookType } from "@/types/hook";
 import { notFound } from "next/navigation";
 
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/components/ui/Resizable";
+} from "@component/ui/Resizable";
 import {
   Card,
   CardContent,
@@ -15,11 +15,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@component/ui/Card";
+import { Button } from "@component/ui/Button";
 import { FileTree } from "@component/ui/Tree";
+import { Icons } from "@component/overall/Icons";
 import { Separator } from "@component/ui/Separator";
-import Container from "@component/overall/Container";
 import { SyntaxHighler } from "@component/ui/SyntaxHighler";
 import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
+
+import Container from "@component/overall/Container";
 
 async function getHook({ hookId }: { hookId: string }) {
   const hookFetch = await fetch(
@@ -133,8 +136,8 @@ export default async function ViewHook({
   return (
     <Container>
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={25}>
-          <Card className="m-4 sticky top-0">
+        <ResizablePanel defaultSize={18} className="m-4" minSize={18}>
+          <Card>
             <CardHeader>
               <CardTitle>File explorer</CardTitle>
               <CardDescription>
@@ -148,14 +151,15 @@ export default async function ViewHook({
           </Card>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel>
-          <Card className="m-4">
+        <ResizablePanel defaultSize={82} minSize={60} className="m-4">
+          <Card>
             {!file.code && (
               <div className="flex items-center justify-center h-[665px]">
                 <EmptyPlaceholder className="text-center">
                   <EmptyPlaceholder.Title>Open a file</EmptyPlaceholder.Title>
                   <EmptyPlaceholder.Description>
-                    Select a file from the tree to view its content
+                    Select a file from the file explorer to view it&apos;s
+                    content.
                   </EmptyPlaceholder.Description>
                 </EmptyPlaceholder>
               </div>
@@ -164,11 +168,22 @@ export default async function ViewHook({
             {file.code && (
               <div>
                 <CardHeader>
-                  <CardTitle>
-                    {file.name}{" "}
-                    <span className="text-sm text-gray-400">{file.extra}</span>
+                  <CardTitle className="flex justify-between items-center">
+                    <div>
+                      {file.name}{" "}
+                      <span className="text-sm text-gray-400">
+                        {file.extra}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Button size="icon" variant="outline" className="w-5 h-5">
+                        <Icons.copy />
+                      </Button>
+                      <Button size="icon" variant="outline" className="w-5 h-5">
+                        <Icons.link />
+                      </Button>
+                    </div>
                   </CardTitle>
-                  <CardDescription></CardDescription>
                   <Separator />
                 </CardHeader>
                 <CardContent>
