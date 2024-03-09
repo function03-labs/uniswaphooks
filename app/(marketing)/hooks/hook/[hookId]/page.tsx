@@ -3,6 +3,8 @@ import { TreeFile } from "@/types/tree";
 import { HookType } from "@/types/hook";
 import { notFound } from "next/navigation";
 
+import { formatDeploymentDetails } from "@lib/utils";
+
 import {
   ResizableHandle,
   ResizablePanel,
@@ -15,14 +17,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@component/ui/Card";
-import { Button } from "@component/ui/Button";
 import { FileTree } from "@component/ui/Tree";
-import { Icons } from "@component/overall/Icons";
+import { Drawer } from "@component/ui/Drawer";
 import { Separator } from "@component/ui/Separator";
 import { SyntaxHighler } from "@component/ui/SyntaxHighler";
 import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
 
 import Container from "@component/overall/Container";
+import { CopyButtons } from "@component/showcase/CopyButtons";
+import { DeployedDetail } from "@component/showcase/DeploymentDetails";
 
 async function getHook({ hookId }: { hookId: string }) {
   const hookFetch = await fetch(
@@ -112,6 +115,7 @@ export default async function ViewHook({
   if (!hook) {
     return notFound();
   }
+  const deploymentDetails = formatDeploymentDetails(hook);
 
   /*     if (hook.status !== "published") {
             return notFound();
@@ -135,8 +139,16 @@ export default async function ViewHook({
 
   return (
     <Container>
+      <div className="m-0 md:m-4">
+        <DeployedDetail hook={hook} deployment={deploymentDetails} />
+      </div>
+
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={18} className="m-4" minSize={18}>
+        <ResizablePanel
+          defaultSize={18}
+          className="m-0 md:m-4 hidden md:block"
+          minSize={18}
+        >
           <Card>
             <CardHeader>
               <CardTitle>File explorer</CardTitle>
@@ -150,8 +162,10 @@ export default async function ViewHook({
             </CardContent>
           </Card>
         </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={82} minSize={60} className="m-4">
+
+        <ResizableHandle className="hidden md:block" withHandle />
+
+        <ResizablePanel defaultSize={82} minSize={60} className="m-0 md:m-4">
           <Card>
             {!file.code && (
               <div className="flex items-center justify-center h-[665px]">
@@ -166,7 +180,7 @@ export default async function ViewHook({
             )}
 
             {file.code && (
-              <div>
+              <Drawer>
                 <CardHeader>
                   <CardTitle className="flex justify-between items-center">
                     <div>
@@ -175,23 +189,17 @@ export default async function ViewHook({
                         {file.extra}
                       </span>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <Button size="icon" variant="outline" className="w-5 h-5">
-                        <Icons.copy />
-                      </Button>
-                      <Button size="icon" variant="outline" className="w-5 h-5">
-                        <Icons.link />
-                      </Button>
-                    </div>
+                    <CopyButtons
+                      code={file.code}
+                      link={`${process.env.NEXT_PUBLIC_URL}/hooks/hook/${hook.id}/?path=${file.path}`}
+                    />
                   </CardTitle>
                   <Separator />
                 </CardHeader>
-                <CardContent>
-                  <div className="min-w-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-300">
-                    <SyntaxHighler code={file.code} />
-                  </div>
+                <CardContent className="min-w-full">
+                  <SyntaxHighler code={file.code} />
                 </CardContent>
-              </div>
+              </Drawer>
             )}
           </Card>
         </ResizablePanel>

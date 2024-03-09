@@ -1,7 +1,11 @@
+import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+import { Icons } from "@component/overall/Icons";
 import AddressCopy from "@component/ui/AddressCopy";
+
+import { HookType } from "@/types/hook";
 import { DeploymentType, StatusesType } from "@/types/deployment";
 
 const statuses: StatusesType = {
@@ -35,7 +39,7 @@ export default function DeploymentDetails({
             "rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset"
           )}
         >
-          {deployment.verified ? "Verified" : "Not deployed"}
+          {deployment.verified ? "Deployed" : "Not deployed"}
         </div>
       </div>
 
@@ -44,6 +48,105 @@ export default function DeploymentDetails({
         deployment.contract &&
         deployment.date && (
           <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+            <div className="flex justify-between gap-x-4 py-3">
+              <dt className="text-gray-500">Deployment Address</dt>
+              <AddressCopy ethAddress={deployment.input.deploymentAddress} />
+            </div>
+
+            {deployment.contract.transactionHash != "N/A" && (
+              <div className="flex justify-between gap-x-4 py-3">
+                <dt className="text-gray-500">TX Hash</dt>
+                <AddressCopy ethAddress={deployment.contract.transactionHash} />
+              </div>
+            )}
+
+            {deployment.contract.creator != "N/A" && (
+              <div className="flex justify-between gap-x-4 py-3">
+                <dt className="text-gray-500">Creator</dt>
+                <AddressCopy ethAddress={deployment.contract.creator} />
+              </div>
+            )}
+
+            <div className="flex justify-between gap-x-4 py-3">
+              <dt className="text-gray-500">Compiler</dt>
+              <dd className="text-gray-700 font-mono text-sm border border-gray-200 rounded-md px-2 py-1 truncate">
+                {deployment.contract.compilerVersion}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-x-4 py-3">
+              <dt className="text-gray-500">Deployment Date</dt>
+              <dd className="text-gray-700">
+                <time dateTime={deployment.date.dateTime}>
+                  {deployment.date.date}
+                </time>
+              </dd>
+            </div>
+          </dl>
+        )}
+    </div>
+  );
+}
+
+export function DeployedDetail({
+  deployment,
+  hook,
+}: {
+  deployment: DeploymentType;
+  hook: HookType;
+}) {
+  return (
+    <div className="overflow-hidden rounded-xl border border-gray-200">
+      <div className="flex items-center justify-between gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+        <div className="flex items-center gap-x-4">
+          <Image
+            src={deployment.imageUrl || "/uniswap-hooks-logo.png"}
+            alt={deployment.networkName}
+            width={48}
+            height={48}
+            className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
+          />
+          <div className="text-sm font-medium leading-6 text-gray-900">
+            {deployment.networkName}
+          </div>
+        </div>
+        <div>
+          <Link
+            href={hook.github}
+            target="_blank"
+            className="flex items-end justify-end gap-x-4 py-3"
+          >
+            <Icons.gitHub className="w-4 h-4" />
+          </Link>
+          <div
+            className={cn(
+              statuses[deployment.verified.toString()],
+              "rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset"
+            )}
+          >
+            {deployment.verified ? "Deployed" : "Not deployed"}
+          </div>
+        </div>
+      </div>
+
+      {deployment.verified &&
+        deployment.input &&
+        deployment.contract &&
+        deployment.date && (
+          <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+            <div className="flex justify-between gap-x-4 py-3">
+              <dt className="text-gray-500">Hook name</dt>
+              <dd className="text-gray-700 font-mono text-sm  px-2 py-1 truncate">
+                {hook.title}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-x-4 py-3">
+              <dt className="text-gray-500">Hook description</dt>
+              <dd className="text-gray-700 max-w-fit text-right font-mono text-sm  px-2 py-1">
+                {hook.description} sdmljfgdlskjfklsdjklf sdlkfj lksdjf klsdjklf
+                jklsdj fklsdfjksld jfklsdjf lmksdjflkj sdmklfsdkljfkl sdnf
+                sdmlfsdlkfn lksd,f
+              </dd>
+            </div>
             <div className="flex justify-between gap-x-4 py-3">
               <dt className="text-gray-500">Deployment Address</dt>
               <AddressCopy ethAddress={deployment.input.deploymentAddress} />

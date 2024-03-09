@@ -20,12 +20,11 @@ import {
   Settings,
   SunMedium,
   Trash,
-  User,
   X,
   Search,
   BookOpenText,
   LucideIcon,
-  Github,
+  GithubIcon as Github,
   MoreHorizontal,
   Equal,
   Copy,
@@ -33,7 +32,7 @@ import {
   BookCheck,
   UserRound,
   LibrarySquare,
-  Link
+  Link,
 } from "lucide-react";
 import Image from "next/image";
 
