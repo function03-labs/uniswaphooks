@@ -122,9 +122,9 @@ export default async function ViewHook({
   }
   const deploymentDetails = formatDeploymentDetails(hook);
 
-  /*     if (hook.status !== "published") {
-            return notFound();
-        } */
+  if (hook.status !== "published" && process.env.NODE_ENV === "production") {
+    return notFound();
+  }
 
   const tree = await buildTree({ github: hook.github, path: "" });
 
@@ -217,7 +217,10 @@ export default async function ViewHook({
                   <div>
                     <CardHeader>
                       <CardTitle className="flex justify-between items-center">
-                        <SelectedFiles selected={file}/>
+                        <SelectedFiles
+                          link={`/hooks/hook/${hook.id}/`}
+                          selected={file}
+                        />
                         <CopyButtons
                           code={file.code}
                           link={`${process.env.NEXT_PUBLIC_URL}/hooks/hook/${hook.id}/?path=${file.path}`}
