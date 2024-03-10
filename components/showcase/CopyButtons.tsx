@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@component/ui/HoverCard";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@component/ui/Tooltip";
 
 import { Button } from "@component/ui/Button";
 import { Icons } from "@component/overall/Icons";
@@ -25,37 +26,39 @@ export function CopyButtons({ code, link }: { code: string; link: string }) {
   };
 
   return (
-    <div className="flex items-center space-x-3">
-      <HoverCard>
-        <HoverCardTrigger>
-          <Button
-            size="icon"
-            variant="outline"
-            className="w-5 h-5"
-            onClick={handleCopyCode}
-          >
-            {copiedCode ? <Icons.check /> : <Icons.copy />}
-          </Button>
-        </HoverCardTrigger>
-        <HoverCardContent className="text-sm font-normal">
-          {copiedCode ? "Code copied!" : "Copy the code to clipboard"}
-        </HoverCardContent>
-      </HoverCard>
-      <HoverCard>
-        <HoverCardTrigger>
-          <Button
-            size="icon"
-            variant="outline"
-            className="w-5 h-5"
-            onClick={handleCopyLink}
-          >
-            {copiedLink ? <Icons.check /> : <Icons.link />}
-          </Button>
-        </HoverCardTrigger>
-        <HoverCardContent className="text-sm font-normal">
-          {copiedLink ? "Link copied!" : "Copy the link to clipboard"}
-        </HoverCardContent>
-      </HoverCard>
-    </div>
+    <TooltipProvider>
+      <div className="flex items-center space-x-3">
+        <Tooltip>
+          <TooltipTrigger>
+            <Button
+              size="icon"
+              variant="outline"
+              className="w-5 h-5"
+              onClick={handleCopyCode}
+            >
+              {copiedCode ? <Icons.check /> : <Icons.copy />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="text-sm font-normal">
+            {copiedCode ? "Code copied!" : "Copy the code to clipboard"}
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button
+              size="icon"
+              variant="outline"
+              className="w-5 h-5"
+              onClick={handleCopyLink}
+            >
+              {copiedLink ? <Icons.check /> : <Icons.link />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="text-sm font-normal">
+            {copiedLink ? "Link copied!" : "Copy the link to clipboard"}
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
   );
 }
