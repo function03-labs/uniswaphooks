@@ -7,28 +7,45 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@component/ui/Resizable";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+} from "@component/ui/Card";
+import { DeployedDetailSkeleton } from "@component/showcase/DeploymentDetails";
 
 export default function DashboardLoading() {
   return (
     <Container>
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={18} className="m-4" minSize={18}>
+      <DeployedDetailSkeleton />
+
+      <Card>
+        <CardHeader>
           <PostItem.Skeleton />
+        </CardHeader>
+        <CardContent>
           <PostItem.Skeleton />
-          <PostItem.Skeleton />
-          <PostItem.Skeleton /> 
-          <PostItem.Skeleton /> 
-          <PostItem.Skeleton />
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={82} minSize={60} className="m-4">
-          <DashboardShell>
+        </CardContent>
+
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel defaultSize={18} className="m-4" minSize={18}>
             <PostItem.Skeleton />
             <PostItem.Skeleton />
             <PostItem.Skeleton />
-          </DashboardShell>
-        </ResizablePanel>
-      </ResizablePanelGroup>
+            <PostItem.Skeleton />
+            <PostItem.Skeleton />
+            <PostItem.Skeleton />
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel defaultSize={82} minSize={60} className="m-4">
+            <DashboardShell>
+              <PostItem.Skeleton />
+              <PostItem.Skeleton />
+              <PostItem.Skeleton />
+            </DashboardShell>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </Card>
     </Container>
   );
 }

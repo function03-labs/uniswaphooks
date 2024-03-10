@@ -4,6 +4,7 @@ import { Tree } from "@geist-ui/core";
 import { TreeType } from "@/types/tree";
 
 import { useRouter } from "next/navigation";
+import { useSelectedPath } from "@component/config/FileSelected";
 
 export function FileTree({
   nodes,
@@ -13,6 +14,8 @@ export function FileTree({
   hookId: string;
 }) {
   const router = useRouter();
+  const { addSelectedPath } = useSelectedPath();
+
   const renderTreeNodes = (nodes: TreeType[] = []) => {
     return nodes.map((node) => {
       if (node.type === "directory") {
@@ -32,6 +35,7 @@ export function FileTree({
       value={nodes}
       onClick={(path) => {
         router.push(`/hooks/hook/${hookId}?path=${path}`);
+        addSelectedPath(path);
       }}
     >
       {renderTreeNodes(nodes)}

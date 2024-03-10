@@ -73,7 +73,7 @@ export const Icons = {
   book: BookCheck,
   user: UserRound,
   library: LibrarySquare,
-  link: Link
+  link: Link,
 };
 
 export function IconMenu() {

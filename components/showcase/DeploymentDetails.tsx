@@ -3,6 +3,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 import { Icons } from "@component/overall/Icons";
+import { Skeleton } from "@component/ui/Skeleton";
 import AddressCopy from "@component/ui/AddressCopy";
 
 import { HookType } from "@/types/hook";
@@ -182,6 +183,38 @@ export function DeployedDetail({
             </div>
           </dl>
         )}
+    </div>
+  );
+}
+
+// create a skeleton for DeploymentDetails
+export function DeployedDetailSkeleton() {
+  return (
+    <div className="animate-pulse overflow-hidden rounded-xl border border-gray-200">
+      <div className="flex items-center justify-between gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+        <div className="flex items-center gap-x-4">
+          <Skeleton className="h-12 w-12 rounded-lg" />
+          <Skeleton className="h-4 w-24 rounded-md" />
+        </div>
+        <div className="flex flex-col items-end justify-end gap-y-2">
+          <Skeleton className="h-12 w-12 rounded-lg" />
+          <Skeleton className="h-4 w-24 rounded-md" />
+        </div>
+      </div>
+      <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+        <div className="flex justify-between gap-x-4 py-3">
+          <Skeleton className="h-12 w-12 rounded-lg" />
+          <Skeleton className="h-4 w-24 rounded-md" />
+        </div>
+        <div className="flex justify-between gap-x-4 py-3">
+          <Skeleton className="h-12 w-12 rounded-lg" />
+          <Skeleton className="h-4 w-24 rounded-md" />
+        </div>
+        <div className="flex justify-between gap-x-4 py-3">
+          <Skeleton className="h-12 w-12 rounded-lg" />
+          <Skeleton className="h-4 w-24 rounded-md" />
+        </div>
+      </dl>
     </div>
   );
 }

@@ -4,6 +4,8 @@ import { HookType } from "@/types/hook";
 import { notFound } from "next/navigation";
 
 import { formatDeploymentDetails } from "@lib/utils";
+import { FileSelected } from "@component/config/FileSelected";
+import { SelectedFiles } from "@component/showcase/SelectedFiles";
 
 import {
   ResizableHandle,
@@ -141,99 +143,98 @@ export default async function ViewHook({
   }
 
   return (
-    <Container>
-      <div className="m-0 md:m-4">
-        <DeployedDetail hook={hook} deployment={deploymentDetails} />
-      </div>
-      <Drawer>
-        <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel
-            defaultSize={18}
-            className="m-0 md:m-4 hidden md:block"
-            minSize={18}
-          >
-            <Card>
-              <CardHeader>
-                <CardTitle>File explorer</CardTitle>
-                <CardDescription>
-                  {hook.title} - {hook.description}
-                </CardDescription>
-                <Separator />
-              </CardHeader>
-              <CardContent>
-                <FileTree nodes={tree} hookId={hook.id} />
-              </CardContent>
-            </Card>
-          </ResizablePanel>
+    <FileSelected>
+      <Container>
+        <div className="m-0 md:m-4">
+          <DeployedDetail hook={hook} deployment={deploymentDetails} />
+        </div>
+        <Drawer>
+          <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel
+              defaultSize={18}
+              className="m-0 md:m-4 hidden md:block"
+              minSize={18}
+            >
+              <Card>
+                <CardHeader>
+                  <CardTitle>File explorer</CardTitle>
+                  <CardDescription>
+                    {hook.title} - {hook.description}
+                  </CardDescription>
+                  <Separator />
+                </CardHeader>
+                <CardContent>
+                  <FileTree nodes={tree} hookId={hook.id} />
+                </CardContent>
+              </Card>
+            </ResizablePanel>
 
-          <ResizableHandle className="hidden md:inline-block" />
+            <ResizableHandle className="hidden md:inline-block" />
 
-          <ResizablePanel
-            defaultSize={82}
-            minSize={60}
-            className="m-0 py-4 md:m-4 md:py-0"
-          >
-            <Card>
-              <CardHeader className="block md:hidden">
-                <CardTitle className="flex justify-between items-center py-2">
-                  <div>File explorer</div>
+            <ResizablePanel
+              defaultSize={82}
+              minSize={60}
+              className="m-0 py-4 md:m-4 md:py-0"
+            >
+              <Card>
+                <CardHeader className="block md:hidden">
+                  <CardTitle className="flex justify-between items-center py-2">
+                    <div>File explorer</div>
 
-                  <DrawerTrigger>
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="w-5 h-5 ml-auto"
-                    >
-                      <Icons.orderbook />
-                    </Button>
-                  </DrawerTrigger>
-                  <FileExplorer tree={tree} hook={hook} />
-                </CardTitle>
+                    <DrawerTrigger>
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        className="w-5 h-5 ml-auto"
+                      >
+                        <Icons.orderbook />
+                      </Button>
+                    </DrawerTrigger>
+                    <FileExplorer tree={tree} hook={hook} />
+                  </CardTitle>
 
-                <CardDescription>
-                  {hook.title} - {hook.description}
-                </CardDescription>
-                <Separator />
-              </CardHeader>
+                  <CardDescription>
+                    {hook.title} - {hook.description}
+                  </CardDescription>
+                  <Separator />
+                </CardHeader>
 
-              {!file.code && (
-                <div className="flex items-center justify-center h-[665px]">
-                  <EmptyPlaceholder className="text-center">
-                    <EmptyPlaceholder.Title>Open a file</EmptyPlaceholder.Title>
-                    <EmptyPlaceholder.Description>
-                      Select a file from the file explorer to view it&apos;s
-                      content.
-                    </EmptyPlaceholder.Description>
-                  </EmptyPlaceholder>
-                </div>
-              )}
+                {!file.code && (
+                  <div className="flex items-center justify-center h-[665px]">
+                    <EmptyPlaceholder className="text-center">
+                      <EmptyPlaceholder.Title>
+                        Open a file
+                      </EmptyPlaceholder.Title>
+                      <EmptyPlaceholder.Description>
+                        Select a file from the file explorer to view it&apos;s
+                        content.
+                      </EmptyPlaceholder.Description>
+                    </EmptyPlaceholder>
+                  </div>
+                )}
 
-              {file.code && (
-                <div>
-                  <CardHeader>
-                    <CardTitle className="flex justify-between items-center">
-                      <div>
-                        {file.name}{" "}
-                        <span className="text-sm text-gray-400">
-                          {file.extra}
-                        </span>
-                      </div>
-                      <CopyButtons
-                        code={file.code}
-                        link={`${process.env.NEXT_PUBLIC_URL}/hooks/hook/${hook.id}/?path=${file.path}`}
-                      />
-                    </CardTitle>
-                    <Separator />
-                  </CardHeader>
-                  <CardContent className="min-w-full">
-                    <SyntaxHighler code={file.code} />
-                  </CardContent>
-                </div>
-              )}
-            </Card>
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </Drawer>
-    </Container>
+                {file.code && (
+                  <div>
+                    <CardHeader>
+                      <CardTitle className="flex justify-between items-center">
+                        <SelectedFiles selected={file}/>
+                        <CopyButtons
+                          code={file.code}
+                          link={`${process.env.NEXT_PUBLIC_URL}/hooks/hook/${hook.id}/?path=${file.path}`}
+                        />
+                      </CardTitle>
+                      <Separator />
+                    </CardHeader>
+                    <CardContent className="min-w-full">
+                      <SyntaxHighler code={file.code} />
+                    </CardContent>
+                  </div>
+                )}
+              </Card>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </Drawer>
+      </Container>
+    </FileSelected>
   );
 }
