@@ -122,7 +122,7 @@ export default async function ViewHook({
   }
   const deploymentDetails = formatDeploymentDetails(hook);
 
-  if (hook.status !== "published" && process.env.NODE_ENV === "production") {
+  if (hook.status !== "published") {
     return notFound();
   }
 
