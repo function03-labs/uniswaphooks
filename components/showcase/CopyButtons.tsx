@@ -6,7 +6,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@component/ui/HoverCard";
-import { DrawerTrigger } from "@component/ui/Drawer";
 
 import { Button } from "@component/ui/Button";
 import { Icons } from "@component/overall/Icons";
@@ -55,18 +54,6 @@ export function CopyButtons({ code, link }: { code: string; link: string }) {
         </HoverCardTrigger>
         <HoverCardContent className="text-sm font-normal">
           {copiedLink ? "Link copied!" : "Copy the link to clipboard"}
-        </HoverCardContent>
-      </HoverCard>
-      <HoverCard>
-        <HoverCardTrigger>
-          <DrawerTrigger>
-            <Button size="icon" variant="outline" className="w-5 h-5 md:hidden">
-              <Icons.orderbook />
-            </Button>
-          </DrawerTrigger>
-        </HoverCardTrigger>
-        <HoverCardContent className="text-sm font-normal">
-          Open file explorer
         </HoverCardContent>
       </HoverCard>
     </div>
