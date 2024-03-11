@@ -35,7 +35,11 @@ export function SelectedFiles({
           {selectedPaths.reverse().map((path) => {
             return (
               <Link key={path} href={`${link}?path=${path}`}>
-                <Card className="min-w-0 flex-none rounded-lg">
+                <Card
+                  className={`min-w-0 flex-none rounded-lg ${
+                    selected.path === path ? "bg-gray-200" : "hover:bg-gray-100"
+                  }`}
+                >
                   <div className="flex items-center justify-between p-2">
                     <CardTitle className="text-sm font-semibold">
                       {path}
