@@ -5,9 +5,11 @@ import HookOwned from "@/components/showcase/hook/HookOwned";
 export default function HookGrid({
   hookPosts,
   owned,
+  role,
 }: {
   hookPosts: HookType[];
   owned: boolean;
+  role: string;
 }) {
   return (
     <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -15,7 +17,7 @@ export default function HookGrid({
         <>
           {hookPosts.map((hookPost) => (
             <li key={hookPost.id}>
-              <HookOwned componentData={hookPost} />
+              <HookOwned componentData={hookPost} role={role} />
             </li>
           ))}
         </>

@@ -16,8 +16,10 @@ import { HookType } from "@/types/hook";
 
 export default function HookOwned({
   componentData,
+  role,
 }: {
   componentData: HookType;
+  role: string;
 }) {
   const refIframe = useRef(null);
 
@@ -52,7 +54,7 @@ export default function HookOwned({
             <PreviewFolder url={`/hooks/hook/${componentId}`} />
           </div>
           <div className="flex justify-end">
-            <PreviewStatus tagType={componentStatus} />
+            <PreviewStatus componentData={componentData} role={role} />
           </div>
         </div>
 

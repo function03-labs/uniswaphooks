@@ -43,7 +43,7 @@ async function getHooks({
 
   hooks.data = hooks.data.filter((hook: any) => hook.user.id === id);
   hooks.data.sort((a: any, b: any) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
   });
 
   return hooks.data;
@@ -71,7 +71,7 @@ export default async function Home() {
 
       <Container classNames="py-8 lg:py-6 space-y-8 lg:space-y-0">
         {hooks?.length ? (
-          <HookGrid hookPosts={hooks} owned={true} />
+          <HookGrid hookPosts={hooks} owned={true} role={user.role} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Title>No hooks created</EmptyPlaceholder.Title>
