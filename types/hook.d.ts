@@ -3,7 +3,6 @@ export type HookType = {
   title: string;
   description: string;
   creator: string;
-  website: string;
   github: string;
   status: string;
 

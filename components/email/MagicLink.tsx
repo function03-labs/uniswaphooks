@@ -25,7 +25,7 @@ export function MagicLink({ magicLink }: { magicLink: MagicLinkData }) {
       <Body style={main}>
         <Container style={container}>
           <Img
-            src="https://react-email-demo-bdj5iju9r-resend.vercel.app/static/linear-logo.png"
+            src="https://uniswaphooks.com/_next/image?url=%2Funiswap-hooks-logo.png&w=64&q=100"
             height="42"
             alt="UniswapHooks logo"
             style={logo}

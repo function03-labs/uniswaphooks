@@ -49,6 +49,8 @@ model User {
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
   role          String    @default("user")
 
+  // TODO Add creatorLink : creatorLink String?
+
   accounts  Account[]
   sessions  Session[]
 
@@ -72,7 +74,6 @@ model Hook {
   title          String
   description    String
   creator        String
-  website        String
   github         String
   status         String   @default("draft")
 

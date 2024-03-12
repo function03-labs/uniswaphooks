@@ -29,7 +29,6 @@ export async function POST(req: Request) {
         description,
         creator,
         github,
-        website,
         userId: session.user.id,
         categoryId,
       },

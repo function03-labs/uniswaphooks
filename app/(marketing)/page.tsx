@@ -8,7 +8,9 @@ import VerifiedHooks from "@component/showcase/VerifiedHooks";
 import CollectionCard from "@component/showcase/CollectionCard";
 
 async function getHooks() {
-  const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hook`);
+  const hooksFetch = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/hook`
+  );
 
   if (!hooksFetch.ok) {
     throw new Error("Failed to fetch hooks");
@@ -49,7 +51,7 @@ async function getCategories(hooks: HookType[]) {
 }
 
 export default async function Page() {
-  const hooks = await getHooks() as HookType[];
+  const hooks = (await getHooks()) as HookType[];
   const categories = await getCategories(hooks);
 
   return (

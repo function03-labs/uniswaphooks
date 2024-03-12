@@ -81,7 +81,6 @@ export async function PUT(
       github,
       creator,
       categoryId,
-      website,
       network,
       status,
       contract,
@@ -99,7 +98,6 @@ export async function PUT(
         description,
         github,
         creator,
-        website,
         status,
         ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
         ...(network

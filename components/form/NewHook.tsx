@@ -66,7 +66,6 @@ export default function NewHookForm() {
         body: JSON.stringify({
           ...values,
           creator,
-          website: "https://uniswaphooks.com/",
         }),
         headers: {
           "Content-Type": "application/json",
