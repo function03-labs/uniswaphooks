@@ -98,9 +98,16 @@ export function DeployedDetail({
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200">
       <div className="flex items-center justify-between gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-        {" "}
         <div className="flex items-center gap-x-4">
           <div className="flex-1 min-w-0">
+            <div
+              className={cn(
+                statuses[deployment.verified.toString()],
+                "rounded-full border max-w-fit border-gray-300 px-2.5 py-0.5 text-xs font-medium"
+              )}
+            >
+              {deployment.verified ? "Deployed" : "Not deployed"}
+            </div>
             <h3 className="truncate text-sm font-medium text-gray-900">
               {hook.title}
             </h3>
@@ -108,14 +115,6 @@ export function DeployedDetail({
           </div>
         </div>
         <div className="space-y-3">
-          <div
-            className={cn(
-              statuses[deployment.verified.toString()],
-              "rounded-full border border-gray-300 px-2.5 py-0.5 text-xs font-medium"
-            )}
-          >
-            {deployment.verified ? "Deployed" : "Not deployed"}
-          </div>
           <Link
             href={hook.github}
             target="_blank"

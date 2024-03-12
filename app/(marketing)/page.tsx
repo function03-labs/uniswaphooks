@@ -23,7 +23,7 @@ async function getHooks() {
 
 async function getCategories(hooks: HookType[]) {
   const categoriesFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/category`
+    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/category`
   );
 
   if (!categoriesFetch.ok) {
