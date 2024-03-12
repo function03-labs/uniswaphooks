@@ -20,16 +20,13 @@ async function getHooks({
   id?: string | null | undefined;
   isAdmin: boolean;
 }) {
-  const hooksFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/hook`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache",
-      },
-    }
-  );
+  const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+    },
+  });
 
   if (!hooksFetch.ok) {
     throw new Error("Failed to fetch hooks");

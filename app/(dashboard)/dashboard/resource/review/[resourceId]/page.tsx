@@ -9,7 +9,7 @@ import ResourceOwned from "@component/showcase/resource/ResourceOwned";
 
 async function getResource({ resourceId }: { resourceId: string }) {
   const ResourceFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/resource/${resourceId}`,
+    `${process.env.NEXT_PUBLIC_URL}/api/resource/${resourceId}`,
     {
       method: "GET",
       headers: {

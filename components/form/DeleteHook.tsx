@@ -9,16 +9,18 @@ import {
 } from "@component/ui/AlertDialog";
 
 export default function DeleteHook({ id }: { id: string }) {
-  const deleteHook = async () => {
-    await fetch(`/api/hook/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    window.location.reload();
-  };
-  
+  async function deleteHook() {
+    try {
+      await fetch(`/api/hook/${id}`, {
+        method: "DELETE",
+      });
+
+      window.location.reload();
+    } catch (error) {
+      console.log("Error deleting hook", error);
+    }
+  }
+
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
@@ -30,9 +32,7 @@ export default function DeleteHook({ id }: { id: string }) {
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction onClick={() => deleteHook()}>
-          Continue
-        </AlertDialogAction>
+        <AlertDialogAction onClick={deleteHook}>Continue</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   );

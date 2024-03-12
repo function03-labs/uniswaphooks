@@ -153,7 +153,12 @@ export function PreviewStatus({
         } ${isDraft && "bg-gray-700 text-gray-100"}`}
       >
         <span className="text-xs font-medium">
-          {tagType!.charAt(0).toUpperCase() + tagType!.slice(1)}
+          {componentData?.status
+            ? componentData.status.charAt(0).toUpperCase() +
+              componentData.status.slice(1)
+            : tagType
+            ? tagType.charAt(0).toUpperCase() + tagType.slice(1)
+            : null}
         </span>
       </span>
     </button>

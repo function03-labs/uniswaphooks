@@ -11,7 +11,7 @@ import DeploymentDetails from "@component/showcase/DeploymentDetails";
 
 async function getHook({ hookId }: { hookId: string }) {
   const hookFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/hook/${hookId}`,
+    `${process.env.NEXT_PUBLIC_URL}/api/hook/${hookId}`,
     {
       method: "GET",
       headers: {

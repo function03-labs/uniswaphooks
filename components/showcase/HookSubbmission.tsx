@@ -4,7 +4,7 @@ import HookOwned from "@component/showcase/hook/HookOwned";
 
 async function getHook(id: string) {
   const hookFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/hook/${id}`,
+    `${process.env.NEXT_PUBLIC_URL}/api/hook/${id}`,
     {
       method: "GET",
       headers: {
