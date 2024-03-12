@@ -143,9 +143,7 @@ export function PreviewConfig({
                     Open GitHub
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  disabled={componentData.status === "published"}
-                >
+                <DropdownMenuItem>
                   <DialogTrigger className="w-full text-left">
                     Edit
                   </DialogTrigger>

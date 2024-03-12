@@ -47,6 +47,7 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
     resolver: zodResolver(hookEditSchema),
     defaultValues: {
       ...hookData,
+      status: "pending",
     },
   });
 
