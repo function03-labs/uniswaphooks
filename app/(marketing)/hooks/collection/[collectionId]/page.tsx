@@ -5,16 +5,13 @@ import CollectionLinks from "@component/ui/CollectionLinks";
 import { CategoryType, HookType } from "@/types/hook";
 
 async function getHooks(category?: string) {
-  const hooksFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/hook`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache",
-      },
-    }
-  );
+  const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+    },
+  });
   if (!hooksFetch.ok) {
     throw new Error("Failed to fetch hooks");
   }
@@ -30,7 +27,7 @@ async function getHooks(category?: string) {
 
 async function getCategories() {
   const categoriesFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/category`
+    `${process.env.NEXT_PUBLIC_URL}/api/category`
   );
 
   if (!categoriesFetch.ok) {

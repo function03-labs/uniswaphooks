@@ -11,7 +11,7 @@ import { sections } from "@config/community";
 async function getResources() {
   try {
     const responseResources = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/resource?${Date.now()}`,
+      `${process.env.NEXT_PUBLIC_URL}/api/resource?${Date.now()}`,
       {
         method: "GET",
         headers: {
