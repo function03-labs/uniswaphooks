@@ -30,23 +30,25 @@ const hookSchema = z.object({
 
 export function PreviewStatus({
   componentData,
+  tagType,
   role,
 }: {
-  componentData: HookType;
-  role: string;
+  componentData?: HookType;
+  tagType?: string;
+  role?: string;
 }) {
   const { toast } = useToast();
   const [isSelectVisible, setIsSelectVisible] = useState(false);
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
     defaultValues: {
-      status: componentData.status,
+      status: componentData?.status,
     },
   });
 
   async function onSubmit(data: z.infer<typeof hookSchema>) {
     try {
-      const updatedHook = await fetch(`/api/hook/${componentData.id}`, {
+      const updatedHook = await fetch(`/api/hook/${componentData?.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -77,10 +79,10 @@ export function PreviewStatus({
       window.location.reload();
     }
   }
-  const isPublished = componentData.status === "published";
-  const isPending = componentData.status === "pending";
-  const isDraft = componentData.status === "draft";
-  const isDeclined = componentData.status === "declined";
+  const isPublished = (componentData?.status || tagType) === "published";
+  const isPending = (componentData?.status || tagType) === "pending";
+  const isDraft = (componentData?.status || tagType) === "draft";
+  const isDeclined = (componentData?.status || tagType) === "declined";
 
   if (!isPublished && !isPending && !isDeclined && !isDraft) {
     return <></>;
@@ -99,8 +101,8 @@ export function PreviewStatus({
             onClick={() => setIsSelectVisible(!isSelectVisible)}
           >
             <span className="text-xs font-medium">
-              {componentData.status.charAt(0).toUpperCase() +
-                componentData.status.slice(1)}
+              {componentData!.status.charAt(0).toUpperCase() +
+                componentData!.status.slice(1)}
             </span>
           </button>
         )}
@@ -151,8 +153,7 @@ export function PreviewStatus({
         } ${isDraft && "bg-gray-700 text-gray-100"}`}
       >
         <span className="text-xs font-medium">
-          {componentData.status.charAt(0).toUpperCase() +
-            componentData.status.slice(1)}
+          {tagType!.charAt(0).toUpperCase() + tagType!.slice(1)}
         </span>
       </span>
     </button>

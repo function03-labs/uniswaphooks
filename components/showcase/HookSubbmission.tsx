@@ -4,7 +4,7 @@ import HookOwned from "@component/showcase/hook/HookOwned";
 
 async function getHook(id: string) {
   const hookFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/hook/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/hook/${id}`,
     {
       method: "GET",
       headers: {
@@ -27,7 +27,7 @@ export default async function HookSubbmission({ id }: { id: string }) {
 
   return (
     <Container classNames="-mx-2 flex flex-col justify-center items-center">
-      <HookOwned componentData={hook} />
+      <HookOwned componentData={hook} role="user" />
       <div className="h-8" />
       <SplashButton href="/dashboard" id={"home"}>
         <span>🏠</span> Back to home

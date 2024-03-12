@@ -6,7 +6,7 @@ import { CategoryType, HookType } from "@/types/hook";
 
 async function getHooks(category?: string) {
   const hooksFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/hook`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/hook`,
     {
       method: "GET",
       headers: {
@@ -30,7 +30,7 @@ async function getHooks(category?: string) {
 
 async function getCategories() {
   const categoriesFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/category`
+    `${process.env.NEXT_PUBLIC_API_URL}/api/category`
   );
 
   if (!categoriesFetch.ok) {
@@ -101,7 +101,7 @@ export default async function Page({
       />
 
       <h3 className="text-3xl font-bold">{data[0].category.title}</h3>
-      <HookGrid hookPosts={data} owned={false} />
+      <HookGrid hookPosts={data} owned={false} role="user" />
     </Container>
   );
 }

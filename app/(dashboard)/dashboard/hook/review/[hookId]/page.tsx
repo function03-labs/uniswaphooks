@@ -11,7 +11,7 @@ import DeploymentDetails from "@component/showcase/DeploymentDetails";
 
 async function getHook({ hookId }: { hookId: string }) {
   const hookFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/hook/${hookId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/hook/${hookId}`,
     {
       method: "GET",
       headers: {
@@ -50,7 +50,7 @@ export default async function ReviewPage({
         title="Review hook"
         subtitle="Review the hook and approve or reject it."
       />
-      <HookOwned componentData={hook} />
+      <HookOwned componentData={hook} role={user.role} />
       <DeploymentDetails deployment={deploymentDetails} />
       <ReviewHook hook={hook} />
     </Container>

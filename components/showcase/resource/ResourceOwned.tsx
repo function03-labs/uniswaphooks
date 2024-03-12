@@ -6,10 +6,7 @@ import ShowMoreText from "react-show-more-text";
 
 import { Badge } from "@component/ui/Badge";
 
-import {
-  PreviewFolder,
-  PreviewConfig,
-} from "@component/overall/preview/PreviewCopy";
+import { PreviewConfig } from "@component/overall/preview/PreviewCopy";
 import { PreviewStatus } from "@component/overall/preview/PreviewStatus";
 
 export default function ResourceCard({

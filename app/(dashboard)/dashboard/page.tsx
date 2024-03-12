@@ -21,7 +21,7 @@ async function getHooks({
   isAdmin: boolean;
 }) {
   const hooksFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/hook`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/hook`,
     {
       method: "GET",
       headers: {

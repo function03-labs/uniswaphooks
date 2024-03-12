@@ -21,7 +21,7 @@ async function getResources({
   isAdmin: boolean;
 }) {
   const resourceFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL_DEV}/api/resource`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/resource`,
     {
       method: "GET",
       headers: {
