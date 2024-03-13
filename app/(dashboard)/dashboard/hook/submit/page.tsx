@@ -5,6 +5,7 @@ import Container from "@component/overall/Container";
 import HeroBanner from "@component/section/HeroBanner";
 
 import NewHookForm from "@component/form/NewHook";
+import UploadHook from "@/components/form/UploadHook";
 import DeployHookForm from "@component/form/DeployHook";
 import HookSubbmission from "@component/showcase/HookSubbmission";
 
@@ -26,10 +27,12 @@ export default function SubmitHookPage({
 
   if (searchParams.step === "details") {
     step = 1;
+/*   } else if (searchParams.step === "upload") {
+    step = 2; */
   } else if (searchParams.step === "deployment" && searchParams.id) {
-    step = 2;
-  } else if (searchParams.step === "submission" && searchParams.id) {
     step = 3;
+  } else if (searchParams.step === "submission" && searchParams.id) {
+    step = 4;
     (heading = "🎉Congrats on subbmitting your hook"),
       (text =
         "Your hook is now under review and will be added to the marketplace soon.");
@@ -41,6 +44,8 @@ export default function SubmitHookPage({
     switch (searchParams.step) {
       case "details":
         return <NewHookForm />;
+/*       case "upload":
+        return <UploadHook id={String(searchParams.id)} />; */
       case "deployment":
         return <DeployHookForm id={String(searchParams.id)} />;
       case "submission":

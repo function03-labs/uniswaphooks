@@ -24,7 +24,7 @@ export function selectMailOptions(
       html = render(Hook({ hook: body as HookEmailType }));
       return {
         from: mailOptions.from,
-        to: mailOptions.to,
+        to: process.env.EMAIL_RECEIVERS!.split(","),
         subject: "New hook submission",
         html,
       };
@@ -32,7 +32,7 @@ export function selectMailOptions(
       html = render(Resource({ resource: body as ResouceEmailType }));
       return {
         from: mailOptions.from,
-        to: mailOptions.to,
+        to: process.env.EMAIL_RECEIVERS!.split(","),
         subject: "New resource submission",
         html,
       };

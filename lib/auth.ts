@@ -31,13 +31,13 @@ export const authOptions: NextAuthOptions = {
         provider: { server, from },
       }) => {
         const mailTransporter = nodemailer.createTransport({
-          host: "smtp.gmail.com",
-          port: 587,
+          host: process.env.EMAIL_SERVER_HOST,
+          port: process.env.EMAIL_SERVER_PORT,
           auth: {
             user: process.env.EMAIL_SENDER,
             pass: process.env.EMAIL_SERVER_PASSWORD,
           },
-        });
+        } as nodemailer.TransportOptions);
 
         try {
           const mailOptions = selectMailOptions("magic-link", {

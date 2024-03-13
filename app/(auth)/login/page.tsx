@@ -38,7 +38,7 @@ export default function LoginPage() {
             Enter your email to sign in to your account
           </p>
         </div>
-
+²
         <Suspense fallback={null}>
           <UserAuthForm />
         </Suspense>

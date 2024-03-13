@@ -50,8 +50,9 @@ function CompleteStep({ step }: { step: (typeof stepse)[0] }) {
 
 const stepse = [
   { id: 1, name: "Hook details", status: "" },
-  { id: 2, name: "Hook deployment", status: "" },
-  { id: 3, name: "Submission", status: "" },
+  { id: 2, name: "Upload", status: ""},
+  { id: 3, name: "Deployment", status: "" },
+  { id: 4, name: "Submission", status: "" },
 ];
 
 export default function Panels({ currentStep }: { currentStep: number }) {

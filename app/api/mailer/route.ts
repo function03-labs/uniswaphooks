@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   if (
     !process.env.EMAIL_SENDER ||
     !process.env.EMAIL_SERVER_PASSWORD ||
-    !process.env.MAIN_EMAIL
+    !process.env.EMAIL_RECEIVERS
   ) {
     return new Response(
       JSON.stringify({ error: "Server configuration error" }),
@@ -19,13 +19,13 @@ export async function POST(req: Request) {
   }
 
   const mailTransporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
+    host: process.env.EMAIL_SERVER_HOST,
+    port: process.env.EMAIL_SERVER_PORT,
     auth: {
       user: process.env.EMAIL_SENDER,
       pass: process.env.EMAIL_SERVER_PASSWORD,
     },
-  });
+  } as nodemailer.TransportOptions);
 
   try {
     const mailOptions = selectMailOptions(body.type, body);
@@ -38,7 +38,6 @@ export async function POST(req: Request) {
       }
     );
   } catch (error) {
-    console.log("Error sending email:", error);
     return new Response(JSON.stringify({ error: "Failed to send email" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

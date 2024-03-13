@@ -33,6 +33,8 @@ import {
   UserRound,
   LibrarySquare,
   Link,
+  FolderClosed,
+  FolderOpen,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -74,6 +76,8 @@ export const Icons = {
   user: UserRound,
   library: LibrarySquare,
   link: Link,
+  folder: FolderClosed,
+  folderOpen: FolderOpen
 };
 
 export function IconMenu() {

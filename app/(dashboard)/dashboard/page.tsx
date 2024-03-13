@@ -21,6 +21,9 @@ async function getHooks({
   isAdmin: boolean;
 }) {
   const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
+    next: {
+      revalidate: 0,
+    },
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -51,6 +51,11 @@ export default function DeployHook({ id }: { id: string }) {
   async function onSubmit(values: z.infer<typeof deployHookSchema>) {
     setLoading(true);
 
+    if (!values.deploymentAddress || !values.network) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const verified = await getVerified({
         address: `address=${values.deploymentAddress}`,
@@ -101,7 +106,6 @@ export default function DeployHook({ id }: { id: string }) {
         },
         date: date || "Unknown date",
       });
-
     } catch (error) {
       toast({
         title: "Error",
@@ -256,7 +260,11 @@ export default function DeployHook({ id }: { id: string }) {
             <FormItem>
               <FormLabel>Deployment address</FormLabel>
               <FormControl>
-                <Input placeholder="0x1234..." {...field} />
+                <Input
+                  placeholder="0x1234..."
+                  {...field}
+                  disabled={loading || updating === "loading"}
+                />
               </FormControl>
               <FormDescription>
                 Enter the address of your deployed hook.
@@ -272,7 +280,11 @@ export default function DeployHook({ id }: { id: string }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Network</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={loading || updating === "loading"}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a network" />

@@ -90,8 +90,11 @@ export const hookEditSchema = z.object({
 });
 
 export const deployHookSchema = z.object({
-  deploymentAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
-  network: z.string().min(1),
+  deploymentAddress: z
+    .string()
+    .regex(/^0x[a-fA-F0-9]{40}$/)
+    .optional(),
+  network: z.string().min(1).optional(),
 });
 
 export const userSchema = z.object({
