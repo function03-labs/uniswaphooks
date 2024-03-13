@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { supabase } from "@/lib/supabase";
-import { hookSchema } from "@config/schema";
 import { useToast } from "@hooks/use-toast";
 
 import {
@@ -24,10 +23,16 @@ import { Input } from "@component/ui/Input";
 import { Button } from "@component/ui/Button";
 import { Icons } from "@component/overall/Icons";
 
+const githubUrlRegex =
+  /^https?:\/\/github\.com\/(?<username>[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})\/(?<repository>[a-z\d_\-]{1,100})(?:\.git)?$/i;
+
+const hookSchema = z.object({
+  github: z.string().regex(githubUrlRegex).optional(),
+});
+
 export default function UploadHook({ id }: { id: string }) {
   const router = useRouter();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
   const [isDecompressing, setIsDecompressing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -36,43 +41,6 @@ export default function UploadHook({ id }: { id: string }) {
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
   });
-
-  const decompressFile = async (file: File): Promise<File[]> => {
-    const buffer = await new Promise<Buffer>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target) {
-          resolve(Buffer.from(event.target.result as ArrayBuffer));
-        } else {
-          reject(new Error("Failed to read file"));
-        }
-      };
-      reader.onerror = (error) => reject(error);
-      reader.readAsArrayBuffer(file);
-    });
-
-    const zip = new admZip(buffer);
-    const zipEntries = zip.getEntries();
-    const decompressedFiles: File[] = [];
-
-    for (const zipEntry of zipEntries) {
-      if (!zipEntry.isDirectory) {
-        const fileData = zip.readFile(zipEntry);
-        if (fileData !== null) {
-          const blob = new Blob([fileData], {
-            type: "application/octet-stream",
-          });
-          const decompressedFile = new File([blob], zipEntry.entryName, {
-            type: blob.type,
-          });
-          decompressedFiles.push(decompressedFile);
-        }
-      }
-    }
-
-    console.log("Decompressed files:", decompressedFiles);
-    return decompressedFiles;
-  };
 
   const uploadFiles = async ({ id, files }: { id: string; files: void }) => {
     const { data, error } = await supabase.storage.from("repositories").upload(
@@ -120,7 +88,20 @@ export default function UploadHook({ id }: { id: string }) {
         throw new Error("No file selected");
       }
 
-      const decompressedFiles = await decompressFile(selectedFile);
+      const decompressedFiles = await fetch("/api/upload", {
+        method: "POST",
+        body: selectedFile,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            throw new Error(data.error);
+          }
+
+          return data;
+        });
+
+      console.log(decompressedFiles);
 
       setIsDecompressing(false);
       setIsUploading(true);
@@ -129,8 +110,6 @@ export default function UploadHook({ id }: { id: string }) {
 
       setIsUploading(false);
 
-      // Continue with the rest of your onSubmit logic
-      setLoading(true);
       try {
         const data = await fetch(`/api/hook/${id}`, {
           method: "PUT",
@@ -148,10 +127,9 @@ export default function UploadHook({ id }: { id: string }) {
         );
       } catch (error) {
         console.error("Submission error:", error);
-        router.push("/error");
+        // router.push("/error");
       }
 
-      setLoading(false);
     } catch (error) {
       console.error("Error processing file:", error);
       setIsDecompressing(false);

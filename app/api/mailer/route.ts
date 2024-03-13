@@ -14,9 +14,12 @@ export async function POST(req: Request) {
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   }
+
+  console.log(process.env.EMAIL_SERVER_HOST, process.env.EMAIL_SERVER_PORT);
+  console.log(process.env.EMAIL_SENDER, process.env.EMAIL_SERVER_PASSWORD);
 
   const mailTransporter = nodemailer.createTransport({
     host: process.env.EMAIL_SERVER_HOST,
@@ -35,9 +38,10 @@ export async function POST(req: Request) {
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error) {
+    console.log(error);
     return new Response(JSON.stringify({ error: "Failed to send email" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

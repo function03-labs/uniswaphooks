@@ -30,10 +30,13 @@ export const userAuthSchema = z.object({
   email: z.string().email(),
 });
 
+const githubUrlRegex =
+  /^https?:\/\/github\.com\/(?<username>[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})\/(?<repository>[a-z\d_\-]{1,100})(?:\.git)?$/i;
+
 export const hookSchema = z.object({
   title: z.string().min(2).max(50),
   description: z.string().min(2),
-  github: z.string().url(),
+  github: z.string().regex(githubUrlRegex).optional(),
   website: z.string().optional(),
   status: z.string().optional(),
   categoryId: z.string().optional(),
@@ -43,7 +46,7 @@ export const hookEditSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(2).max(50),
   description: z.string().min(2),
-  github: z.string().url(),
+  github: z.string().regex(githubUrlRegex),
   creator: z.string(),
   website: z.string().optional(),
   status: z.string().optional(),

@@ -27,8 +27,8 @@ export default function SubmitHookPage({
 
   if (searchParams.step === "details") {
     step = 1;
-/*   } else if (searchParams.step === "upload") {
-    step = 2; */
+  } else if (searchParams.step === "upload") {
+    step = 2;
   } else if (searchParams.step === "deployment" && searchParams.id) {
     step = 3;
   } else if (searchParams.step === "submission" && searchParams.id) {
@@ -44,8 +44,8 @@ export default function SubmitHookPage({
     switch (searchParams.step) {
       case "details":
         return <NewHookForm />;
-/*       case "upload":
-        return <UploadHook id={String(searchParams.id)} />; */
+      case "upload":
+        return <UploadHook id={String(searchParams.id)} />;
       case "deployment":
         return <DeployHookForm id={String(searchParams.id)} />;
       case "submission":

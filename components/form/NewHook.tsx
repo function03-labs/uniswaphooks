@@ -1,12 +1,11 @@
 "use client";
 
 import * as z from "zod";
-import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { extractCreator } from "@lib/utils";
 import { hookSchema } from "@config/schema";
 import { ResourcePost } from "@/types/post";
 
@@ -58,14 +57,12 @@ export default function NewHookForm() {
 
   async function onSubmit(values: z.infer<typeof hookSchema>) {
     setLoading(true);
-    const creator = extractCreator(values.github);
 
     try {
       const data = await fetch("/api/hook", {
         method: "POST",
         body: JSON.stringify({
           ...values,
-          creator,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +71,7 @@ export default function NewHookForm() {
       const response = await data.json();
 
       router.push(
-        `/dashboard/hook/submit?id=${response.data.id}&step=deployment`
+        `/dashboard/hook/submit?id=${response.data.id}&step=upload`
       );
     } catch (error) {
       console.error("Submission error:", error);
@@ -150,26 +147,6 @@ export default function NewHookForm() {
               </FormControl>
               <FormDescription>
                 Provide a description for your hook.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="github"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>GitHub Repository</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="https://github.com/author/repo..."
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Enter the URL of your GitHub repository.
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -9,16 +9,18 @@ import { MagicLink } from "@component/email/MagicLink";
 
 export function selectMailOptions(
   type: string,
-  body: HookEmailType | ResouceEmailType | MagicLinkData
+  body: HookEmailType | ResouceEmailType | MagicLinkData,
 ) {
   let html;
   const mailOptions = {
     from: `UniswapHooks <${process.env.EMAIL_SENDER}>`,
-    to: process.env.MAIN_EMAIL,
+    to: process.env.EMAIL_RECEIVERS!.split(","),
     subject: "",
     html: "",
   };
-  
+
+  console.log(mailOptions);
+
   switch (type) {
     case "hooks":
       html = render(Hook({ hook: body as HookEmailType }));

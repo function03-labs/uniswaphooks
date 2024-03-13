@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgres"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_DEV")
 }
 
 model Account {
@@ -73,8 +73,8 @@ model Hook {
   id             String   @id @default(uuid())
   title          String
   description    String
-  creator        String
-  github         String
+  creator        String?
+  github         String?
   status         String   @default("draft")
 
   userId         String
