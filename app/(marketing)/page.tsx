@@ -21,7 +21,7 @@ async function getHooks() {
 
   const hooks = await hooksFetch.json();
   hooks.data = hooks.data.filter(
-    (hook: HookType) => hook.storageType === "github"
+    (hook: HookType) => hook.status === "published"
   );
 
   return hooks.data;
@@ -76,7 +76,11 @@ export default async function Page() {
           A community-curated collection of open-source hooks for Uniswap v4.
         </p>
 
-        <HeaderSearch hooks={hooks} />
+        <HeaderSearch
+          hooks={hooks.filter(
+            (hook: HookType) => hook.storageType === "github"
+          )}
+        />
         <VerifiedHooks />
       </HeroBanner>
 

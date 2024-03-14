@@ -91,6 +91,7 @@ export default async function ViewHook({
     }
   } else if (hook.storageType === "storage") {
     tree = await buildTreeNode(params.hookId, "repositories");
+    console.log(tree);
     if (searchParams.path) {
       const fileFound = findFile(tree, searchParams.path as string);
       file = fileFound as TreeFile;

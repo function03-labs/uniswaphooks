@@ -117,6 +117,10 @@ export default function UploadHook({ id }: { id: string }) {
         value.filePath = values.github!;
       }
 
+      if (!response?.ok) {
+        throw new Error("Failed to upload files");
+      }
+
       await fetch(`/api/hook/${id}`, {
         method: "PUT",
         body: JSON.stringify({
@@ -130,7 +134,11 @@ export default function UploadHook({ id }: { id: string }) {
       router.push(`/dashboard/hook/submit?id=${id}&step=deployment`);
     } catch (error) {
       console.log("Error processing file:", error);
-      router.push("/error");
+      toast({
+        title: "Failed to upload files",
+        description: "Please try again later",
+        variant: "destructive",
+      });
     }
     setIsProcessing(false);
   }

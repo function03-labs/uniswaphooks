@@ -20,7 +20,7 @@ export async function POST(
     const fileObj = new File([file], "filename");
     const decompressedFiles = await decompressFile(fileObj);
 
-    await uploadFiles(decompressedFiles, params.hookId);
+    const uploads = await uploadFiles(decompressedFiles, params.hookId);
 
     return new Response(
       JSON.stringify({
