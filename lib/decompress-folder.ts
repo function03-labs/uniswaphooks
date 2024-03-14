@@ -22,6 +22,5 @@ export const decompressFile = async (file: File): Promise<File[]> => {
     }
   }
 
-  console.log("Decompressed files:", decompressedFiles);
   return decompressedFiles;
 };

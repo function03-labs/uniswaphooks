@@ -90,7 +90,7 @@ export default function HeaderSearch({ hooks }: { hooks: HookType[] }) {
             <ul className="max-h-64 space-y-1 overflow-auto p-2">
               {searchResults.map((searchResult) => (
                 <li key={searchResult.id}>
-                  <Link target="_blank" href={searchResult.github}>
+                  <Link target="_blank" href={searchResult.filePath}>
                     <div className="flex items-center justify-between rounded-md px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 focus:bg-gray-50">
                       <span>{searchResult.title}</span>
 

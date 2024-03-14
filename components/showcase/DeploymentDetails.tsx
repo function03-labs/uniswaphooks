@@ -114,15 +114,17 @@ export function DeployedDetail({
             <p className="truncate text-sm text-gray-500">{hook.description}</p>
           </div>
         </div>
-        <div className="space-y-3">
-          <Link
-            href={hook.github}
-            target="_blank"
-            className="flex items-end justify-center p-1 rounded-md hover:bg-gray-100"
-          >
-            <Icons.gitHub className="w-4 h-4 text-gray-500" />
-          </Link>
-        </div>
+        {hook.storageType === "github" && (
+          <div className="space-y-3">
+            <Link
+              href={hook.filePath}
+              target="_blank"
+              className="flex items-end justify-center p-1 rounded-md hover:bg-gray-100"
+            >
+              <Icons.gitHub className="w-4 h-4 text-gray-500" />
+            </Link>
+          </div>
+        )}
       </div>
 
       {deployment.verified &&

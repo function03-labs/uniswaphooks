@@ -148,7 +148,7 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
                 control={form.control}
                 name="categoryId"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="pb-4">
                     <FormLabel>Category</FormLabel>
                     <FormControl>
                       <Select

@@ -126,7 +126,8 @@ export default async function ViewHook({
     return notFound();
   }
 
-  const tree = await buildTree({ github: hook.github, path: "" });
+  // TODO: This only works for Github hosted repositories, update to Supabase storage
+  const tree = await buildTree({ github: hook.filePath, path: "" });
 
   let file = {} as TreeFile;
   if (searchParams.path) {

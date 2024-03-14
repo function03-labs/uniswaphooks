@@ -2,8 +2,10 @@ export type HookType = {
   id: string;
   title: string;
   description: string;
-  creator: string;
-  github: string;
+  creatorName: string;
+  website: string;
+  filePath: string;
+  storageType: string;
   status: string;
 
   userId: string;

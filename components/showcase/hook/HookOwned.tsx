@@ -35,9 +35,7 @@ export default function HookOwned({
     id: componentId,
     title: componentTitle,
     description: componentDescription,
-    github: componentGithub,
-    creator: componentCreator,
-    status: componentStatus,
+    creatorName: componentCreator,
   } = componentData;
 
   return (

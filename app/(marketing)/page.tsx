@@ -8,20 +8,23 @@ import VerifiedHooks from "@component/showcase/VerifiedHooks";
 import CollectionCard from "@component/showcase/CollectionCard";
 
 async function getHooks() {
-  const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hook`);
+  const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`);
 
   if (!hooksFetch.ok) {
     throw new Error("Failed to fetch hooks");
   }
 
   const hooks = await hooksFetch.json();
+  hooks.data = hooks.data.filter(
+    (hook: HookType) => hook.storageType === "github"
+  );
 
   return hooks.data;
 }
 
 async function getCategories(hooks: HookType[]) {
   const categoriesFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/category`
+    `${process.env.NEXT_PUBLIC_URL}/api/category`
   );
 
   if (!categoriesFetch.ok) {

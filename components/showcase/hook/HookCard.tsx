@@ -32,8 +32,8 @@ export default function ComponentPreview({
     id: componentId,
     title: componentTitle,
     description: componentDescription,
-    github: componentGithub,
-    creator: componentCreator,
+    website: componentWebsite,
+    creatorName: componentCreator,
   } = componentData;
 
   return (
@@ -50,7 +50,7 @@ export default function ComponentPreview({
               componentCode={componentTitle + "\n" + componentDescription}
             />
 
-            <PreviewGithub repoUrl={componentGithub} />
+            <PreviewGithub repoUrl={componentWebsite} />
             <PreviewWebsite
               websiteUrl={`${process.env.NEXT_PUBLIC_URL}/hooks/hook/${componentId}`}
             />
@@ -74,9 +74,7 @@ export default function ComponentPreview({
         </div>
 
         {componentCreator && (
-          <PreviewCreator
-            creatorGithub={componentCreator}
-          />
+          <PreviewCreator creatorGithub={componentCreator} />
         )}
       </div>
     </div>

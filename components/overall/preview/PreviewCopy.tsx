@@ -138,7 +138,7 @@ export function PreviewConfig({
                   <Link
                     target="_blank"
                     className="w-full text-left"
-                    href={(componentData as HookType).github}
+                    href={(componentData as HookType).website}
                   >
                     Open GitHub
                   </Link>
