@@ -176,18 +176,15 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
             <div>
               <FormField
                 control={form.control}
-                name="github"
+                name="website"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>GitHub Repository</FormLabel>
+                    <FormLabel>Website</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="https://github.com/author/repo..."
-                        {...field}
-                      />
+                      <Input placeholder="hyt" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Enter the URL of your GitHub repository.
+                      Enter the website of your hook.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
