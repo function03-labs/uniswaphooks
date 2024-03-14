@@ -107,6 +107,10 @@ export default function UploadHook({ id }: { id: string }) {
           body: selectedFile,
         });
 
+        if (!response?.ok) {
+          throw new Error("Failed to upload files");
+        }
+
         value.storageType = "storage";
         value.filePath =
           process.env.NEXT_PUBLIC_SUPABASE_URL +
@@ -115,10 +119,6 @@ export default function UploadHook({ id }: { id: string }) {
       } else {
         value.storageType = "github";
         value.filePath = values.github!;
-      }
-
-      if (!response?.ok) {
-        throw new Error("Failed to upload files");
       }
 
       await fetch(`/api/hook/${id}`, {
