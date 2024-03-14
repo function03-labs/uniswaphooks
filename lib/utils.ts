@@ -98,3 +98,11 @@ export function cleanFiles(files: File[]) {
     return !isExcludedFolder && !isImage;
   });
 }
+
+export function getItemType(entity: any) {
+  if (entity.metadata) {
+    return "file";
+  }
+
+  return "directory";
+}

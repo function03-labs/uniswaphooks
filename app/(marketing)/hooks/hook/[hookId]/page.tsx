@@ -1,11 +1,11 @@
 import { findFile } from "@lib/utils";
-import { TreeFile } from "@/types/tree";
+import { TreeFile, TreeType } from "@/types/tree";
 import { HookType } from "@/types/hook";
 import { notFound } from "next/navigation";
 
 import { formatDeploymentDetails } from "@lib/utils";
 import { FileSelected } from "@component/config/FileSelected";
-import { SelectedFiles } from "@component/showcase/SelectedFiles";
+import { buildTreeGithub, buildTreeNode } from "@lib/file-explorer";
 
 import {
   ResizableHandle,
@@ -30,6 +30,7 @@ import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
 import Container from "@component/overall/Container";
 import { CopyButtons } from "@component/showcase/CopyButtons";
 import { FileExplorer } from "@component/showcase/FileExplorer";
+import { SelectedFiles } from "@component/showcase/SelectedFiles";
 import { DeployedDetail } from "@component/showcase/DeploymentDetails";
 
 async function getHook({ hookId }: { hookId: string }) {
@@ -53,61 +54,6 @@ async function getHook({ hookId }: { hookId: string }) {
   return hook;
 }
 
-async function getRepository({
-  github,
-  path,
-}: {
-  github: string;
-  path?: string;
-}) {
-  const repoFetch = await fetch(
-    `https://api.github.com/repos/${github.split("/")[3]}/${
-      github.split("/")[4]
-    }/contents/${path}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `token ${process.env.GITHUB_TOKEN}`,
-      },
-    }
-  );
-
-  if (!repoFetch.ok) {
-    console.log(repoFetch);
-    throw new Error("Failed to fetch repo");
-  }
-
-  const repoContent = await repoFetch.json();
-
-  return repoContent;
-}
-
-async function buildTree({ github, path }: { github: string; path: string }) {
-  const contents = await getRepository({ github, path });
-  const tree = await Promise.all(
-    contents.map(async (item: any) => {
-      if (item.type === "dir") {
-        return {
-          type: "directory",
-          name: item.name,
-          path: item.path,
-          files: await buildTree({ github, path: item.path }),
-        };
-      } else {
-        return {
-          type: "file",
-          name: item.name,
-          path: item.path,
-          download_url: item.download_url,
-          extra: `${Math.floor(item.size / 102.4) / 10} kb`,
-        };
-      }
-    })
-  );
-  return tree;
-}
-
 export default async function ViewHook({
   params,
   searchParams,
@@ -126,19 +72,36 @@ export default async function ViewHook({
     return notFound();
   }
 
-  // TODO: This only works for Github hosted repositories, update to Supabase storage
-  const tree = await buildTree({ github: hook.filePath, path: "" });
-
+  let tree;
   let file = {} as TreeFile;
-  if (searchParams.path) {
-    const fileFound = findFile(tree, searchParams.path as string);
-    file = fileFound as TreeFile;
-    if (fileFound) {
-      try {
-        const fileFetch = await fetch(fileFound.download_url);
-        file.code = await fileFetch.text();
-      } catch (error) {
-        console.error("Failed to fetch file content:", error);
+
+  if (hook.storageType === "github") {
+    tree = await buildTreeGithub({ github: hook.filePath, path: "" });
+
+    if (searchParams.path) {
+      const fileFound = findFile(tree, searchParams.path as string);
+      file = fileFound as TreeFile;
+      if (fileFound) {
+        try {
+          const fileFetch = await fetch(fileFound.download_url);
+          file.code = await fileFetch.text();
+        } catch (error) {
+          console.error("Failed to fetch file content:", error);
+        }
+      }
+    }
+  } else if (hook.storageType === "storage") {
+    tree = await buildTreeNode(params.hookId, "repositories");
+    if (searchParams.path) {
+      const fileFound = findFile(tree, searchParams.path as string);
+      file = fileFound as TreeFile;
+      if (fileFound) {
+        try {
+          const fileFetch = await fetch(fileFound.download_url);
+          file.code = await fileFetch.text();
+        } catch (error) {
+          console.error("Failed to fetch file content:", error);
+        }
       }
     }
   }
@@ -165,7 +128,7 @@ export default async function ViewHook({
                   <Separator />
                 </CardHeader>
                 <CardContent>
-                  <FileTree nodes={tree} hookId={hook.id} />
+                  <FileTree nodes={tree as TreeType[]} hookId={hook.id} />
                 </CardContent>
               </Card>
             </ResizablePanel>
@@ -191,7 +154,7 @@ export default async function ViewHook({
                         <Icons.orderbook />
                       </Button>
                     </DrawerTrigger>
-                    <FileExplorer tree={tree} hook={hook} />
+                    <FileExplorer tree={tree as TreeFile[]} hook={hook} />
                   </CardTitle>
 
                   <CardDescription>

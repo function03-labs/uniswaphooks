@@ -15,4 +15,9 @@ type TreeDirectory = {
   extra?: string;
 };
 
+export type FileOrDirectory = {
+  name: string;
+  type: "file" | "directory";
+};
+
 export type TreeType = TreeFile | TreeDirectory;
