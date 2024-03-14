@@ -1,13 +1,11 @@
 "use client";
 
 import * as z from "zod";
-import admZip from "adm-zip";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { supabase } from "@/lib/supabase";
 import { useToast } from "@hooks/use-toast";
 
 import {
@@ -26,38 +24,49 @@ import { Icons } from "@component/overall/Icons";
 const githubUrlRegex =
   /^https?:\/\/github\.com\/(?<username>[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})\/(?<repository>[a-z\d_\-]{1,100})(?:\.git)?$/i;
 
-const hookSchema = z.object({
-  github: z.string().regex(githubUrlRegex).optional(),
-});
+const hookSchema = z
+  .object({
+    github: z
+      .string()
+      .refine((value) => githubUrlRegex.test(value), {
+        message: "Invalid GitHub URL",
+      })
+      .optional(),
+    file: z
+      .instanceof(File, {
+        message: "Please upload a file, such as a ZIP, RAR, TAR, or TGZ file",
+      })
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      const hasGithub = Boolean(data.github);
+      const hasFile = Boolean(data.file);
+
+      if (!hasGithub && !hasFile) {
+        return false;
+      }
+
+      if (hasGithub && hasFile) {
+        return false;
+      }
+
+      return true;
+    },
+    {
+      message: "Either a GitHub URL or a file must be provided, but not both",
+    }
+  );
 
 export default function UploadHook({ id }: { id: string }) {
   const router = useRouter();
   const { toast } = useToast();
-  const [isDecompressing, setIsDecompressing] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-
+  const [progress, setProgress] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
   });
-
-  const uploadFiles = async ({ id, files }: { id: string; files: void }) => {
-    const { data, error } = await supabase.storage.from("repositories").upload(
-      `${id}/*`,
-      files as any,
-      {
-        upsert: true,
-        progress: (progress: number) => {
-          setUploadProgress(progress);
-        },
-      } as any
-    );
-
-    if (error) {
-      console.error("Error uploading files:", error);
-    }
-  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -74,66 +83,74 @@ export default function UploadHook({ id }: { id: string }) {
           description: "Please upload a ZIP, RAR, TAR, or TGZ file.",
           variant: "destructive",
         });
+        return false;
       }
     } else {
       setSelectedFile(null);
     }
+
+    return true;
   };
 
   async function onSubmit(values: z.infer<typeof hookSchema>) {
-    setIsDecompressing(true);
+    setIsProcessing(true);
 
     try {
-      if (!selectedFile) {
-        throw new Error("No file selected");
-      }
+      let response;
+      let value = {
+        storageType: "",
+        filePath: "",
+      };
 
-      const decompressedFiles = await fetch("/api/upload", {
-        method: "POST",
-        body: selectedFile,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            throw new Error(data.error);
-          }
-
-          return data;
+      if (selectedFile && !values.github) {
+        response = await fetch(`/api/upload/${id}`, {
+          method: "POST",
+          body: selectedFile,
         });
 
-      console.log(decompressedFiles);
+        const data = await response.json();
 
-      setIsDecompressing(false);
-      setIsUploading(true);
+        if (data.error) {
+          throw new Error(data.error);
+        }
 
-      await uploadFiles({ id, files: decompressedFiles as unknown as void });
+        value.storageType = "storage";
+        value.filePath =
+          process.env.NEXT_PUBLIC_SUPABASE_URL +
+          "/storage/v1/object/public/repositories/" +
+          id;
+      } else {
+        value.storageType = "github";
+        value.filePath = values.github!;
+      }
 
-      setIsUploading(false);
+      setIsProcessing(false);
+      setProgress(0);
 
       try {
-        const data = await fetch(`/api/hook/${id}`, {
+        const hookResponse = await fetch(`/api/hook/${id}`, {
           method: "PUT",
           body: JSON.stringify({
             ...values,
+            ...value,
           }),
           headers: {
             "Content-Type": "application/json",
           },
         });
-        const response = await data.json();
+        const hookData = await hookResponse.json();
 
         router.push(
-          `/dashboard/hook/submit?id=${response.data.id}&step=deployment`
+          `/dashboard/hook/submit?id=${hookData.data.id}&step=deployment`
         );
       } catch (error) {
         console.error("Submission error:", error);
         // router.push("/error");
       }
-
     } catch (error) {
       console.error("Error processing file:", error);
-      setIsDecompressing(false);
-      setIsUploading(false);
+      setIsProcessing(false);
+      setProgress(0);
     }
   }
 
@@ -171,55 +188,93 @@ export default function UploadHook({ id }: { id: string }) {
           </div>
         </div>
 
-        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-950/40 px-6 py-10">
-          <div className="text-center">
-            {selectedFile ? (
-              <>
-                <Icons.folderOpen
-                  className="mx-auto h-12 w-12 text-gray-300"
-                  aria-hidden="true"
-                />
-                <span className="mt-4 block text-sm font-semibold text-gray-600">
-                  Uploaded repository
-                </span>
-                <div className="mt-4 text-sm leading-6 text-gray-600">
-                  {selectedFile.name}
-                </div>
-              </>
-            ) : (
-              <>
-                <Icons.folder
-                  className="mx-auto h-12 w-12 text-gray-300"
-                  aria-hidden="true"
-                />
-                <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                  <label
-                    htmlFor="file-upload"
-                    className="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500"
-                  >
-                    <span>Upload a repository</span>
-                    <input
-                      id="file-upload"
-                      name="file-upload"
-                      type="file"
-                      accept=".zip, .rar, .tar, .tgz"
-                      onChange={handleFileChange}
-                      className="sr-only"
-                    />
-                  </label>
-                  <p className="pl-1">or drag and drop</p>
-                </div>
-                <p className="text-xs leading-5 text-gray-600">
-                  ZIP, RAR, TAR, and TGZ files are supported.
-                </p>
-              </>
-            )}
-          </div>
-        </div>
+        <FormField
+          control={form.control}
+          name="file"
+          render={({ field }) => {
+            return (
+              <FormItem>
+                <FormControl>
+                  <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-950/40 px-6 py-10">
+                    <div className="text-center">
+                      {selectedFile ? (
+                        <>
+                          <Icons.folderOpen
+                            className="mx-auto h-12 w-12 text-gray-300"
+                            aria-hidden="true"
+                          />
+                          <span className="mt-4 block text-sm font-semibold text-gray-600">
+                            Uploaded repository
+                          </span>
+                          <div className="mt-4 text-sm leading-6 text-gray-600">
+                            {selectedFile.name}
+                          </div>
 
-        {isDecompressing ? (
-          <p>Decompressing file...</p>
-        ) : isUploading ? (
+                          <Button
+                            variant="destructive"
+                            size={"sm"}
+                            className="mt-4 text-xs font-semibold"
+                            onClick={() => {
+                              setSelectedFile(null);
+                              field.onChange(null);
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Icons.folder
+                            className="mx-auto h-12 w-12 text-gray-300"
+                            aria-hidden="true"
+                          />
+                          <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                            <label
+                              htmlFor="file-upload"
+                              className="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500"
+                            >
+                              <span>Upload a repository</span>
+                              <Input
+                                id="file-upload"
+                                type="file"
+                                placeholder="shadcn"
+                                accept=".zip, .rar, .tar, .tgz"
+                                className="sr-only"
+                                onChange={(event) => {
+                                  const file = event.target.files?.[0] || null;
+
+                                  if (handleFileChange(event)) {
+                                    setSelectedFile(file);
+                                    field.onChange(file);
+                                  }
+                                }}
+                                onBlur={field.onBlur}
+                                ref={field.ref}
+                              />
+                            </label>
+                            <p className="pl-1">from your computer</p>
+                          </div>
+                          <p className="text-xs leading-5 text-gray-600">
+                            ZIP, RAR, TAR, and TGZ files are supported.
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
+
+        {form.getValues("file") && form.getValues("github") && (
+          <div className="text-sm text-red-600">
+            You can only provide a GitHub repository or a file, but not both.
+          </div>
+        )}
+
+        {isProcessing && (
           <div className="flex items-center space-x-2">
             <svg
               className="animate-spin h-5 w-5 text-gray-900"
@@ -241,16 +296,23 @@ export default function UploadHook({ id }: { id: string }) {
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               />
             </svg>
-            <p>Uploading: {Math.round(uploadProgress * 100)}%</p>
+            <div className="w-full h-1 bg-gray-300 rounded-full">
+              <div
+                className="h-1 bg-blue-500 rounded-full"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <p>{`${progress.toFixed(0)}%`}</p>
           </div>
-        ) : (
-          <Button
-            className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
-            type="submit"
-          >
-            ☑️ Upload
-          </Button>
         )}
+
+        <Button
+          disabled={isProcessing}
+          className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+          type="submit"
+        >
+          ☑️ Upload
+        </Button>
       </form>
     </Form>
   );

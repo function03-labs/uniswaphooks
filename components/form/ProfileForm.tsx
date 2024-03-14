@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@hooks/use-toast";
-import { manageImage } from "@/lib/storage";
-import { userSchema } from "@/config/schema";
+import { manageAvatar } from "@lib/storage";
+import { userSchema } from "@config/schema";
 
 import {
   Form,
@@ -58,7 +58,7 @@ export default function ProfileForm({ user }: { user: any }) {
 
     let imageUrl;
     if (selectedImage) {
-      imageUrl = await manageImage(selectedImage, user.id);
+      imageUrl = await manageAvatar(selectedImage, user.id);
       setImagePreviewUrl(imageUrl);
     }
 

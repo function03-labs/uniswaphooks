@@ -1,24 +1,37 @@
+import * as z from "zod";
+
+import { uploadFiles } from "@lib/storage";
 import { decompressFile } from "@lib/decompress-folder";
 
-export async function POST(req: Request) {
+const routeContextSchema = z.object({
+  params: z.object({
+    hookId: z.string(),
+  }),
+});
+
+export async function POST(
+  req: Request,
+  context: z.infer<typeof routeContextSchema>
+) {
   const file = await req.blob();
+  const { params } = routeContextSchema.parse(context);
 
   try {
     const fileObj = new File([file], "filename");
     const decompressedFiles = await decompressFile(fileObj);
 
-    // TODO: let's upload them to supabase
+    await uploadFiles(decompressedFiles, params.hookId);
 
     return new Response(
       JSON.stringify({
-        message: "Files decompressed successfully",
+        message: "Files uploaded successfully",
       }),
       {
         status: 200,
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
   } catch (error) {
     console.log("Error processing file:", error);
@@ -29,7 +42,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
   }
 }

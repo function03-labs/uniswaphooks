@@ -1,31 +1,34 @@
+import { cleanFiles } from "@lib/utils";
 import { supabase } from "@lib/supabase";
 
-export async function uploadImage(file: File, userId: string) {
+export async function uploadAvatar(file: File, userId: string) {
   return await supabase.storage
     .from("avatars")
     .upload(userId + "/avatar.png", file);
 }
 
-export async function deleteImage(userId: string) {
+export async function deleteAvatar(userId: string) {
   return await supabase.storage
     .from("avatars")
     .remove([userId + "/avatar.png"]);
 }
 
-export async function getDownloadUrl(userId: string) {
+export async function getAvatarDownloadUrl(userId: string) {
   return await supabase.storage.from("avatars").list(userId);
 }
 
-export async function manageImage(file: File, userId: string) {
+export async function manageAvatar(file: File, userId: string) {
   if (
-    await getDownloadUrl(userId).then((res) => res.data && res.data.length > 0)
+    await getAvatarDownloadUrl(userId).then(
+      (res) => res.data && res.data.length > 0
+    )
   ) {
-    deleteImage(userId);
+    deleteAvatar(userId);
   }
 
-  await uploadImage(file, userId);
+  await uploadAvatar(file, userId);
 
-  const { data, error } = await getDownloadUrl(userId);
+  const { data, error } = await getAvatarDownloadUrl(userId);
   if (error) {
     throw error;
   }
@@ -36,4 +39,30 @@ export async function manageImage(file: File, userId: string) {
     userId +
     "/avatar.png"
   );
+}
+
+export async function uploadFiles(files: File[], folderName: string) {
+  const cleanedFiles = cleanFiles(files);
+
+  const uploadPromises = cleanedFiles.map((file) => {
+    const filePath = `${folderName}/${file.name}`;
+    return supabase.storage.from("repositories").upload(filePath, file);
+  });
+
+  const uploadResults = await Promise.all(uploadPromises);
+
+  const filePaths = uploadResults.map((result) => {
+    if (result.data) {
+      return (
+        process.env.NEXT_PUBLIC_SUPABASE_URL +
+        "/storage/v1/object/public/repositories/" +
+        folderName +
+        "/" +
+        result.data.path
+      );
+    }
+    return null;
+  });
+
+  return filePaths;
 }

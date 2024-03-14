@@ -75,3 +75,26 @@ export function findFile(
     }
   }
 }
+
+export function cleanFiles(files: File[]) {
+  const excludedFolders = [/\/node_modules\//, /\/.git\//];
+  const imageExtensions = [
+    ".ico",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".bmp",
+    ".svg",
+  ];
+
+  return files.filter((file) => {
+    const isExcludedFolder = excludedFolders.some((folder) =>
+      folder.test(file.name)
+    );
+
+    const isImage = imageExtensions.some((ext) => file.name.endsWith(ext));
+
+    return !isExcludedFolder && !isImage;
+  });
+}

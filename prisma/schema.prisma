@@ -49,7 +49,7 @@ model User {
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
   role          String    @default("user")
 
-  // TODO Add creatorLink : creatorLink String?
+  website      String?
 
   accounts  Account[]
   sessions  Session[]
@@ -73,9 +73,13 @@ model Hook {
   id             String   @id @default(uuid())
   title          String
   description    String
-  creator        String?
-  github         String?
   status         String   @default("draft")
+
+  creatorName    String?
+  website        String?
+
+  filePath       String?
+  storageType    String @default("storage")
 
   userId         String
   user           User     @relation(fields: [userId], references: [id])
@@ -88,7 +92,7 @@ model Hook {
 
   networkId      String?
   network        Network?  @relation(fields: [networkId], references: [id])
-  
+
   contractId     String?
   contract       Contract? @relation(fields: [contractId], references: [id])
 

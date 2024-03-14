@@ -30,6 +30,7 @@ export const authOptions: NextAuthOptions = {
         url,
         provider: { server, from },
       }) => {
+
         const mailTransporter = nodemailer.createTransport({
           host: process.env.EMAIL_SERVER_HOST,
           port: process.env.EMAIL_SERVER_PORT,
@@ -86,6 +87,7 @@ export const authOptions: NextAuthOptions = {
         createdAt: dbUser.createdAt,
         updatedAt: dbUser.updatedAt,
         role: dbUser.role,
+        website: dbUser.website,
       };
     },
   },

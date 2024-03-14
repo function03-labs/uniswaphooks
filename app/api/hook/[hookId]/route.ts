@@ -78,10 +78,12 @@ export async function PUT(
     const {
       title,
       description,
-      github,
-      creator,
+      filePath,
+      storageType,
+      creatorName,
       categoryId,
       network,
+      website,
       status,
       contract,
       deploymentDate,
@@ -96,9 +98,11 @@ export async function PUT(
       data: {
         title,
         description,
-        github,
-        creator,
+        filePath,
+        creatorName,
+        website,
         status,
+        storageType,
         ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
         ...(network
           ? {

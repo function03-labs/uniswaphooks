@@ -19,8 +19,6 @@ export function selectMailOptions(
     html: "",
   };
 
-  console.log(mailOptions);
-
   switch (type) {
     case "hooks":
       html = render(Hook({ hook: body as HookEmailType }));

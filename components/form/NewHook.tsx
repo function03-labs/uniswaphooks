@@ -43,7 +43,12 @@ export default function NewHookForm() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const data = await fetch("/api/category");
+        const data = await fetch("/api/category", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const response = await data.json();
 
         setCategories(response.data);
@@ -70,9 +75,7 @@ export default function NewHookForm() {
       });
       const response = await data.json();
 
-      router.push(
-        `/dashboard/hook/submit?id=${response.data.id}&step=upload`
-      );
+      router.push(`/dashboard/hook/submit?id=${response.data.id}&step=upload`);
     } catch (error) {
       console.error("Submission error:", error);
       router.push("/error");
@@ -147,6 +150,27 @@ export default function NewHookForm() {
               </FormControl>
               <FormDescription>
                 Provide a description for your hook.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="website"
+          render={({ field }) => (
+            <FormItem className="flex-grow">
+              <FormLabel>Website</FormLabel>
+              <FormControl className="flex">
+                <Input
+                  placeholder="Enter the website URL for your hook."
+                  className="flex-grow"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                Enter the website URL for your hook.
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    let { title, description, creator, github, website, categoryId } = body;
+    let { title, description, website, categoryId } = body;
 
     const session = await getServerSession(authOptions);
 
@@ -27,8 +27,7 @@ export async function POST(req: Request) {
       data: {
         title,
         description,
-        creator,
-        github,
+        website,
         userId: session.user.id,
         categoryId,
       },
