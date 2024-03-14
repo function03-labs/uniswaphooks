@@ -61,7 +61,6 @@ const hookSchema = z
 export default function UploadHook({ id }: { id: string }) {
   const router = useRouter();
   const { toast } = useToast();
-  const [progress, setProgress] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const form = useForm<z.infer<typeof hookSchema>>({
@@ -108,12 +107,6 @@ export default function UploadHook({ id }: { id: string }) {
           body: selectedFile,
         });
 
-        const data = await response.json();
-
-        if (data.error) {
-          throw new Error(data.error);
-        }
-
         value.storageType = "storage";
         value.filePath =
           process.env.NEXT_PUBLIC_SUPABASE_URL +
@@ -124,34 +117,22 @@ export default function UploadHook({ id }: { id: string }) {
         value.filePath = values.github!;
       }
 
-      setIsProcessing(false);
-      setProgress(0);
+      await fetch(`/api/hook/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          ...value,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      try {
-        const hookResponse = await fetch(`/api/hook/${id}`, {
-          method: "PUT",
-          body: JSON.stringify({
-            ...values,
-            ...value,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const hookData = await hookResponse.json();
-
-        router.push(
-          `/dashboard/hook/submit?id=${hookData.data.id}&step=deployment`
-        );
-      } catch (error) {
-        console.error("Submission error:", error);
-        // router.push("/error");
-      }
+      router.push(`/dashboard/hook/submit?id=${id}&step=deployment`);
     } catch (error) {
-      console.error("Error processing file:", error);
-      setIsProcessing(false);
-      setProgress(0);
+      console.log("Error processing file:", error);
+      router.push("/error");
     }
+    setIsProcessing(false);
   }
 
   return (
@@ -165,6 +146,7 @@ export default function UploadHook({ id }: { id: string }) {
               <FormLabel>GitHub Repository</FormLabel>
               <FormControl>
                 <Input
+                  disabled={isProcessing}
                   placeholder="https://github.com/author/repo..."
                   {...field}
                 />
@@ -210,17 +192,42 @@ export default function UploadHook({ id }: { id: string }) {
                             {selectedFile.name}
                           </div>
 
-                          <Button
-                            variant="destructive"
-                            size={"sm"}
-                            className="mt-4 text-xs font-semibold"
-                            onClick={() => {
-                              setSelectedFile(null);
-                              field.onChange(null);
-                            }}
-                          >
-                            Remove
-                          </Button>
+                          {isProcessing ? (
+                            <div className="flex items-center justify-center">
+                              <svg
+                                className="animate-spin h-5 w-5 text-gray-900"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                />
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                />
+                              </svg>
+                            </div>
+                          ) : (
+                            <Button
+                              variant="destructive"
+                              size={"sm"}
+                              className="mt-4 text-xs font-semibold"
+                              onClick={() => {
+                                setSelectedFile(null);
+                                field.onChange(null);
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          )}
                         </>
                       ) : (
                         <>
@@ -271,38 +278,6 @@ export default function UploadHook({ id }: { id: string }) {
         {form.getValues("file") && form.getValues("github") && (
           <div className="text-sm text-red-600">
             You can only provide a GitHub repository or a file, but not both.
-          </div>
-        )}
-
-        {isProcessing && (
-          <div className="flex items-center space-x-2">
-            <svg
-              className="animate-spin h-5 w-5 text-gray-900"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              />
-            </svg>
-            <div className="w-full h-1 bg-gray-300 rounded-full">
-              <div
-                className="h-1 bg-blue-500 rounded-full"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <p>{`${progress.toFixed(0)}%`}</p>
           </div>
         )}
 

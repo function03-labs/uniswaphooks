@@ -181,7 +181,10 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
                   <FormItem>
                     <FormLabel>Website</FormLabel>
                     <FormControl>
-                      <Input placeholder="hyt" {...field} />
+                      <Input
+                        placeholder="Enter the website of your hook."
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       Enter the website of your hook.
