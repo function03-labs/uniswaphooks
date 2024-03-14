@@ -23,7 +23,6 @@ async function getRepository({
   );
 
   if (!repoFetch.ok) {
-    console.log(repoFetch);
     throw new Error("Failed to fetch repo");
   }
 
@@ -82,7 +81,7 @@ async function fetchFilesAndDirectories({
       return {
         name: item.name,
         type: getItemType(item),
-
+        path: path.split("/").slice(1).join("/") + "/" + item.name,
         size: item.metadata?.size
           ? `${Math.floor(item.metadata.size / 102.4) / 10} kb`
           : undefined,
@@ -119,8 +118,13 @@ export async function buildTreeNode(parentPath: string, bucketName: string) {
       treeNode.push({
         type: "file",
         name: item.name,
-        path: currentPath,
-        download_url: `https://${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${currentPath}`,
+        path: item.path,
+        download_url: `${
+          process.env.NEXT_PUBLIC_SUPABASE_URL
+        }/storage/v1/object/public/${bucketName}/${encodeURI(
+          currentPath
+        ).replace(/%2F/g, "/")}`,
+
         extra: item.size,
       });
     }

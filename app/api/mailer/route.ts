@@ -18,9 +18,6 @@ export async function POST(req: Request) {
     );
   }
 
-  console.log(process.env.EMAIL_SERVER_HOST, process.env.EMAIL_SERVER_PORT);
-  console.log(process.env.EMAIL_SENDER, process.env.EMAIL_SERVER_PASSWORD);
-
   const mailTransporter = nodemailer.createTransport({
     host: process.env.EMAIL_SERVER_HOST,
     port: process.env.EMAIL_SERVER_PORT,

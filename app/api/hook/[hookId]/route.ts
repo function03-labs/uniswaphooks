@@ -82,11 +82,8 @@ export async function PUT(
       storageType,
       creatorName,
       categoryId,
-      network,
       website,
       status,
-      contract,
-      deploymentDate,
     } = await req.json();
 
     if (!(await verifyCurrentUserHasAccessToPost(params.hookId))) {
@@ -104,27 +101,6 @@ export async function PUT(
         status,
         storageType,
         ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
-        ...(network
-          ? {
-              network: {
-                create: network,
-              },
-            }
-          : {}),
-        ...(contract
-          ? {
-              contract: {
-                create: contract,
-              },
-            }
-          : {}),
-        ...(deploymentDate
-          ? {
-              deploymentDate: {
-                create: deploymentDate,
-              },
-            }
-          : {}),
       },
     });
 

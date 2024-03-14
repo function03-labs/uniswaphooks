@@ -24,9 +24,8 @@ async function getResources({
     `${process.env.NEXT_PUBLIC_URL}/api/resource`,
     {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache",
+      next: {
+        revalidate: 0,
       },
     }
   );

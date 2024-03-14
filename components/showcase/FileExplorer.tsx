@@ -19,7 +19,7 @@ export function FileExplorer({
   hook: HookType;
 }) {
   return (
-    <DrawerContent>
+    <DrawerContent className="max-h-1/2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
       <DrawerHeader>
         <DrawerTitle>File explorer</DrawerTitle>
         <DrawerDescription>

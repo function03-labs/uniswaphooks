@@ -7,9 +7,8 @@ import { CategoryType, HookType } from "@/types/hook";
 async function getHooks(category?: string) {
   const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-cache",
+    next: {
+      revalidate: 15,
     },
   });
   if (!hooksFetch.ok) {

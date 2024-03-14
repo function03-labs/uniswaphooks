@@ -24,11 +24,6 @@ async function getHooks({
     next: {
       revalidate: 0,
     },
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-cache",
-    },
   });
 
   if (!hooksFetch.ok) {

@@ -1,7 +1,7 @@
 import { findFile } from "@lib/utils";
-import { TreeFile, TreeType } from "@/types/tree";
 import { HookType } from "@/types/hook";
 import { notFound } from "next/navigation";
+import { TreeFile, TreeType } from "@/types/tree";
 
 import { formatDeploymentDetails } from "@lib/utils";
 import { FileSelected } from "@component/config/FileSelected";
@@ -38,9 +38,8 @@ async function getHook({ hookId }: { hookId: string }) {
     `${process.env.NEXT_PUBLIC_URL}/api/hook/${hookId}`,
     {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache",
+      next: {
+        revalidate: 0,
       },
     }
   );
@@ -66,7 +65,6 @@ export default async function ViewHook({
   if (!hook) {
     return notFound();
   }
-  const deploymentDetails = formatDeploymentDetails(hook);
 
   if (hook.status !== "published") {
     return notFound();
@@ -75,6 +73,7 @@ export default async function ViewHook({
   let tree;
   let file = {} as TreeFile;
 
+  const deploymentDetails = formatDeploymentDetails(hook);
   if (hook.storageType === "github") {
     tree = await buildTreeGithub({ github: hook.filePath, path: "" });
 
@@ -100,7 +99,7 @@ export default async function ViewHook({
           const fileFetch = await fetch(fileFound.download_url);
           file.code = await fileFetch.text();
         } catch (error) {
-          console.error("Failed to fetch file content:", error);
+          console.log("Failed to fetch file content:", error);
         }
       }
     }
