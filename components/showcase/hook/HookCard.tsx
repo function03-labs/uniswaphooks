@@ -49,8 +49,9 @@ export default function ComponentPreview({
             <PreviewCopy
               componentCode={componentTitle + "\n" + componentDescription}
             />
-
-            <PreviewGithub repoUrl={componentWebsite} />
+            {componentWebsite && (
+              <PreviewWebsite websiteUrl={componentWebsite} />
+            )}
             <PreviewWebsite
               websiteUrl={`${process.env.NEXT_PUBLIC_URL}/hooks/hook/${componentId}`}
             />

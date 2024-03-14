@@ -19,7 +19,10 @@ async function getHooks(category?: string) {
   const hooks = await hooksFetch.json();
 
   if (category) {
-    return hooks.data.filter((hook: HookType) => hook.categoryId === category);
+    return hooks.data.filter(
+      (hook: HookType) =>
+        hook.category.id === category && hook.status === "published"
+    );
   }
 
   return hooks.data;
@@ -97,7 +100,7 @@ export default async function Page({
         )}
       />
 
-      <h3 className="text-3xl font-bold">{data[0].category.title}</h3>
+      <h3 className="text-3xl font-bold">{data[0]?.category.title}</h3>
       <HookGrid hookPosts={data} owned={false} role="user" />
     </Container>
   );
