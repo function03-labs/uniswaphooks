@@ -133,14 +133,17 @@ export function PreviewConfig({
                 <DropdownMenuLabel>Hook menu</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  disabled={componentData.status === "declined"}
+                  disabled={
+                    componentData.status === "declined" ||
+                    !(componentData as HookType).website
+                  }
                 >
                   <Link
                     target="_blank"
                     className="w-full text-left"
-                    href={(componentData as HookType).website}
+                    href={(componentData as HookType).website || ""}
                   >
-                    Open GitHub
+                    Open website
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>

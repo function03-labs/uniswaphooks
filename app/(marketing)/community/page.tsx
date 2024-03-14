@@ -44,7 +44,10 @@ export default async function Page() {
       >
         <p className="-mt-6 text-base text-gray-900">
           Do you have a resource you&apos;d like to add?{" "}
-          <Link className="text-pink-600 hover:underline" href="/community/new">
+          <Link
+            className="text-pink-600 hover:underline"
+            href="/dashboard/resource/submit"
+          >
             Add it here
           </Link>
           .
