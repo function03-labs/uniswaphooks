@@ -102,10 +102,15 @@ export default function UploadHook({ id }: { id: string }) {
       };
 
       if (selectedFile && !values.github) {
-        response = await fetch(`/api/upload/${id}`, {
-          method: "POST",
-          body: selectedFile,
-        });
+        response = await fetch(
+          `/api/upload/${id}`,
+          {
+            method: "POST",
+            body: selectedFile,
+          }
+        );
+
+        console.log("response", response);
 
         if (!response?.ok) {
           throw new Error("Failed to upload files");

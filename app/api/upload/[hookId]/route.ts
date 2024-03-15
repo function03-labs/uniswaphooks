@@ -3,6 +3,10 @@ import * as z from "zod";
 import { uploadFiles } from "@lib/storage";
 import { decompressFile } from "@lib/decompress-folder";
 
+interface NamedBlob extends Blob {
+  name: string;
+}
+
 const routeContextSchema = z.object({
   params: z.object({
     hookId: z.string(),
@@ -17,10 +21,9 @@ export async function POST(
   const { params } = routeContextSchema.parse(context);
 
   try {
-    const fileObj = new File([file], "filename");
-    const decompressedFiles = await decompressFile(fileObj);
+    const decompressedFiles = (await decompressFile(file)) as NamedBlob[];
 
-    const uploads = await uploadFiles(decompressedFiles, params.hookId);
+    await uploadFiles(decompressedFiles, params.hookId);
 
     return new Response(
       JSON.stringify({
@@ -35,14 +38,11 @@ export async function POST(
     );
   } catch (error) {
     console.log("Error processing file:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to decompress files" }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    return new Response(JSON.stringify({ error: "Failed to upload files" }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 }

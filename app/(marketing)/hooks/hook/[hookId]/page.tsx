@@ -94,6 +94,8 @@ export default async function ViewHook({
     console.log(tree);
     if (searchParams.path) {
       const fileFound = findFile(tree, searchParams.path as string);
+      console.log(fileFound);
+      console.log(tree);
       file = fileFound as TreeFile;
       if (fileFound) {
         try {

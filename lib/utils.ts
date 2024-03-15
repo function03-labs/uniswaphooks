@@ -76,7 +76,11 @@ export function findFile(
   }
 }
 
-export function cleanFiles(files: File[]) {
+interface NamedBlob extends Blob {
+  name: string;
+}
+
+export function cleanFiles(files: NamedBlob[]) {
   const excludedFolders = [/\/node_modules\//, /\/.git\//];
   const imageExtensions = [
     ".ico",

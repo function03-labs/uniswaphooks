@@ -1,11 +1,15 @@
 import admZip from "adm-zip";
 
-export const decompressFile = async (file: File): Promise<File[]> => {
+interface NamedBlob extends Blob {
+  name: string;
+}
+
+export const decompressFile = async (file: Blob): Promise<Blob[]> => {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
   const zip = new admZip(buffer);
   const zipEntries = zip.getEntries();
-  const decompressedFiles: File[] = [];
+  const decompressedFiles: NamedBlob[] = [];
 
   for (const zipEntry of zipEntries) {
     if (!zipEntry.isDirectory) {

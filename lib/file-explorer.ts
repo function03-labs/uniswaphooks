@@ -81,7 +81,9 @@ async function fetchFilesAndDirectories({
       return {
         name: item.name,
         type: getItemType(item),
-        path: path.split("/").slice(1).join("/") + "/" + item.name,
+        path: path.includes("/")
+        ? `${path.split("/").slice(1).join("/")}/${item.name}`
+        : item.name,
         size: item.metadata?.size
           ? `${Math.floor(item.metadata.size / 102.4) / 10} kb`
           : undefined,

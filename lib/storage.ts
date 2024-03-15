@@ -1,6 +1,10 @@
 import { cleanFiles } from "@lib/utils";
 import { supabase } from "@lib/supabase";
 
+interface NamedBlob extends Blob {
+  name: string;
+}
+
 export async function uploadAvatar(file: File, userId: string) {
   return await supabase.storage
     .from("avatars")
@@ -41,7 +45,7 @@ export async function manageAvatar(file: File, userId: string) {
   );
 }
 
-export async function uploadFiles(files: File[], folderName: string) {
+export async function uploadFiles(files: NamedBlob[], folderName: string) {
   const cleanedFiles = cleanFiles(files);
 
   const uploadPromises = cleanedFiles.map((file) => {
@@ -50,6 +54,7 @@ export async function uploadFiles(files: File[], folderName: string) {
   });
 
   const uploadResults = await Promise.all(uploadPromises);
+  console.log(uploadResults);
 
   const filePaths = uploadResults.map((result) => {
     if (result.data) {
@@ -63,6 +68,8 @@ export async function uploadFiles(files: File[], folderName: string) {
     }
     return null;
   });
+
+  console.log(filePaths);
 
   return filePaths;
 }
