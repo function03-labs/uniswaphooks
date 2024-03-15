@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@hooks/use-toast";
+import { supabase } from "@lib/supabase";
 
 import {
   Form,
@@ -102,19 +103,30 @@ export default function UploadHook({ id }: { id: string }) {
       };
 
       if (selectedFile && !values.github) {
-        response = await fetch(
-          `/api/upload/${id}`,
-          {
-            method: "POST",
-            body: selectedFile,
-          }
-        );
-
-        console.log("response", response);
+        console.log("selectedFile", selectedFile);
+        response = await fetch(`/api/decompress`, {
+          method: "POST",
+          body: selectedFile,
+        });
 
         if (!response?.ok) {
           throw new Error("Failed to upload files");
         }
+
+        const data = await response.json();
+
+        const files = data.files.map((file: any) => {
+          return new File([file.content], file.name, {
+            type: file.type,
+          });
+        });
+
+        const uploadPromises = files.map((file: any) => {
+          const filePath = `${id}/${file.name}`;
+          return supabase.storage.from("repositories").upload(filePath, file);
+        });
+
+        await Promise.all(uploadPromises);
 
         value.storageType = "storage";
         value.filePath =

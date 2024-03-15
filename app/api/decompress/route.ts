@@ -1,33 +1,38 @@
-import * as z from "zod";
-
-import { uploadFiles } from "@lib/storage";
 import { decompressFile } from "@lib/decompress-folder";
 
 interface NamedBlob extends Blob {
   name: string;
 }
-
-const routeContextSchema = z.object({
-  params: z.object({
-    hookId: z.string(),
-  }),
-});
-
-export async function POST(
-  req: Request,
-  context: z.infer<typeof routeContextSchema>
-) {
+export async function POST(req: Request) {
   const file = await req.blob();
-  const { params } = routeContextSchema.parse(context);
 
   try {
     const decompressedFiles = (await decompressFile(file)) as NamedBlob[];
+    console.log(decompressedFiles);
 
-    await uploadFiles(decompressedFiles, params.hookId);
+    //decopressFile names
+    const fileNames = decompressedFiles.map((file) => file.name);
+    console.log(fileNames);
+
+    const filePromises = decompressedFiles.map(async (file) => {
+      const arrayBuffer = await file.arrayBuffer();
+      const byteArray = new Uint8Array(arrayBuffer);
+      const stringContent = new TextDecoder().decode(byteArray);
+
+      // get file name
+
+      return {
+        name: file.name,
+        type: file.type,
+        content: stringContent,
+      };
+    });
+
+    const files = await Promise.all(filePromises);
 
     return new Response(
       JSON.stringify({
-        message: "Files uploaded successfully",
+        files,
       }),
       {
         status: 200,

@@ -80,7 +80,7 @@ interface NamedBlob extends Blob {
   name: string;
 }
 
-export function cleanFiles(files: NamedBlob[]) {
+export function cleanFiles(files: NamedBlob[]): NamedBlob[] {
   const excludedFolders = [/\/node_modules\//, /\/.git\//];
   const imageExtensions = [
     ".ico",
@@ -93,6 +93,10 @@ export function cleanFiles(files: NamedBlob[]) {
   ];
 
   return files.filter((file) => {
+    if (!file) {
+      return false;
+    }
+
     const isExcludedFolder = excludedFolders.some((folder) =>
       folder.test(file.name)
     );

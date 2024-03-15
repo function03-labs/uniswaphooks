@@ -46,9 +46,8 @@ export async function manageAvatar(file: File, userId: string) {
 }
 
 export async function uploadFiles(files: NamedBlob[], folderName: string) {
-  const cleanedFiles = cleanFiles(files);
-
-  const uploadPromises = cleanedFiles.map((file) => {
+  console.log(files);
+  const uploadPromises = files.map((file) => {
     const filePath = `${folderName}/${file.name}`;
     return supabase.storage.from("repositories").upload(filePath, file);
   });

@@ -4,7 +4,7 @@ interface NamedBlob extends Blob {
   name: string;
 }
 
-export const decompressFile = async (file: Blob): Promise<Blob[]> => {
+export async function decompressFile(file: Blob): Promise<NamedBlob[]> {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
   const zip = new admZip(buffer);
@@ -21,10 +21,13 @@ export const decompressFile = async (file: Blob): Promise<Blob[]> => {
         const decompressedFile = new Blob([blob], {
           type: "application/octet-stream",
         });
-        decompressedFiles.push(decompressedFile as NamedBlob);
+        const namedBlob = Object.assign(decompressedFile, {
+          name: zipEntry.entryName,
+        });
+        decompressedFiles.push(namedBlob as NamedBlob);
       }
     }
   }
 
   return decompressedFiles;
-};
+}
