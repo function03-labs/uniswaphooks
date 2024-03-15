@@ -11,7 +11,7 @@ import { sections } from "@config/community";
 async function getResources() {
   try {
     const responseResources = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/resource?${Date.now()}`,
+      `${process.env.NEXT_PUBLIC_URL}/api/resource?${Date.now()}`,
       {
         method: "GET",
         headers: {
@@ -44,7 +44,10 @@ export default async function Page() {
       >
         <p className="-mt-6 text-base text-gray-900">
           Do you have a resource you&apos;d like to add?{" "}
-          <Link className="text-pink-600 hover:underline" href="/community/new">
+          <Link
+            className="text-pink-600 hover:underline"
+            href="/dashboard/resource/submit"
+          >
             Add it here
           </Link>
           .

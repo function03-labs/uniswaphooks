@@ -16,7 +16,7 @@ export default function VerifiedHooks() {
           </Badge>
         </Link>
       ))}
-      <Link href="/components/hooks/uniswap-labs">
+      <Link href="/hooks/collection/uniswap-labs">
         <Badge variant="default" className="mb-1 mr-1">
           <Icons.more className="w-5 h-5 pr-2 -mt-2 pt-2" />
           View more

@@ -5,6 +5,7 @@ import { PreviewIframeProps } from "@/types/preview";
 export default function PreviewIframe({
   showPreview,
   componentHtml,
+  componentId,
   componentTitle,
   componentCreator,
   componentDescription,
@@ -26,7 +27,7 @@ export default function PreviewIframe({
       >
         <div className="items-left m-4 ml-4 flex w-4/5 flex-col gap-2">
           <Link
-            href={`#${componentTitle}`}
+            href={`#${componentId}`}
             className="text-xl font-medium text-black no-underline"
           >
             {componentTitle}

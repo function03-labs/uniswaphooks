@@ -3,6 +3,7 @@ import EmailProvider from "next-auth/providers/email";
 import GitHubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
+import { JWT } from "next-auth/jwt";
 import nodemailer from "nodemailer";
 import { selectMailOptions } from "@lib/email-template";
 
@@ -29,14 +30,15 @@ export const authOptions: NextAuthOptions = {
         url,
         provider: { server, from },
       }) => {
+
         const mailTransporter = nodemailer.createTransport({
-          host: "smtp-relay.brevo.com",
-          port: 587,
+          host: process.env.EMAIL_SERVER_HOST,
+          port: process.env.EMAIL_SERVER_PORT,
           auth: {
             user: process.env.EMAIL_SENDER,
             pass: process.env.EMAIL_SERVER_PASSWORD,
           },
-        });
+        } as nodemailer.TransportOptions);
 
         try {
           const mailOptions = selectMailOptions("magic-link", {
@@ -45,7 +47,7 @@ export const authOptions: NextAuthOptions = {
           });
           await mailTransporter.sendMail(mailOptions);
         } catch (error) {
-          console.error("Error sending email:", error);
+          console.log("Error sending email:", error);
         }
       },
     }),
@@ -53,16 +55,16 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ token, session }) {
       if (token) {
-        // @ts-ignore: Property 'id' does not exist on type 'Session'.
-        session.user!.id = token.id;
-        session.user!.name = token.name;
-        session.user!.email = token.email;
-        session.user!.image = token.picture;
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.image;
+        session.user.role = token.role;
       }
 
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user }): Promise<JWT> {
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email,
@@ -80,7 +82,12 @@ export const authOptions: NextAuthOptions = {
         id: dbUser.id,
         name: dbUser.name,
         email: dbUser.email,
-        picture: dbUser.image,
+        emailVerified: dbUser.emailVerified,
+        image: dbUser.image,
+        createdAt: dbUser.createdAt,
+        updatedAt: dbUser.updatedAt,
+        role: dbUser.role,
+        website: dbUser.website,
       };
     },
   },

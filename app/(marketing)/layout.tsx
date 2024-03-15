@@ -1,3 +1,6 @@
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@lib/session";
+
 import Header from "@component/navigation/Header";
 import Footer from "@component/navigation/Footer";
 
@@ -10,9 +13,11 @@ interface MarketingLayoutProps {
 export default async function MarketingLayout({
   children,
 }: MarketingLayoutProps) {
+  const user = await getCurrentUser();
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <Header user={user} />
       {/* <HeaderBanner /> */}
       <main className="flex-1">{children}</main>
       <Footer />

@@ -18,7 +18,7 @@ export default function CollectionCard({
   return (
     <>
       {componentData.category === "hooks" && (
-        <Link href={`/hooks/${componentData.id}`}>
+        <Link href={`/hooks/collection/${componentData.id}`}>
           <div className="group relative block h-full bg-white before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:border-gray-900">
             <div className="rounded-lg border-2 border-gray-900 bg-white transition group-hover:-translate-y-2 group-hover:-translate-x-2">
               <div className="p-4 sm:p-6">

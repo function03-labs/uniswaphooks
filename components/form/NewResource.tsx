@@ -2,8 +2,8 @@
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { cn } from "@lib/utils";
@@ -34,22 +34,15 @@ import { Button } from "@component/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import EmojiPicker from "@component/emoji-picker/EmojiPicker";
 
-import { resourceSchema } from "@config/schema";
 import { sections } from "@config/community";
+import { resourceSchema } from "@config/schema";
 
 import { Check, ChevronsUpDown, SmilePlus } from "lucide-react";
 
-export default function NewResourceForm() {
+export default function NewResourceForm({ user }: { user: any }) {
   const router = useRouter();
   const form = useForm<z.infer<typeof resourceSchema>>({
     resolver: zodResolver(resourceSchema),
-    defaultValues: {
-      emoji: "",
-      title: "",
-      section: "",
-      description: "",
-      resourceUrl: "",
-    },
   });
 
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
@@ -62,7 +55,7 @@ export default function NewResourceForm() {
     }
 
     try {
-      await fetch("/api/resource", {
+      const requestResource = await fetch("/api/resource", {
         method: "POST",
         body: JSON.stringify(values),
         headers: {
@@ -70,11 +63,18 @@ export default function NewResourceForm() {
         },
       });
 
-      router.push("/thank-you");
+      const response = await requestResource.json();
+
+      router.push("/dashboard/thank-you");
 
       await fetch("/api/mailer", {
         method: "POST",
-        body: JSON.stringify({ ...values, type: "resources" }),
+        body: JSON.stringify({
+          ...values,
+          id: response.data.id,
+          user: user.email,
+          type: "resources",
+        }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -88,12 +88,12 @@ export default function NewResourceForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="grid sm:grid-cols-1 lg:grid-cols-6 lg:gap-4 ">
+        <div className="grid sm:grid-cols-1 xl:grid-cols-6 xl:gap-4">
           <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
-              <FormItem className="lg:col-span-5">
+              <FormItem className="xl:col-span-5">
                 <FormLabel>
                   Title <span className="text-red-500">*</span>
                 </FormLabel>
@@ -161,8 +161,8 @@ export default function NewResourceForm() {
                           ? sections.find(
                               (section) => section.id === field.value
                             )?.title
-                          : "Choose a section"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          : "Select section"}
+                        <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>

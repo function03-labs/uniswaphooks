@@ -1,7 +1,7 @@
+import { render } from "@react-email/render";
 import { MagicLinkData } from "@/types/auth";
 import { HookEmailType } from "@/types/hook";
 import { ResouceEmailType } from "@/types/post";
-import { render } from "@react-email/render";
 
 import { Hook } from "@/components/email/Hook";
 import { Resource } from "@component/email/Resource";
@@ -9,21 +9,22 @@ import { MagicLink } from "@component/email/MagicLink";
 
 export function selectMailOptions(
   type: string,
-  body: HookEmailType | ResouceEmailType | MagicLinkData
+  body: HookEmailType | ResouceEmailType | MagicLinkData,
 ) {
   let html;
   const mailOptions = {
     from: `UniswapHooks <${process.env.EMAIL_SENDER}>`,
-    to: process.env.MAIN_EMAIL,
+    to: process.env.EMAIL_RECEIVERS!.split(","),
     subject: "",
     html: "",
   };
+
   switch (type) {
     case "hooks":
       html = render(Hook({ hook: body as HookEmailType }));
       return {
         from: mailOptions.from,
-        to: mailOptions.to,
+        to: process.env.EMAIL_RECEIVERS!.split(","),
         subject: "New hook submission",
         html,
       };
@@ -31,7 +32,7 @@ export function selectMailOptions(
       html = render(Resource({ resource: body as ResouceEmailType }));
       return {
         from: mailOptions.from,
-        to: mailOptions.to,
+        to: process.env.EMAIL_RECEIVERS!.split(","),
         subject: "New resource submission",
         html,
       };

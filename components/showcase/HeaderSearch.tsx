@@ -7,9 +7,9 @@ import Fuse from "fuse.js";
 import { useClickAway, useDebounce } from "react-use";
 import React, { useEffect, useRef, useState, useMemo } from "react";
 
-import { HookType, CategoryType } from "@/types/hook";
+import { HookType } from "@/types/hook";
 
-export default function HeaderSearch() {
+export default function HeaderSearch({ hooks }: { hooks: HookType[] }) {
   const routerPathname = usePathname();
 
   const refDropdown = useRef(null);
@@ -17,8 +17,7 @@ export default function HeaderSearch() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [fuse, setFuse] = useState<Fuse<any> | null>(null);
-  const [initialResults, setInitialResults] = useState([]);
-  const [searchResults, setSearchResults] = useState<HookType[]>([]);
+  const [searchResults, setSearchResults] = useState<HookType[]>(hooks);
   const [searchQueryDebounced, setSearchQueryDebounced] = useState("");
 
   const fuseOptions = useMemo(
@@ -31,18 +30,16 @@ export default function HeaderSearch() {
 
   useEffect(() => {
     const getSearchResults = async () => {
-      const searchResults = await fetchSearchResults();
-      const fuseInstance = new Fuse(searchResults, fuseOptions);
+      const fuseInstance = new Fuse(hooks, fuseOptions);
       setFuse(fuseInstance);
-      setInitialResults(searchResults);
     };
 
     getSearchResults();
-  }, [fuseOptions]);
+  }, [fuseOptions, hooks]);
 
   useEffect(() => {
     if (!searchQuery) {
-      setSearchResults(initialResults.slice(0, 4));
+      setSearchResults(hooks.slice(0, 4));
       return;
     }
 
@@ -53,7 +50,7 @@ export default function HeaderSearch() {
         .slice(0, 4);
       setSearchResults(filteredResults);
     }
-  }, [searchQueryDebounced, fuse, searchQuery, initialResults]);
+  }, [searchQueryDebounced, fuse, searchQuery, hooks]);
 
   useEffect(() => {
     setSearchQuery("");
@@ -63,36 +60,6 @@ export default function HeaderSearch() {
   useClickAway(refDropdown, () => setShowDropdown(false));
 
   useDebounce(() => setSearchQueryDebounced(searchQuery), 500, [searchQuery]);
-
-  async function fetchSearchResults() {
-    const searchHooks = await fetch("/api/hook", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const resultHooks = await searchHooks.json();
-    console.log(resultHooks);
-    const publishedSearchJson = resultHooks.data.filter(
-      (item: HookType) => item.status === "published"
-    );
-
-    const searchCategories = await fetch("/api/category", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const resultCategories = await searchCategories.json();
-    publishedSearchJson.forEach((hook: HookType) => {
-      const category = resultCategories.data.find(
-        (category: CategoryType) => category.id === hook.categoryId
-      );
-      hook.category = category;
-    });
-
-    return publishedSearchJson;
-  }
 
   return (
     <div ref={refDropdown} className="relative flex h-16 items-center py-8">
@@ -123,7 +90,7 @@ export default function HeaderSearch() {
             <ul className="max-h-64 space-y-1 overflow-auto p-2">
               {searchResults.map((searchResult) => (
                 <li key={searchResult.id}>
-                  <Link target="_blank" href={searchResult.github}>
+                  <Link target="_blank" href={searchResult.filePath}>
                     <div className="flex items-center justify-between rounded-md px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 focus:bg-gray-50">
                       <span>{searchResult.title}</span>
 

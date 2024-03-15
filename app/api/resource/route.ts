@@ -1,10 +1,28 @@
 import { db } from "@lib/prisma";
+import { authOptions } from "@lib/auth";
+import { getServerSession } from "next-auth";
 
 export async function POST(req: Request) {
   try {
-    const bodyAsString = await req.json();
-    const body = JSON.parse(bodyAsString);
-    const { emoji, title, section, description, imageUrl, resourceUrl } = body;
+    const body = await req.json();
+    const { emoji, title, section, description, resourceUrl } = body;
+
+    const session = await getServerSession(authOptions);
+
+
+    if (!session || !session.user) {
+      return new Response(
+        JSON.stringify({
+          message: "You are not authorized to perform this action",
+        }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
 
     const newResource = await db.resource.create({
       data: {
@@ -12,8 +30,8 @@ export async function POST(req: Request) {
         title,
         section,
         description,
-        imageUrl,
         resourceUrl,
+        userId: session.user.id,
       },
     });
 
@@ -85,18 +103,9 @@ export async function GET() {
 
 export async function PUT(req: Request) {
   try {
-    const bodyAsString = await req.json();
-    const body = JSON.parse(bodyAsString);
-    const {
-      id,
-      emoji,
-      title,
-      section,
-      description,
-      imageUrl,
-      resourceUrl,
-      status,
-    } = body;
+    const body = await req.json();
+    const { id, emoji, title, section, description, resourceUrl, status } =
+      body;
 
     const updatedResource = await db.resource.update({
       where: {
@@ -107,7 +116,6 @@ export async function PUT(req: Request) {
         title,
         section,
         description,
-        imageUrl,
         resourceUrl,
         status,
       },
@@ -144,8 +152,7 @@ export async function PUT(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    const bodyAsString = await req.json();
-    const body = JSON.parse(bodyAsString);
+    const body = await req.json();
     const { id } = body;
 
     const deletedResource = await db.resource.delete({

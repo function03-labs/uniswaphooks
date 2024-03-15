@@ -1,27 +1,35 @@
 import { db } from "@lib/prisma";
+import { authOptions } from "@lib/auth";
+import { getServerSession } from "next-auth";
 
 export async function POST(req: Request) {
   try {
-    const bodyAsString = await req.json();
-    const body = JSON.parse(bodyAsString);
-    let { title, description, creator, website, github, categoryId } = body;
+    const body = await req.json();
+    let { title, description, website, categoryId } = body;
 
-    if (!categoryId || categoryId === "") {
-      categoryId = "from-the-community";
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.user) {
+      return new Response(
+        JSON.stringify({
+          message: "You are not authorized to perform this action",
+        }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     }
 
     const newHook = await db.hook.create({
       data: {
         title,
         description,
-        creator,
         website,
-        github,
-        category: {
-          connect: {
-            id: categoryId,
-          },
-        },
+        userId: session.user.id,
+        categoryId,
       },
     });
 
@@ -59,6 +67,10 @@ export async function GET() {
     const hooks = await db.hook.findMany({
       include: {
         category: true,
+        user: true,
+        network: true,
+        contract: true,
+        deploymentDate: true,
       },
     });
     return new Response(
@@ -74,106 +86,6 @@ export async function GET() {
       }
     );
   } catch (err: any) {
-    return new Response(
-      JSON.stringify({
-        message: "Something went wrong",
-        error: err.message,
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  }
-}
-
-export async function PUT(req: Request) {
-  try {
-    const bodyAsString = await req.json();
-    const body = JSON.parse(bodyAsString);
-    const {
-      id,
-      title,
-      description,
-      creator,
-      website,
-      github,
-      status,
-      categoryId,
-    } = body;
-
-    const updatedHook = await db.hook.update({
-      where: {
-        id,
-      },
-      data: {
-        title,
-        description,
-        creator,
-        website,
-        github,
-        status,
-        categoryId,
-      },
-    });
-
-    return new Response(
-      JSON.stringify({
-        message: "Hook updated successfully",
-        data: updatedHook,
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  } catch (err: any) {
-    console.log(err);
-    return new Response(
-      JSON.stringify({
-        message: "Something went wrong",
-        error: err.message,
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  }
-}
-
-export async function DELETE(req: Request) {
-  try {
-    const bodyAsString = await req.json();
-    const body = JSON.parse(bodyAsString);
-    const { id } = body;
-
-    const deletedHook = await db.hook.delete({
-      where: {
-        id,
-      },
-    });
-
-    return new Response(
-      JSON.stringify({
-        message: "Hook deleted successfully",
-        data: deletedHook,
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  } catch (err: any) {
-    console.log(err);
     return new Response(
       JSON.stringify({
         message: "Something went wrong",

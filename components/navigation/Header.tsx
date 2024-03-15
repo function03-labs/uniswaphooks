@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import Container from "@component/overall/Container";
@@ -15,7 +14,7 @@ import SplashButton from "@component/ui/SplashButton";
 
 import { marketingConfig } from "@config/marketing";
 
-export default function Header() {
+export default function Header({ user }: { user: any }) {
   const routerPathname = usePathname();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -37,22 +36,19 @@ export default function Header() {
 
         <div className="flex items-center justify-end gap-2 sm:gap-4">
           <div className="hidden sm:block">
-            <SplashButton
-              id="submit-button"
-              href="https://uniswaphooks.vercel.app/add-new-hook"
-            >
+            <SplashButton id="submit-button" href="/dashboard/hook/submit">
               <span className="mr-2">🎉</span> Submit A Hook
             </SplashButton>
           </div>
 
-          {/*           <SplashButton
+          <SplashButton
             id="submit-button"
-            href="/register"
+            href={user ? "/dashboard" : "/register"}
             className="bg-black text-white border-black hover:bg-white hover:text-black hover:border-black"
           >
             <span className="mr-2">🔒</span>
-            Register
-          </SplashButton> */}
+            {user ? "Dashboard" : "Register"}
+          </SplashButton>
 
           <HeaderMenu
             showMenu={showMenu}

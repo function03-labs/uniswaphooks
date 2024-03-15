@@ -24,7 +24,12 @@ export type ResourcePost = {
 };
 
 export type ResouceEmailType = {
+  id: string;
+  resourceUrl: string;
+  emoji: string;
   title: string;
   description: string;
   section: string;
+  status: string;
+  user: string;
 };

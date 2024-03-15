@@ -5,7 +5,12 @@ import CollectionLinks from "@component/ui/CollectionLinks";
 import { CategoryType, HookType } from "@/types/hook";
 
 async function getHooks(category?: string) {
-  const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hook`);
+  const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
+    method: "GET",
+    next: {
+      revalidate: 15,
+    },
+  });
   if (!hooksFetch.ok) {
     throw new Error("Failed to fetch hooks");
   }
@@ -13,7 +18,10 @@ async function getHooks(category?: string) {
   const hooks = await hooksFetch.json();
 
   if (category) {
-    return hooks.data.filter((hook: HookType) => hook.categoryId === category);
+    return hooks.data.filter(
+      (hook: HookType) =>
+        hook.category.id === category && hook.status === "published"
+    );
   }
 
   return hooks.data;
@@ -21,7 +29,7 @@ async function getHooks(category?: string) {
 
 async function getCategories() {
   const categoriesFetch = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/category`
+    `${process.env.NEXT_PUBLIC_URL}/api/category`
   );
 
   if (!categoriesFetch.ok) {
@@ -52,12 +60,10 @@ async function getCategoryData(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: {
-    slug: string[];
-  };
+  params: { collectionId: string };
 }) {
   try {
-    const data = await getCategoryData(params.slug[0]);
+    const data = await getCategoryData(params.collectionId);
 
     return {
       title: `${data.title} | UniswapHooks`,
@@ -70,8 +76,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
-  const data = await getHooks(params.slug[0]);
+export default async function Page({
+  params,
+}: {
+  params: { collectionId: string };
+}) {
+  const data = await getHooks(params.collectionId);
   const collections = await getCategories();
 
   const activeCategory = {
@@ -82,15 +92,15 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   return (
     <Container classNames="py-8 lg:py-12 space-y-8 lg:space-y-12">
       <CollectionLinks
-        activeCollection={params.slug[0]}
+        activeCollection={params.collectionId}
         activeCategory={activeCategory}
         componentsData={collections.sort((a: CategoryType, b: CategoryType) =>
           a.createdAt < b.createdAt ? 1 : -1
         )}
       />
 
-      <h3 className="text-3xl font-bold">{data[0].category.title}</h3>
-      <HookGrid hookPosts={data} />
+      <h3 className="text-3xl font-bold">{data[0]?.category.title}</h3>
+      <HookGrid hookPosts={data} owned={false} role="user" />
     </Container>
   );
 }
