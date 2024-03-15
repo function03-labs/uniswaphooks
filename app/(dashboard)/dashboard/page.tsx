@@ -55,10 +55,6 @@ export default async function Home() {
 
   const hooks = await getHooks({ id: user.id, isAdmin: user.role === "admin" });
 
-/*   if (user.role === "admin") {
-    await migrateHooks();
-  } */
-
   return (
     <main>
       <DashboardHeader
