@@ -18,10 +18,10 @@ export const decompressFile = async (file: Blob): Promise<Blob[]> => {
         const blob = new Blob([fileData], {
           type: "application/octet-stream",
         });
-        const decompressedFile = new File([blob], zipEntry.entryName, {
-          type: blob.type,
+        const decompressedFile = new Blob([blob], {
+          type: "application/octet-stream",
         });
-        decompressedFiles.push(decompressedFile);
+        decompressedFiles.push(decompressedFile as NamedBlob);
       }
     }
   }
