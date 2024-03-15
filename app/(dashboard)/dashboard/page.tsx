@@ -8,8 +8,6 @@ import { DashboardHeader } from "@component/dashboard/Header";
 import SplashButton from "@component/ui/SplashButton";
 import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
 
-import { migrateHooks } from "@/lib/migrate";
-
 export const metadata = {
   title: "Hooks",
   description: "Manage your hooks with ease.",
@@ -35,7 +33,9 @@ async function getHooks({
   const hooks = await hooksFetch.json();
 
   if (isAdmin) {
-    return hooks.data;
+    return hooks.data.sort((a: any, b: any) => {
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    });
   }
 
   hooks.data = hooks.data.filter((hook: any) => hook.user.id === id);

@@ -8,7 +8,7 @@ async function getHooks(category?: string) {
   const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
     method: "GET",
     next: {
-      revalidate: 15,
+      revalidate: 0,
     },
   });
   if (!hooksFetch.ok) {
@@ -41,7 +41,7 @@ async function getCategories() {
   const hooks = await getHooks();
   categories.data.forEach((category: CategoryType) => {
     category.count = hooks.filter(
-      (hook: HookType) => hook.category.id === category.id
+      (hook: HookType) => hook.category.id === category.id && hook.status === "published"
     ).length;
   });
 
@@ -86,7 +86,7 @@ export default async function Page({
 
   const activeCategory = {
     category: "hooks",
-    emoji: "🪝",
+    emoji: "🪝",  
   };
 
   return (
