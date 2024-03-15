@@ -6,6 +6,7 @@ import { useInView } from "react-intersection-observer";
 
 import PreviewCopy, {
   PreviewWebsite,
+  PreviewGithub
 } from "@component/overall/preview/PreviewCopy";
 import PreviewCreator from "@component/overall/preview/PreviewCreator";
 import PreviewIframe from "@component/overall/preview/PreviewIframe";
@@ -49,7 +50,7 @@ export default function ComponentPreview({
               componentCode={componentTitle + "\n" + componentDescription}
             />
             {componentWebsite && (
-              <PreviewWebsite websiteUrl={componentWebsite} />
+              <PreviewGithub repoUrl={componentWebsite} />
             )}
             <PreviewWebsite
               websiteUrl={`${process.env.NEXT_PUBLIC_URL}/hooks/hook/${componentId}`}

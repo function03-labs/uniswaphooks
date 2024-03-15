@@ -11,7 +11,7 @@ async function getHooks() {
   const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
     method: "GET",
     next: {
-      revalidate: 15,
+      revalidate: 0,
     },
   });
 
