@@ -8,6 +8,8 @@ import { DashboardHeader } from "@component/dashboard/Header";
 import SplashButton from "@component/ui/SplashButton";
 import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
 
+import { migrateHooks } from "@/lib/migrate";
+
 export const metadata = {
   title: "Hooks",
   description: "Manage your hooks with ease.",
@@ -52,6 +54,10 @@ export default async function Home() {
   }
 
   const hooks = await getHooks({ id: user.id, isAdmin: user.role === "admin" });
+
+/*   if (user.role === "admin") {
+    await migrateHooks();
+  } */
 
   return (
     <main>
