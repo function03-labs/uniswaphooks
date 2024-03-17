@@ -38,11 +38,15 @@ export const hookSchema = z.object({
   categoryId: z.string().optional(),
 });
 
+const githubUrlRegex =
+  /^https?:\/\/github\.com\/(?<username>[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})\/(?<repository>[a-z\d_\-]{1,100})(?:\.git)?$/i;
+
 export const hookEditSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(2).max(50),
   description: z.string().min(2),
-  website: z.string().optional(),
+  filePath: z.string().regex(githubUrlRegex).optional(),
+  website: z.string().url().optional(),
   status: z.string().optional(),
   userId: z.string(),
 

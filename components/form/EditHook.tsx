@@ -203,6 +203,30 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
                   <Button className="py-2 w-full">📋Deploy now</Button>
                 </Link>
               )}
+              {hookData.storageType === "github" && (
+                <>
+                  <div className="h-6" />
+                  <FormField
+                    control={form.control}
+                    name="filePath"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>GitHub Repository</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="https://github.com/username/repo"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Enter the github repository of your hook.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
             </div>
           </div>
 
