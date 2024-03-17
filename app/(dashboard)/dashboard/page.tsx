@@ -64,6 +64,12 @@ export default async function Home() {
         <SplashButton href="/dashboard/hook/submit" id={"add-hook"}>
           <span>➕</span> Add a new hook
         </SplashButton>
+        <SplashButton href="/dashboard/hook/submit" id={"sort-hooks"}>
+          <span>🔍</span> Sort hooks
+        </SplashButton>
+        <SplashButton href="/dashboard/hook/submit" id={"filter-hooks"}>
+          <span>📁</span> Filter hooks
+        </SplashButton>
       </DashboardHeader>
 
       <Container classNames="py-8 lg:py-6 space-y-8 lg:space-y-0">
