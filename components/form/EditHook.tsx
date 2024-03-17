@@ -1,6 +1,7 @@
 "use client";
 
 import * as z from "zod";
+import Link from "next/link";
 
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
@@ -195,6 +196,13 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
               />
               <div className="h-6" />
               <DeploymentDetails deployment={deploymentDetails} />
+              {!deploymentDetails.verified && (
+                <Link
+                  href={`/dashboard/hook/submit?id=${hookData.id}&step=deployment`}
+                >
+                  <Button className="py-2 w-full">📋Deploy now</Button>
+                </Link>
+              )}
             </div>
           </div>
 
