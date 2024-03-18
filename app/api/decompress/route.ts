@@ -8,19 +8,11 @@ export async function POST(req: Request) {
 
   try {
     const decompressedFiles = (await decompressFile(file)) as NamedBlob[];
-    console.log(decompressedFiles);
-
-    //decopressFile names
-    const fileNames = decompressedFiles.map((file) => file.name);
-    console.log(fileNames);
 
     const filePromises = decompressedFiles.map(async (file) => {
       const arrayBuffer = await file.arrayBuffer();
       const byteArray = new Uint8Array(arrayBuffer);
       const stringContent = new TextDecoder().decode(byteArray);
-
-      // get file name
-
       return {
         name: file.name,
         type: file.type,

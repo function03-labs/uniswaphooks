@@ -1,9 +1,0 @@
-id,title,description,category,emoji,count,tag,createdAt,updatedAt
-from-the-community,From the Community,Hooks developed and submitted by the Uniswap community.,hooks,🌍,0,NULL,2023-12-20 19:38:33.262,2023-12-20 19:38:33.262
-templates,Templates,Templates to assist in creating Uniswap V4 Hooks,hooks,🛠️,0,NULL,2023-12-20 19:39:27.437,2023-12-20 19:39:27.437
-uniswap-labs,Uniswap Labs,Hooks published by the Uniswap Foundation,hooks,🦄,0,NULL,2023-12-20 19:39:53.012,2023-12-20 19:39:53.012
-ethcc-paris-hookathon,EthCC Paris Hookathon,Hooks submitted during the EthCC Paris Hookathon 2023,hooks,🥖,0,NULL,2023-12-20 19:40:18.198,2023-12-20 19:40:18.198
-ethglobal-nyc,ETHGlobal NYC,Hooks submitted during the ETHGlobal NYC Hackathon,hooks,🗽,0,NULL,2023-12-20 19:40:49.178,2023-12-20 19:40:49.178
-ethonline-2023,ETHOnline 2023,A curated list of awesome Uniswap v4 hooks resources.,hooks,🗞️,0,NULL,2023-12-20 19:53:41.699,2023-12-20 19:53:41.699
-unisuave-ethglobal,UniSUAVE ETHGlobal,UniSUAVE ETHGlobal Istanbul,hooks,🤖,0,NULL,2023-12-20 19:54:04.005,2023-12-20 19:54:04.005
-ethglobal-london,ETHGlobal London,ETHGlobal London,hooks,🇬🇧,0,new,2024-03-14 07:39:08,2024-03-14 07:39:11

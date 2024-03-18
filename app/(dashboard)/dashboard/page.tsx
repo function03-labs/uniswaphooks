@@ -6,6 +6,7 @@ import HookGrid from "@component/showcase/hook/HookGrid";
 import { DashboardHeader } from "@component/dashboard/Header";
 
 import SplashButton from "@component/ui/SplashButton";
+import { SortButtons } from "@component/dashboard/SortButtons";
 import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
 
 export const metadata = {
@@ -33,20 +34,49 @@ async function getHooks({
   const hooks = await hooksFetch.json();
 
   if (isAdmin) {
-    return hooks.data.sort((a: any, b: any) => {
+    return hooks.data
+  }
+
+  return hooks.data.filter((hook: any) => hook.user.id === id)
+}
+
+function getSortedHooks(
+  hooks: any,
+  sort: string | string[] | undefined,
+  filter: string | string[] | undefined
+) {
+  if (sort === "latest") {
+    hooks.sort((a: any, b: any) => {
       return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     });
   }
+  else if (sort === "oldest") {
+    hooks.sort((a: any, b: any) => {
+      return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+    });
+  }
 
-  hooks.data = hooks.data.filter((hook: any) => hook.user.id === id);
-  hooks.data.sort((a: any, b: any) => {
-    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-  });
+  if (filter === "pending") {
+    return hooks.filter((hook: any) => hook.status === "pending");
+  }
+  else if (filter === "published") {
+    return hooks.filter((hook: any) => hook.status === "published");
+  }
+  else if (filter === "draft") {
+    return hooks.filter((hook: any) => hook.status === "draft");
+  }
+  else if (filter === "declined") {
+    return hooks.filter((hook: any) => hook.status === "declined");
+  }
 
-  return hooks.data;
+  return hooks;
 }
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const user = await getCurrentUser();
 
   if (!user) {
@@ -54,6 +84,7 @@ export default async function Home() {
   }
 
   const hooks = await getHooks({ id: user.id, isAdmin: user.role === "admin" });
+  const sortedHooks = getSortedHooks(hooks, searchParams.sort, searchParams.filter);
 
   return (
     <main>
@@ -61,14 +92,12 @@ export default async function Home() {
         heading="Manage your hooks with ease."
         text="Create, edit, and manage your hooks."
       >
-        <SplashButton href="/dashboard/hook/submit" id={"add-hook"}>
-          <span>➕</span> Add a new hook
-        </SplashButton>
+        <SortButtons />
       </DashboardHeader>
 
       <Container classNames="py-8 lg:py-6 space-y-8 lg:space-y-0">
-        {hooks?.length ? (
-          <HookGrid hookPosts={hooks} owned={true} role={user.role} />
+        {sortedHooks?.length ? (
+          <HookGrid hookPosts={sortedHooks} owned={true} role={user.role} />
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Title>No hooks created</EmptyPlaceholder.Title>

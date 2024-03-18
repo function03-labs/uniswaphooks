@@ -1,6 +1,7 @@
 "use client";
 
 import * as z from "zod";
+import Link from "next/link";
 
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
@@ -195,6 +196,37 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
               />
               <div className="h-6" />
               <DeploymentDetails deployment={deploymentDetails} />
+              {!deploymentDetails.verified && (
+                <Link
+                  href={`/dashboard/hook/submit?id=${hookData.id}&step=deployment`}
+                >
+                  <Button className="py-2 w-full">📋Deploy now</Button>
+                </Link>
+              )}
+              {hookData.storageType === "github" && (
+                <>
+                  <div className="h-6" />
+                  <FormField
+                    control={form.control}
+                    name="filePath"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>GitHub Repository</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="https://github.com/username/repo"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Enter the github repository of your hook.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
             </div>
           </div>
 
