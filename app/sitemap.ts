@@ -90,7 +90,7 @@ export default async function sitemap() {
     const siteSlugsPosts = blogs.map((blog: any) => `blog/${blog.slug}`);
 
     const tools = await getTools();
-    const siteSlugsTools = tools.map((tool: any) => `tools/${tool.id}`);
+    const siteSlugsTools = tools.map((tool: any) => `tools/${tool.value.id}`);
 
     const siteSlugs = [
       ...siteSlugsCategories,
