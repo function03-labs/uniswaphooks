@@ -2,26 +2,32 @@ import { join } from "path";
 import matter from "gray-matter";
 import { promises as fs } from "fs";
 
+import { sections } from "@config/community";
+
 async function getCategories() {
   const fetchCategories = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/category`
+    `${process.env.NEXT_PUBLIC_URL}/api/category`,
+    {
+      next: {
+        revalidate: 0,
+      },
+    }
   );
   const categories = await fetchCategories.json();
   return categories.data;
 }
 
 async function getResources() {
-  const fetchResources = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/resource`
-  );
-  const resources = await fetchResources.json();
-  return resources.data;
+  return sections;
 }
 
 async function getHooks() {
-  const fetchHooks = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hook`);
+  const fetchHooks = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
+    method: "GET",
+  });
   const hooks = await fetchHooks.json();
-  return hooks.data;
+
+  return hooks.data.filter((hook: any) => hook.status === "published");
 }
 
 async function getBlogs() {
@@ -90,7 +96,7 @@ export default async function sitemap() {
     const siteSlugsPosts = blogs.map((blog: any) => `blog/${blog.slug}`);
 
     const tools = await getTools();
-    const siteSlugsTools = tools.map((tool: any) => `tools/${tool.value.id}`);
+    const siteSlugsTools = tools.map((tool: any) => `tool/${tool.value.id}`);
 
     const siteSlugs = [
       ...siteSlugsCategories,
