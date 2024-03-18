@@ -60,7 +60,6 @@ function getSortedHooks(
     return hooks.filter((hook: any) => hook.status === "pending");
   }
   else if (filter === "published") {
-    console.log("published");
     return hooks.filter((hook: any) => hook.status === "published");
   }
   else if (filter === "draft") {
