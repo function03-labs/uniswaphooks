@@ -103,7 +103,6 @@ export default function UploadHook({ id }: { id: string }) {
       };
 
       if (selectedFile && !values.github) {
-        console.log("selectedFile", selectedFile);
         response = await fetch(`/api/decompress`, {
           method: "POST",
           body: selectedFile,
@@ -123,6 +122,15 @@ export default function UploadHook({ id }: { id: string }) {
 
         const uploadPromises = files.map((file: any) => {
           const filePath = `${id}/${file.name}`;
+
+          if (
+            file.name.match(/\.(jpe?g|png|gif|bmp|webp|svg)$/i) ||
+            file.name.includes(".github/") ||
+            file.name.includes("node_modules/")
+          ) {
+            return;
+          }
+
           return supabase.storage.from("repositories").upload(filePath, file);
         });
 

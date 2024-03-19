@@ -137,6 +137,9 @@ dependencies:
   input-otp:
     specifier: 0.3.31-beta
     version: 0.3.31-beta(react-dom@18.2.0)(react@18.2.0)
+  lru-cache:
+    specifier: ^10.2.0
+    version: 10.2.0
   lucide-react:
     specifier: ^0.336.0
     version: 0.336.0(react@18.2.0)
