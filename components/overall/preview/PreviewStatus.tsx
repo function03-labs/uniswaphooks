@@ -22,55 +22,56 @@ import {
   SelectValue,
 } from "@component/ui/Select";
 
-import { HookType } from "@/types/hook";
-
-const hookSchema = z.object({
+const statusSchema = z.object({
   status: z.string(),
 });
 
 export function PreviewStatus({
-  componentData,
+  id,
+  status,
   tagType,
   role,
+  variant,
 }: {
-  componentData?: HookType;
+  id: string;
+  status?: string;
   tagType?: string;
   role?: string;
+  variant?: string;
 }) {
   const { toast } = useToast();
   const [isSelectVisible, setIsSelectVisible] = useState(false);
-  const form = useForm<z.infer<typeof hookSchema>>({
-    resolver: zodResolver(hookSchema),
+  const form = useForm<z.infer<typeof statusSchema>>({
+    resolver: zodResolver(statusSchema),
     defaultValues: {
-      status: componentData?.status,
+      status: status,
     },
   });
 
-  async function onSubmit(data: z.infer<typeof hookSchema>) {
+  async function onSubmit(data: z.infer<typeof statusSchema>) {
     try {
-      const updatedHook = await fetch(`/api/hook/${componentData?.id}`, {
+      const update = await fetch(`/api/${variant}/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...componentData,
           status: data.status,
         }),
       });
 
-      if (!updatedHook.ok) {
-        throw new Error("Failed to update hook");
+      if (!update.ok) {
+        throw new Error("Failed to update");
       }
 
       toast({
-        title: "Hook updated",
-        description: "The hook has been updated.",
+        title: "Updated successfully",
+        description: "We have updated the status.",
       });
     } catch (error) {
       console.log(error);
       toast({
-        title: "Failed to update hook",
+        title: "Failed to update",
         description: "Please try again",
         variant: "destructive",
       });
@@ -79,10 +80,10 @@ export function PreviewStatus({
       window.location.reload();
     }
   }
-  const isPublished = (componentData?.status || tagType) === "published";
-  const isPending = (componentData?.status || tagType) === "pending";
-  const isDraft = (componentData?.status || tagType) === "draft";
-  const isDeclined = (componentData?.status || tagType) === "declined";
+  const isPublished = (status || tagType) === "published";
+  const isPending = (status || tagType) === "pending";
+  const isDraft = (status || tagType) === "draft";
+  const isDeclined = (status || tagType) === "declined";
 
   if (!isPublished && !isPending && !isDeclined && !isDraft) {
     return <></>;
@@ -101,8 +102,7 @@ export function PreviewStatus({
             onClick={() => setIsSelectVisible(!isSelectVisible)}
           >
             <span className="text-xs font-medium">
-              {componentData!.status.charAt(0).toUpperCase() +
-                componentData!.status.slice(1)}
+              {status ? status.charAt(0).toUpperCase() + status.slice(1) : ""}
             </span>
           </button>
         )}
@@ -153,9 +153,8 @@ export function PreviewStatus({
         } ${isDraft && "bg-gray-700 text-gray-100"}`}
       >
         <span className="text-xs font-medium">
-          {componentData?.status
-            ? componentData.status.charAt(0).toUpperCase() +
-              componentData.status.slice(1)
+          {status
+            ? status.charAt(0).toUpperCase() + status.slice(1)
             : tagType
             ? tagType.charAt(0).toUpperCase() + tagType.slice(1)
             : null}

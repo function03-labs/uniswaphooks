@@ -77,19 +77,32 @@ export async function PUT(
       return new Response(null, { status: 403 });
     }
 
-    await db.resource.update({
-      where: {
-        id: params.resourceId,
-      },
-      data: {
-        emoji,
-        title,
-        description,
-        section,
-        status,
-        resourceUrl,
-      },
-    });
+    if (status) {
+      await db.resource.update({
+        where: {
+          id: params.resourceId,
+        },
+        data: {
+          status,
+        },
+      });
+    }
+
+    else {
+      await db.resource.update({
+        where: {
+          id: params.resourceId,
+        },
+        data: {
+          emoji,
+          title,
+          description,
+          section,
+          resourceUrl,
+          status,
+        },
+      });
+    }
 
     return new Response(null, { status: 204 });
   } catch (error) {

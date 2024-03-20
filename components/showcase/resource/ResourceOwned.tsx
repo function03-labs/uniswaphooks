@@ -21,7 +21,12 @@ export default function ResourceCard({
           <PreviewConfig type="resource" componentData={resourcePost} />
         </div>
         <div className="flex justify-end">
-          <PreviewStatus tagType={resourcePost.status} />
+          <PreviewStatus
+            id={resourcePost.id}
+            status={resourcePost.status}
+            role={"admin"}
+            variant="resource"
+          />
         </div>
       </div>
       <Link target="_blank" href={resourcePost.resourceUrl}>
