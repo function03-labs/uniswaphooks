@@ -67,7 +67,12 @@ export default async function SubmitHookPage({
       case "deployment":
         return <DeployHookForm id={String(searchParams.id)} />;
       case "submission":
-        return <HookSubbmission id={String(searchParams.id)} />;
+        return (
+          <HookSubbmission
+            id={String(searchParams.id)}
+            categories={categories}
+          />
+        );
       case undefined:
         return <NewHookForm categories={categories} />;
       default:

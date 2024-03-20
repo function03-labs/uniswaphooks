@@ -9,6 +9,17 @@ import HeroBanner from "@component/section/HeroBanner";
 import HookOwned from "@component/showcase/hook/HookOwned";
 import DeploymentDetails from "@component/showcase/DeploymentDetails";
 
+async function fetchCategories() {
+  try {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/category`);
+    const response = await data.json();
+
+    return response.data;
+  } catch (error) {
+    console.error("Category fetch error:", error);
+  }
+}
+
 async function getHook({ hookId }: { hookId: string }) {
   const hookFetch = await fetch(
     `${process.env.NEXT_PUBLIC_URL}/api/hook/${hookId}`,
@@ -41,6 +52,7 @@ export default async function ReviewPage({
     return notFound();
   }
 
+  const categories = await fetchCategories();
   const hook = (await getHook({ hookId: params.hookId })) as HookType;
   const deploymentDetails = formatDeploymentDetails(hook);
 
@@ -50,7 +62,11 @@ export default async function ReviewPage({
         title="Review hook"
         subtitle="Review the hook and approve or reject it."
       />
-      <HookOwned componentData={hook} role={user.role} />
+      <HookOwned
+        componentData={hook}
+        role={user.role}
+        categories={categories}
+      />
       <DeploymentDetails deployment={deploymentDetails} />
       <ReviewHook hook={hook} />
     </Container>

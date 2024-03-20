@@ -12,14 +12,16 @@ import { PreviewStatus } from "@component/overall/preview/PreviewStatus";
 import PreviewIframe from "@component/overall/preview/PreviewIframe";
 import PreviewTitle from "@component/overall/preview/PreviewTitle";
 import { Skeleton } from "@component/ui/Skeleton";
-import { HookType } from "@/types/hook";
+import { HookType, CategoryType } from "@/types/hook";
 
 export default function HookOwned({
   componentData,
   role,
+  categories,
 }: {
   componentData: HookType;
   role: string;
+  categories: CategoryType[];
 }) {
   const refIframe = useRef(null);
 
@@ -48,11 +50,20 @@ export default function HookOwned({
 
         <div className="flex tems-start justify-between gap-2 w-full">
           <div className="flex flex-wrap items-end gap-2">
-            <PreviewConfig type="hook" componentData={componentData} />
+            <PreviewConfig
+              type="hook"
+              componentData={componentData}
+              categories={categories}
+            />
             <PreviewFolder url={`/hooks/hook/${componentId}`} />
           </div>
           <div className="flex justify-end">
-            <PreviewStatus id={componentData.id} status={componentData.status} role={role} variant="hook" />
+            <PreviewStatus
+              id={componentData.id}
+              status={componentData.status}
+              role={role}
+              variant="hook"
+            />
           </div>
         </div>
 

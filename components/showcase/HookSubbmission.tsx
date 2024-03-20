@@ -1,6 +1,7 @@
 import Container from "@component/overall/Container";
 import SplashButton from "@component/ui/SplashButton";
 import HookOwned from "@component/showcase/hook/HookOwned";
+import { CategoryType } from "@/types/hook";
 
 async function getHook(id: string) {
   const hookFetch = await fetch(
@@ -22,12 +23,18 @@ async function getHook(id: string) {
   return hook;
 }
 
-export default async function HookSubbmission({ id }: { id: string }) {
+export default async function HookSubbmission({
+  id,
+  categories,
+}: {
+  id: string;
+  categories: CategoryType[];
+}) {
   const hook = await getHook(id);
 
   return (
     <Container classNames="-mx-2 flex flex-col justify-center items-center">
-      <HookOwned componentData={hook} role="user" />
+      <HookOwned componentData={hook} role="user" categories={categories} />
       <div className="h-8" />
       <SplashButton href="/dashboard" id={"home"}>
         <span>🏠</span> Back to home
