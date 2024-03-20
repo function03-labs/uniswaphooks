@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { hookSchema } from "@config/schema";
-import { ResourcePost } from "@/types/post";
+import { CategoryType } from "@/types/hook";
 
 import {
   Form,
@@ -29,36 +29,19 @@ import { Input } from "@component/ui/Input";
 import { Button } from "@component/ui/Button";
 import { Textarea } from "@component/ui/Textarea";
 
-export default function NewHookForm() {
+export default function NewHookForm({
+  categories,
+}: {
+  categories: CategoryType[];
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<ResourcePost[]>([]);
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
     defaultValues: {
       categoryId: "from-the-community",
     },
   });
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const data = await fetch("/api/category", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const response = await data.json();
-
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Category fetch error:", error);
-      }
-    }
-
-    fetchCategories();
-  }, []);
 
   async function onSubmit(values: z.infer<typeof hookSchema>) {
     setLoading(true);

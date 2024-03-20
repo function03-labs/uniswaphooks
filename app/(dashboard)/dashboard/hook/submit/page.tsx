@@ -15,7 +15,23 @@ export const metadata = {
     "Submit your Hook, and we'll review it for inclusion in the marketplace.",
 };
 
-export default function SubmitHookPage({
+async function fetchCategories() {
+  try {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/category`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await data.json();
+
+    return response.data;
+  } catch (error) {
+    console.error("Category fetch error:", error);
+  }
+}
+
+export default async function SubmitHookPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -24,6 +40,8 @@ export default function SubmitHookPage({
   var heading = "Add a new hook";
   var text =
     "Please ensure your hook adheres to the standards and guidelines of the UniswapHooks community.";
+
+  const categories = await fetchCategories();
 
   if (searchParams.step === "details") {
     step = 1;
@@ -43,7 +61,7 @@ export default function SubmitHookPage({
   const renderStepContent = () => {
     switch (searchParams.step) {
       case "details":
-        return <NewHookForm />;
+        return <NewHookForm categories={categories} />;
       case "upload":
         return <UploadHook id={String(searchParams.id)} />;
       case "deployment":
@@ -51,7 +69,7 @@ export default function SubmitHookPage({
       case "submission":
         return <HookSubbmission id={String(searchParams.id)} />;
       case undefined:
-        return <NewHookForm />;
+        return <NewHookForm categories={categories} />;
       default:
         return notFound();
     }
