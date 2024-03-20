@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { ResourcePost } from "@/types/post";
 import { hookEditSchema } from "@config/schema";
 import { formatDeploymentDetails } from "@lib/utils";
 
@@ -38,11 +37,16 @@ import { Button } from "@component/ui/Button";
 import { Textarea } from "@component/ui/Textarea";
 import DeploymentDetails from "@component/showcase/DeploymentDetails";
 
-import { HookType } from "@/types/hook";
+import { HookType, CategoryType } from "@/types/hook";
 
-export default function EditHook({ hookData }: { hookData: HookType }) {
+export default function EditHook({
+  hookData,
+  categories,
+}: {
+  hookData: HookType;
+  categories: CategoryType[];
+}) {
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<ResourcePost[]>([]);
   const deploymentDetails = formatDeploymentDetails(hookData);
   const form = useForm<z.infer<typeof hookEditSchema>>({
     resolver: zodResolver(hookEditSchema),
@@ -51,21 +55,6 @@ export default function EditHook({ hookData }: { hookData: HookType }) {
       status: "pending",
     },
   });
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const data = await fetch("/api/category");
-        const response = await data.json();
-
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Category fetch error:", error);
-      }
-    }
-
-    fetchCategories();
-  }, []);
 
   async function onSubmit(values: z.infer<typeof hookEditSchema>) {
     setLoading(true);

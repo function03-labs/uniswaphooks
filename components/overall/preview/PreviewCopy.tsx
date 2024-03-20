@@ -20,8 +20,8 @@ import DeleteHook from "@component/form/DeleteHook";
 import EditResource from "@component/form/EditResource";
 import DeleteResource from "@component/form/DeleteResource";
 
-import { HookType } from "@/types/hook";
 import { ResourcePost } from "@/types/post";
+import { CategoryType, HookType } from "@/types/hook";
 
 export default function PreviewCopy({ componentCode = "" }) {
   const [buttonText, setButtonText] = useState("Copy");
@@ -107,14 +107,16 @@ export function PreviewWebsite({ websiteUrl = "" }) {
 export function PreviewConfig({
   componentData,
   type,
+  categories,
 }: {
   componentData: HookType | ResourcePost;
   type: string;
+  categories?: CategoryType[];
 }) {
   const [buttonText, setButtonText] = useState("Menu");
   const [buttonEmoji, setButtonEmoji] = useState("🔁");
 
-  if (type === "hook") {
+  if (type === "hook" && categories) {
     return (
       <Dialog>
         <AlertDialog>
@@ -162,7 +164,10 @@ export function PreviewConfig({
           </button>
           <DeleteHook id={componentData.id} />
         </AlertDialog>
-        <EditHook hookData={componentData as HookType} />
+        <EditHook
+          hookData={componentData as HookType}
+          categories={categories}
+        />
       </Dialog>
     );
   } else {
