@@ -52,7 +52,7 @@ export default function HookOwned({
             <PreviewFolder url={`/hooks/hook/${componentId}`} />
           </div>
           <div className="flex justify-end">
-            <PreviewStatus componentData={componentData} role={role} />
+            <PreviewStatus id={componentData.id} status={componentData.status} role={role} variant="hook" />
           </div>
         </div>
 

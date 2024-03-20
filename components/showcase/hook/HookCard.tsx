@@ -6,7 +6,8 @@ import { useInView } from "react-intersection-observer";
 
 import PreviewCopy, {
   PreviewWebsite,
-  PreviewGithub
+  PreviewGithub,
+  PreviewFolder,
 } from "@component/overall/preview/PreviewCopy";
 import PreviewCreator from "@component/overall/preview/PreviewCreator";
 import PreviewIframe from "@component/overall/preview/PreviewIframe";
@@ -44,17 +45,15 @@ export default function ComponentPreview({
           componentId={componentId.toString()}
         />
 
-        <div className="lg:flex lg:items-end">
-          <div className="flex flex-wrap items-end gap-2">
+        <div className="flex flex-wrap items-end justify-between">
+          <div className="flex gap-2">
             <PreviewCopy
               componentCode={componentTitle + "\n" + componentDescription}
             />
-            {componentWebsite && (
-              <PreviewGithub repoUrl={componentWebsite} />
-            )}
-            <PreviewWebsite
-              websiteUrl={`${process.env.NEXT_PUBLIC_URL}/hooks/hook/${componentId}`}
-            />
+            {componentWebsite && <PreviewGithub repoUrl={componentWebsite} />}
+          </div>
+          <div>
+            <PreviewFolder url={`/hooks/hook/${componentId}`} />
           </div>
         </div>
 
