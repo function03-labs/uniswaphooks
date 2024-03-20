@@ -19,7 +19,7 @@ export function FileExplorer({
   hook: HookType;
 }) {
   return (
-    <DrawerContent className="max-h-1/2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+    <DrawerContent>
       <DrawerHeader>
         <DrawerTitle>File explorer</DrawerTitle>
         <DrawerDescription>
@@ -27,9 +27,9 @@ export function FileExplorer({
         </DrawerDescription>
         <Separator />
       </DrawerHeader>
-      <DrawerFooter className="px-2 h-1/2 overflow-y-auto">
+      <div className="px-2 overflow-y-auto max-h-96 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         <FileTree nodes={tree} hookId={hook.id} />
-      </DrawerFooter>
+      </div>
     </DrawerContent>
   );
 }
