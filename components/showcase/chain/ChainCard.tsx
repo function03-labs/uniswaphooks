@@ -66,7 +66,7 @@ function SliderCard(chainPost: ChainPost) {
     <div className="">
       <InputCard
         name="ModifyLiqTest"
-        value={chainPost.poolModifyLiquitifyTest}
+        value={chainPost.poolModifyLiquidityTest}
         copy={true}
       />
       <InputCard
@@ -75,8 +75,8 @@ function SliderCard(chainPost: ChainPost) {
         copy={true}
       />
       <InputCard
-        name="InitializeTest"
-        value={chainPost.poolInitializeTest}
+        name="Quoter"
+        value={chainPost.quoter}
         copy={true}
       />
     </div>
@@ -151,7 +151,7 @@ export default function ChainCard(chainPost: ChainPost) {
               copy={true}
             />
             {chainPost.poolInitializeTest &&
-            chainPost.poolModifyLiquitifyTest &&
+            chainPost.poolModifyLiquidityTest &&
             chainPost.poolSwapTest ? (
               <Accordion type="single" collapsible className="w-full ">
                 <AccordionItem value="item-1">
