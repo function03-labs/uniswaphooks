@@ -6,7 +6,7 @@ export type ChainPost = {
   currency: string;
   docs: string;
   poolManager: string;
-  poolInitializeTest: string;
-  poolModifyLiquitifyTest: string;
+  poolModifyLiquidityTest: string;
   poolSwapTest: string;
+  quoter: string;
 };
