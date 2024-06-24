@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 
 import { buttonVariants } from "@/components/ui/Button"
 import { UserAuthForm } from "@/components/form/UserAuth"
-import { Logo } from "@/components/overall/Icons"
+import { Logo } from "@/components/shared/icons"
 
 export const metadata = {
   title: "Create an account",

@@ -1,7 +1,6 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useCopyToClipboard } from "react-use"
-
 import { CategoryType, HookType } from "@/types/hook"
 import { ResourcePost } from "@/types/post"
 

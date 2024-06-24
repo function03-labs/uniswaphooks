@@ -5,7 +5,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Fuse from "fuse.js"
 import { useClickAway, useDebounce } from "react-use"
-
 import { HookType } from "@/types/hook"
 
 export function HeaderSearch({ hooks }: { hooks: HookType[] }) {

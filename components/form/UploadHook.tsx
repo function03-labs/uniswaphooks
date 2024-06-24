@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/Form"
 import { Input } from "@/components/ui/Input"
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 const githubUrlRegex =
   /^https?:\/\/github\.com\/(?<username>[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})\/(?<repository>[a-z\d_\-]{1,100})(?:\.git)?$/i

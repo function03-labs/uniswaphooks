@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { Icons, Logo } from "@/components/overall/Icons"
+import { Icons, Logo } from "@/components/shared/icons"
 
 const links = [
   {

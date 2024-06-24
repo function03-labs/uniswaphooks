@@ -1,5 +1,4 @@
 import { render } from "@react-email/render"
-
 import { MagicLinkData } from "@/types/auth"
 import { HookEmailType } from "@/types/hook"
 import { ResouceEmailType } from "@/types/post"

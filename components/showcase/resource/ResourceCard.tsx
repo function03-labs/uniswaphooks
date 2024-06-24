@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import ShowMoreText from "react-show-more-text"
-
 import { ResourcePost } from "@/types/post"
 
 import { Badge } from "@/components/ui/Badge"

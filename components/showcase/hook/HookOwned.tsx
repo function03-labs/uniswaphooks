@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
-
 import { CategoryType, HookType } from "@/types/hook"
 
 import { Skeleton } from "@/components/ui/Skeleton"

@@ -11,7 +11,6 @@ import {
   Section,
   Text,
 } from "@react-email/components"
-
 import { HookEmailType } from "@/types/hook"
 
 const main = {

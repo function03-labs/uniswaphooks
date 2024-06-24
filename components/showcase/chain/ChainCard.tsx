@@ -12,7 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/Accordion"
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 function InputCard({
   name,

@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/Tooltip"
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 export function CopyButtons({ code, link }: { code: string; link: string }) {
   const [copiedCode, setCopiedCode] = useState(false)

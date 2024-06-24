@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { cn } from "@lib/utils"
 import { emojisplosion } from "emojisplosion"
-
 import { SplashButtonProps } from "@/types/splash-button"
 
 export function SplashButton(props: SplashButtonProps) {

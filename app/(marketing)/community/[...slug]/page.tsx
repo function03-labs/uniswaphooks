@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { sections } from "@config/community"
-
 import { ResourcePost } from "@/types/post"
 
 import { CollectionLinks } from "@/components/ui/CollectionLinks"

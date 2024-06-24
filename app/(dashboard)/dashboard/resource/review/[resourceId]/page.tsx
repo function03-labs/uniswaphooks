@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation"
 import { getCurrentUser } from "@lib/session"
-
 import { ResourcePost } from "@/types/post"
 
 import { ReviewResource } from "@/components/form/ReviewResource"

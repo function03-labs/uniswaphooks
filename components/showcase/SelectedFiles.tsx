@@ -7,7 +7,7 @@ import { TreeFile } from "@/types/tree"
 import { Button } from "@/components/ui/Button"
 import { Card, CardTitle } from "@/components/ui/Card"
 import { useSelectedPath } from "@/components/config/FileSelected"
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 export function SelectedFiles({
   selected,

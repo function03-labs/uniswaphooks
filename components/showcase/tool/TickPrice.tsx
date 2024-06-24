@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/Form"
 import { Input } from "@/components/ui/Input"
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 const formSchema = z.object({
   tokenOne: z.string(),

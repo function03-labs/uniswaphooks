@@ -1,5 +1,4 @@
 import Link from "next/link"
-
 import { ToolPost } from "@/types/tool"
 
 import { CardTag } from "@/components/ui/CardTag"

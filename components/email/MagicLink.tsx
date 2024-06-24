@@ -13,7 +13,6 @@ import {
   Section,
   Text,
 } from "@react-email/components"
-
 import { MagicLinkData } from "@/types/auth"
 
 export function MagicLink({ magicLink }: { magicLink: MagicLinkData }) {

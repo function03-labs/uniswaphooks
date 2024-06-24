@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation"
 import { Tree } from "@geist-ui/core"
-
 import { TreeType } from "@/types/tree"
 
 import { useSelectedPath } from "@/components/config/FileSelected"

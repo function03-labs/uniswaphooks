@@ -11,7 +11,6 @@ import {
   Section,
   Text,
 } from "@react-email/components"
-
 import { ResouceEmailType } from "@/types/post"
 
 const main = {

@@ -8,7 +8,7 @@ import { cn } from "@lib/utils"
 
 import { MobileNav } from "@/components/navigation/MobileNav"
 import { BrandLogo } from "@/components/overall/BrandLogo"
-import { Icons, Logo } from "@/components/overall/Icons"
+import { Icons, Logo } from "@/components/shared/icons"
 
 interface MainNavProps {
   items?: MainNavItem[]

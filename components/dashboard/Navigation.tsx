@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { SidebarNavItem } from "@/types"
 import { Tabs } from "@geist-ui/core"
 
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 interface DashboardNavProps {
   items: SidebarNavItem[]

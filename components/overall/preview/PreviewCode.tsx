@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import Prism from "prismjs"
-
 import { PreviewCodeProps } from "@/types/preview"
 
 require("prismjs/components/prism-jsx.min")

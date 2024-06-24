@@ -1,4 +1,4 @@
-import { SiteConfig } from "@/types"
+import { AnnouncementBannerProps, SiteConfig } from "@/types"
 
 export const siteConfig: SiteConfig = {
   name: "UniswapHooks",
@@ -9,4 +9,10 @@ export const siteConfig: SiteConfig = {
     twitter: "https://twitter.com/aiden0x4",
     github: "https://github.com/function03-labs/uniswaphooks",
   },
+}
+
+export const announcement: AnnouncementBannerProps = {
+  title: "Welcome to UniswapHooks!",
+  overview: "Curated Uniswap v4 Hooks.",
+  url: "/",
 }

@@ -13,7 +13,7 @@ import * as z from "zod"
 import { buttonVariants } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { Label } from "@/components/ui/Label"
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 

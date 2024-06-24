@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils"
 
 import { buttonVariants } from "@/components/ui/Button"
 import { UserAuthForm } from "@/components/form/UserAuth"
-import { Icons, Logo } from "@/components/overall/Icons"
 import { SponsorLink } from "@/components/overall/SponsorLink"
+import { Icons, Logo } from "@/components/shared/icons"
 
 export const metadata: Metadata = {
   title: "Login",

@@ -3,7 +3,7 @@
 import { useState } from "react"
 
 import { Card } from "@/components/ui/Card"
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 export function AddressCopy({ ethAddress }: { ethAddress: string }) {
   const [isCopied, setIsCopied] = useState(false)

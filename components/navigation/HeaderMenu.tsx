@@ -1,7 +1,7 @@
 import { MainNavItem } from "@/types"
 
 import { HeaderMenuLinks } from "@/components/navigation/HeaderMenuLinks"
-import { IconMenu } from "@/components/overall/Icons"
+import { IconMenu } from "@/components/shared/icons"
 
 export function HeaderMenu({
   showMenu,

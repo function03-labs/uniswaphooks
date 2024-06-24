@@ -2,7 +2,7 @@ import Link from "next/link"
 import { uniswaplabs } from "@data/uniswaplabs-hooks"
 
 import { Badge } from "@/components/ui/Badge"
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 export function VerifiedHooks() {
   const hooks = uniswaplabs.sort(() => Math.random() - 0.5)

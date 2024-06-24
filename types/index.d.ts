@@ -63,3 +63,9 @@ export type SidebarNavItem = {
       items: NavLink[]
     }
 )
+
+export type AnnouncementBannerProps = {
+  title: string
+  overview: string
+  url: string
+}

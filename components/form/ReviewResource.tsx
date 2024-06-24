@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useToast } from "@hooks/use-toast"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-
 import { ResourcePost } from "@/types/post"
 
 import { Button } from "@/components/ui/Button"

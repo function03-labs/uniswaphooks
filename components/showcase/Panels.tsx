@@ -1,4 +1,4 @@
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 function CurrentStep({ step }: { step: (typeof stepse)[0] }) {
   return (

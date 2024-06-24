@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 
 import { AddressCopy } from "@/components/ui/AddressCopy"
 import { Skeleton } from "@/components/ui/Skeleton"
-import { Icons } from "@/components/overall/Icons"
+import { Icons } from "@/components/shared/icons"
 
 const statuses: StatusesType = {
   true: "text-green-700 bg-green-50 ring-green-600/20",
