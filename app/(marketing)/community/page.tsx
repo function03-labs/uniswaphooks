@@ -1,12 +1,12 @@
-import Link from "next/link";
+import Link from "next/link"
+import { sections } from "@config/community"
 
-import Container from "@component/overall/Container";
-import HeroBanner from "@component/section/HeroBanner";
-import CollectionLinks from "@component/ui/CollectionLinks";
-import ResourceGrid from "@component/showcase/resource/ResourceGrid";
+import { ResourcePost } from "@/types/post"
 
-import { ResourcePost } from "@/types/post";
-import { sections } from "@config/community";
+import { CollectionLinks } from "@/components/ui/CollectionLinks"
+import { Container } from "@/components/overall/Container"
+import { HeroBanner } from "@/components/section/HeroBanner"
+import { ResourceGrid } from "@/components/showcase/resource/ResourceGrid"
 
 async function getResources() {
   try {
@@ -18,23 +18,23 @@ async function getResources() {
           "Cache-Control": "no-cache",
         },
       }
-    ).then((res) => res.json());
+    ).then((res) => res.json())
 
     return responseResources.data.filter(
       (resource: ResourcePost) => resource.status == "published"
-    );
+    )
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching data:", error)
   }
 }
 
 export default async function Page() {
-  const postPosts = await getResources();
+  const postPosts = await getResources()
 
   const activeCategory = {
     category: "Educational Resources",
     emoji: "📚",
-  };
+  }
 
   return (
     <>
@@ -66,5 +66,5 @@ export default async function Page() {
         <ResourceGrid resourcePosts={postPosts} />
       </Container>
     </>
-  );
+  )
 }

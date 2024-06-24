@@ -1,24 +1,23 @@
-import * as z from "zod";
-import { getServerSession } from "next-auth";
-
-import { db } from "@lib/prisma";
-import { authOptions } from "@lib/auth";
+import { authOptions } from "@lib/auth"
+import { db } from "@lib/prisma"
+import { getServerSession } from "next-auth"
+import * as z from "zod"
 
 const routeContextSchema = z.object({
   params: z.object({
     userId: z.string(),
   }),
-});
+})
 
 export async function PUT(
   req: Request,
   context: z.infer<typeof routeContextSchema>
 ) {
-  const { params } = routeContextSchema.parse(context);
-  const { name, email, image } = await req.json();
+  const { params } = routeContextSchema.parse(context)
+  const { name, email, image } = await req.json()
 
   if (!(await verifyCurrentUser(params.userId))) {
-    return new Response(null, { status: 403 });
+    return new Response(null, { status: 403 })
   }
 
   const user = await db.user.update({
@@ -30,27 +29,27 @@ export async function PUT(
       email,
       image,
     },
-  });
+  })
 
   return new Response(JSON.stringify(user), {
     headers: {
       "content-type": "application/json",
     },
-  });
+  })
 }
 
 async function verifyCurrentUser(userId: string) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
 
   if (!session) {
-    return false;
+    return false
   }
 
   const count = await db.user.count({
     where: {
       id: userId,
     },
-  });
+  })
 
-  return count > 0;
+  return count > 0
 }

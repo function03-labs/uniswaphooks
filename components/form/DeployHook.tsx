@@ -1,21 +1,22 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { useToast } from "@hooks/use-toast";
-import { deployHookSchema } from "@config/schema";
-import { DeploymentType } from "@/types/deployment";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { deployHookSchema } from "@config/schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useToast } from "@hooks/use-toast"
 import {
-  getVerified,
-  getSourceCode,
   getCreatorTx,
   getDeploymentDate,
-} from "@lib/hook-deployment";
+  getSourceCode,
+  getVerified,
+} from "@lib/hook-deployment"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
+import { DeploymentType } from "@/types/deployment"
+
+import { Button } from "@/components/ui/Button"
 import {
   Form,
   FormControl,
@@ -24,43 +25,42 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@component/ui/Form";
+} from "@/components/ui/Form"
+import { Input } from "@/components/ui/Input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@component/ui/Select";
-import { Input } from "@component/ui/Input";
-import { Button } from "@component/ui/Button";
-import DeploymentDetails from "@component/showcase/DeploymentDetails";
+} from "@/components/ui/Select"
+import { DeploymentDetails } from "@/components/showcase/DeploymentDetails"
 
-export default function DeployHook({ id }: { id: string }) {
-  const { toast } = useToast();
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [updating, setUpdating] = useState("not-visible");
+export function DeployHook({ id }: { id: string }) {
+  const { toast } = useToast()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [updating, setUpdating] = useState("not-visible")
   const [deployementData, setDeploymentData] = useState<DeploymentType>({
     verified: false,
-  } as DeploymentType);
+  } as DeploymentType)
   const form = useForm<z.infer<typeof deployHookSchema>>({
     resolver: zodResolver(deployHookSchema),
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof deployHookSchema>) {
-    setLoading(true);
+    setLoading(true)
 
     if (!values.deploymentAddress || !values.network) {
-      setLoading(false);
-      return;
+      setLoading(false)
+      return
     }
 
     try {
       const verified = await getVerified({
         address: `address=${values.deploymentAddress}`,
         network: values.network,
-      });
+      })
 
       setDeploymentData({
         ...deployementData,
@@ -69,24 +69,24 @@ export default function DeployHook({ id }: { id: string }) {
           deploymentAddress: values.deploymentAddress,
           network: values.network,
         },
-      });
+      })
 
       if (!verified) {
-        setLoading(false);
-        return;
+        setLoading(false)
+        return
       }
 
       const sourceCode = await getSourceCode({
         address: `address=${values.deploymentAddress}`,
         network: values.network,
-      });
+      })
       const creator = await getCreatorTx({
         address: `contractaddresses=${values.deploymentAddress}`,
         network: values.network,
-      });
+      })
 
       // TODO: Get Deployment Date -> 'date'
-      const date = await getDeploymentDate();
+      const date = await getDeploymentDate()
 
       setDeploymentData({
         ...deployementData,
@@ -105,22 +105,22 @@ export default function DeployHook({ id }: { id: string }) {
           transactionHash: creator.transactionHash || "Unknown transaction",
         },
         date: date || "Unknown date",
-      });
+      })
     } catch (error) {
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
         variant: "destructive",
-      });
+      })
     }
 
-    setLoading(false);
-    setUpdating("visible");
+    setLoading(false)
+    setUpdating("visible")
   }
 
   async function updateHook() {
-    setLoading(true);
-    setUpdating("loading");
+    setLoading(true)
+    setUpdating("loading")
 
     try {
       const requestUpdate = await fetch(`/api/hook/${id}`, {
@@ -144,26 +144,26 @@ export default function DeployHook({ id }: { id: string }) {
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
 
       if (requestUpdate.status !== 204) {
         toast({
           title: "Error",
           description: "Something went wrong. Please try again.",
           variant: "destructive",
-        });
-        throw new Error("Error updating hook");
+        })
+        throw new Error("Error updating hook")
       }
 
       toast({
         title: "Success",
         description: "Your hook has been submitted successfully.",
-      });
+      })
 
-      router.push(`/dashboard/hook/submit?id=${id}&step=submission`);
+      router.push(`/dashboard/hook/submit?id=${id}&step=submission`)
 
-      const hook = await fetch(`/api/hook/${id}`);
-      const hookData = await hook.json();
+      const hook = await fetch(`/api/hook/${id}`)
+      const hookData = await hook.json()
 
       await fetch("/api/mailer", {
         method: "POST",
@@ -178,23 +178,23 @@ export default function DeployHook({ id }: { id: string }) {
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
     } catch (error) {
-      console.log("Update error:", error);
+      console.log("Update error:", error)
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
         variant: "destructive",
-      });
+      })
     }
 
-    setLoading(false);
-    setUpdating("visible");
+    setLoading(false)
+    setUpdating("visible")
   }
 
   async function deployLater() {
-    setLoading(true);
-    setUpdating("loading");
+    setLoading(true)
+    setUpdating("loading")
 
     try {
       const requestUpdate = await fetch(`/api/hook/${id}`, {
@@ -205,26 +205,26 @@ export default function DeployHook({ id }: { id: string }) {
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
 
       if (requestUpdate.status !== 204) {
         toast({
           title: "Error",
           description: "Something went wrong. Please try again.",
           variant: "destructive",
-        });
-        throw new Error("Error updating hook");
+        })
+        throw new Error("Error updating hook")
       }
 
       toast({
         title: "Success",
         description: "Your hook has been submitted successfully.",
-      });
+      })
 
-      router.push(`/dashboard/hook/submit?id=${id}&step=submission`);
+      router.push(`/dashboard/hook/submit?id=${id}&step=submission`)
 
-      const hook = await fetch(`/api/hook/${id}`);
-      const hookData = await hook.json();
+      const hook = await fetch(`/api/hook/${id}`)
+      const hookData = await hook.json()
 
       await fetch("/api/mailer", {
         method: "POST",
@@ -239,14 +239,14 @@ export default function DeployHook({ id }: { id: string }) {
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
     } catch (error) {
-      console.log("Update error:", error);
+      console.log("Update error:", error)
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
         variant: "destructive",
-      });
+      })
     }
   }
 
@@ -309,9 +309,9 @@ export default function DeployHook({ id }: { id: string }) {
           <DeploymentDetails deployment={deployementData} />
         )}
 
-        <div className="md:grid md:grid-cols-3 gap-4 space-y-4 lg:space-y-0">
+        <div className="gap-4 space-y-4 md:grid md:grid-cols-3 lg:space-y-0">
           <Button
-            className="md:col-span-1 inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+            className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500 md:col-span-1"
             onClick={() => deployLater()}
           >
             ➡️Skip for now
@@ -320,14 +320,14 @@ export default function DeployHook({ id }: { id: string }) {
           {loading ? (
             <Button
               disabled
-              className="md:col-span-2 inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+              className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500 md:col-span-2"
               type="submit"
             >
               🔃Deploying...
             </Button>
           ) : (
             <Button
-              className="md:col-span-2 inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500"
+              className="inline-flex w-full items-center rounded-md border-2 border-current bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 transition hover:-rotate-2 hover:scale-110 hover:bg-white focus:outline-none focus:ring active:text-pink-500 md:col-span-2"
               type="submit"
             >
               ☑️Deploy Hook
@@ -353,5 +353,5 @@ export default function DeployHook({ id }: { id: string }) {
         )}
       </form>
     </Form>
-  );
+  )
 }

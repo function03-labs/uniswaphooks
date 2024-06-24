@@ -1,3 +1,4 @@
+import * as React from "react"
 import {
   Body,
   Button,
@@ -11,9 +12,9 @@ import {
   Preview,
   Section,
   Text,
-} from "@react-email/components";
-import { MagicLinkData } from "@/types/auth";
-import * as React from "react";
+} from "@react-email/components"
+
+import { MagicLinkData } from "@/types/auth"
 
 export function MagicLink({ magicLink }: { magicLink: MagicLinkData }) {
   return (
@@ -48,26 +49,26 @@ export function MagicLink({ magicLink }: { magicLink: MagicLinkData }) {
         </Container>
       </Body>
     </Html>
-  );
+  )
 }
 
 const logo = {
   borderRadius: 21,
   width: 42,
   height: 42,
-};
+}
 
 const main = {
   backgroundColor: "#ffffff",
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-};
+}
 
 const container = {
   margin: "0 auto",
   padding: "20px 0 48px",
   maxWidth: "560px",
-};
+}
 
 const heading = {
   fontSize: "24px",
@@ -76,18 +77,18 @@ const heading = {
   fontWeight: "400",
   color: "#484848",
   padding: "17px 0 0",
-};
+}
 
 const paragraph = {
   margin: "0 0 15px",
   fontSize: "15px",
   lineHeight: "1.4",
   color: "#3c4149",
-};
+}
 
 const buttonContainer = {
   padding: "27px 0 27px",
-};
+}
 
 const button = {
   backgroundColor: "#5e6ad2",
@@ -99,17 +100,17 @@ const button = {
   textAlign: "center" as const,
   display: "block",
   padding: "11px 23px",
-};
+}
 
 const reportLink = {
   fontSize: "14px",
   color: "#b4becc",
-};
+}
 
 const hr = {
   borderColor: "#dfe1e4",
   margin: "42px 0 26px",
-};
+}
 
 const code = {
   fontFamily: "monospace",
@@ -120,4 +121,4 @@ const code = {
   fontSize: "21px",
   borderRadius: "4px",
   color: "#3c4149",
-};
+}

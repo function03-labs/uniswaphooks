@@ -1,29 +1,29 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
+import React, { useState } from "react"
+
+import { Button } from "@/components/ui/Button"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@component/ui/Tooltip";
-
-import { Button } from "@component/ui/Button";
-import { Icons } from "@component/overall/Icons";
+} from "@/components/ui/Tooltip"
+import { Icons } from "@/components/overall/Icons"
 
 export function CopyButtons({ code, link }: { code: string; link: string }) {
-  const [copiedCode, setCopiedCode] = useState(false);
-  const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false)
+  const [copiedLink, setCopiedLink] = useState(false)
 
   const handleCopyCode = () => {
-    navigator.clipboard.writeText(code).then(() => setCopiedCode(true));
-    setTimeout(() => setCopiedCode(false), 2000);
-  };
+    navigator.clipboard.writeText(code).then(() => setCopiedCode(true))
+    setTimeout(() => setCopiedCode(false), 2000)
+  }
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(link).then(() => setCopiedLink(true));
-    setTimeout(() => setCopiedLink(false), 2000);
-  };
+    navigator.clipboard.writeText(link).then(() => setCopiedLink(true))
+    setTimeout(() => setCopiedLink(false), 2000)
+  }
 
   return (
     <TooltipProvider>
@@ -33,7 +33,7 @@ export function CopyButtons({ code, link }: { code: string; link: string }) {
             <Button
               size="icon"
               variant="outline"
-              className="w-5 h-5"
+              className="h-5 w-5"
               onClick={handleCopyCode}
             >
               {copiedCode ? <Icons.check /> : <Icons.copy />}
@@ -48,7 +48,7 @@ export function CopyButtons({ code, link }: { code: string; link: string }) {
             <Button
               size="icon"
               variant="outline"
-              className="w-5 h-5"
+              className="h-5 w-5"
               onClick={handleCopyLink}
             >
               {copiedLink ? <Icons.check /> : <Icons.link />}
@@ -60,5 +60,5 @@ export function CopyButtons({ code, link }: { code: string; link: string }) {
         </Tooltip>
       </div>
     </TooltipProvider>
-  );
+  )
 }

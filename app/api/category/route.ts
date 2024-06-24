@@ -1,10 +1,10 @@
-import { db } from "@lib/prisma";
+import { db } from "@lib/prisma"
 
 export async function POST(req: Request) {
   try {
-    const bodyAsString = await req.json();
-    const body = JSON.parse(bodyAsString);
-    const { id, title, description, category, emoji, tag } = body;
+    const bodyAsString = await req.json()
+    const body = JSON.parse(bodyAsString)
+    const { id, title, description, category, emoji, tag } = body
 
     const newCategory = await db.category.create({
       data: {
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
         emoji,
         tag,
       },
-    });
+    })
 
     return new Response(
       JSON.stringify({
@@ -28,9 +28,9 @@ export async function POST(req: Request) {
           "Content-Type": "application/json",
         },
       }
-    );
+    )
   } catch (err: any) {
-    console.log(err);
+    console.log(err)
     return new Response(
       JSON.stringify({
         message: "Something went wrong",
@@ -42,13 +42,13 @@ export async function POST(req: Request) {
           "Content-Type": "application/json",
         },
       }
-    );
+    )
   }
 }
 
 export async function GET() {
   try {
-    const categories = await db.category.findMany();
+    const categories = await db.category.findMany()
     return new Response(
       JSON.stringify({
         message: "Categories fetched successfully",
@@ -60,9 +60,9 @@ export async function GET() {
           "Content-Type": "application/json",
         },
       }
-    );
+    )
   } catch (err: any) {
-    console.log(err);
+    console.log(err)
     return new Response(
       JSON.stringify({
         message: "Something went wrong",
@@ -74,6 +74,6 @@ export async function GET() {
           "Content-Type": "application/json",
         },
       }
-    );
+    )
   }
 }

@@ -1,44 +1,44 @@
-"use client";
+"use client"
 
-import { useRef, useState } from "react";
+import { useRef, useState } from "react"
+import { useInView } from "react-intersection-observer"
 
-import { useInView } from "react-intersection-observer";
+import { CategoryType, HookType } from "@/types/hook"
 
+import { Skeleton } from "@/components/ui/Skeleton"
 import {
-  PreviewFolder,
   PreviewConfig,
-} from "@component/overall/preview/PreviewCopy";
-import { PreviewStatus } from "@component/overall/preview/PreviewStatus";
-import PreviewIframe from "@component/overall/preview/PreviewIframe";
-import PreviewTitle from "@component/overall/preview/PreviewTitle";
-import { Skeleton } from "@component/ui/Skeleton";
-import { HookType, CategoryType } from "@/types/hook";
+  PreviewFolder,
+} from "@/components/overall/preview/PreviewCopy"
+import { PreviewIframe } from "@/components/overall/preview/PreviewIframe"
+import { PreviewStatus } from "@/components/overall/preview/PreviewStatus"
+import { PreviewTitle } from "@/components/overall/preview/PreviewTitle"
 
-export default function HookOwned({
+export function HookOwned({
   componentData,
   role,
   categories,
 }: {
-  componentData: HookType;
-  role: string;
-  categories: CategoryType[];
+  componentData: HookType
+  role: string
+  categories: CategoryType[]
 }) {
-  const refIframe = useRef(null);
+  const refIframe = useRef(null)
 
-  const [previewWidth, setPreviewWidth] = useState("100%");
-  const [showPreview, setShowPreview] = useState(true);
+  const [previewWidth, setPreviewWidth] = useState("100%")
+  const [showPreview, setShowPreview] = useState(true)
 
   const { ref, inView } = useInView({
     threshold: 0,
     triggerOnce: true,
-  });
+  })
 
   const {
     id: componentId,
     title: componentTitle,
     description: componentDescription,
     creatorName: componentCreator,
-  } = componentData;
+  } = componentData
 
   return (
     <div ref={ref} id={componentId} className="p-2">
@@ -48,7 +48,7 @@ export default function HookOwned({
           componentId={componentId}
         />
 
-        <div className="flex tems-start justify-between gap-2 w-full">
+        <div className="tems-start flex w-full justify-between gap-2">
           <div className="flex flex-wrap items-end gap-2">
             <PreviewConfig
               type="hook"
@@ -84,7 +84,7 @@ export default function HookOwned({
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 HookOwned.Skeleton = function HookOwnedSkeleton() {
@@ -92,7 +92,7 @@ HookOwned.Skeleton = function HookOwnedSkeleton() {
     <div className="max-w-md p-2">
       <div className="space-y-2">
         <Skeleton />
-        <div className="lg:flex lg:items-start lg:justify-between gap-2 w-full">
+        <div className="w-full gap-2 lg:flex lg:items-start lg:justify-between">
           <div className="flex flex-wrap items-end gap-2">
             <Skeleton />
             <Skeleton />
@@ -108,5 +108,5 @@ HookOwned.Skeleton = function HookOwnedSkeleton() {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

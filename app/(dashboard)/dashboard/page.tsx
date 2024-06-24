@@ -1,27 +1,26 @@
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@lib/session";
+import { redirect } from "next/navigation"
+import { getCurrentUser } from "@lib/session"
 
-import Container from "@component/overall/Container";
-import HookGrid from "@component/showcase/hook/HookGrid";
-import { DashboardHeader } from "@component/dashboard/Header";
-
-import SplashButton from "@component/ui/SplashButton";
-import { SortButtons } from "@component/dashboard/SortButtons";
-import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@/components/ui/EmptyPlaceholder"
+import { SplashButton } from "@/components/ui/SplashButton"
+import { DashboardHeader } from "@/components/dashboard/Header"
+import { SortButtons } from "@/components/dashboard/SortButtons"
+import { Container } from "@/components/overall/Container"
+import { HookGrid } from "@/components/showcase/hook/HookGrid"
 
 export const metadata = {
   title: "Hooks",
   description: "Manage your hooks with ease.",
-};
+}
 
 async function fetchCategories() {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/category`);
-    const response = await data.json();
+    const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/category`)
+    const response = await data.json()
 
-    return response.data;
+    return response.data
   } catch (error) {
-    console.error("Category fetch error:", error);
+    console.error("Category fetch error:", error)
   }
 }
 
@@ -29,26 +28,26 @@ async function getHooks({
   id,
   isAdmin,
 }: {
-  id?: string | null | undefined;
-  isAdmin: boolean;
+  id?: string | null | undefined
+  isAdmin: boolean
 }) {
   const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
     next: {
       revalidate: 0,
     },
-  });
+  })
 
   if (!hooksFetch.ok) {
-    throw new Error("Failed to fetch hooks");
+    throw new Error("Failed to fetch hooks")
   }
 
-  const hooks = await hooksFetch.json();
+  const hooks = await hooksFetch.json()
 
   if (isAdmin) {
-    return hooks.data;
+    return hooks.data
   }
 
-  return hooks.data.filter((hook: any) => hook.user.id === id);
+  return hooks.data.filter((hook: any) => hook.user.id === id)
 }
 
 function getSortedHooks(
@@ -58,45 +57,45 @@ function getSortedHooks(
 ) {
   if (sort === "latest") {
     hooks.sort((a: any, b: any) => {
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    });
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    })
   } else if (sort === "oldest") {
     hooks.sort((a: any, b: any) => {
-      return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
-    });
+      return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+    })
   }
 
   if (filter === "pending") {
-    return hooks.filter((hook: any) => hook.status === "pending");
+    return hooks.filter((hook: any) => hook.status === "pending")
   } else if (filter === "published") {
-    return hooks.filter((hook: any) => hook.status === "published");
+    return hooks.filter((hook: any) => hook.status === "published")
   } else if (filter === "draft") {
-    return hooks.filter((hook: any) => hook.status === "draft");
+    return hooks.filter((hook: any) => hook.status === "draft")
   } else if (filter === "declined") {
-    return hooks.filter((hook: any) => hook.status === "declined");
+    return hooks.filter((hook: any) => hook.status === "declined")
   }
 
-  return hooks;
+  return hooks
 }
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser()
 
   if (!user) {
-    redirect("/login");
+    redirect("/login")
   }
 
-  const categories = await fetchCategories();
-  const hooks = await getHooks({ id: user.id, isAdmin: user.role === "admin" });
+  const categories = await fetchCategories()
+  const hooks = await getHooks({ id: user.id, isAdmin: user.role === "admin" })
   const sortedHooks = getSortedHooks(
     hooks,
     searchParams.sort,
     searchParams.filter
-  );
+  )
 
   return (
     <main>
@@ -129,5 +128,5 @@ export default async function Home({
         )}
       </Container>
     </main>
-  );
+  )
 }

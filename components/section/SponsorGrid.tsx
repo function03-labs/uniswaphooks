@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-export default function SponsorGrid() {
+export function SponsorGrid() {
   // eslint-disable-next-line no-unused-vars
   const sponsorItems = Array.from({ length: 12 }).map((_) => ({
     name: "Name or logo here",
     href: "#",
     image: "",
-  }));
+  }))
 
   return (
     <div className="not-prose my-[1.25em] lg:-ms-[10ch] lg:w-[85ch]">
@@ -30,5 +30,5 @@ export default function SponsorGrid() {
         ))}
       </ul>
     </div>
-  );
+  )
 }

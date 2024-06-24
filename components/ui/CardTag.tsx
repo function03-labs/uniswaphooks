@@ -1,11 +1,11 @@
-export default function CardTag({ tagType }: { tagType: string }) {
-  const isNew = tagType === "new";
-  const isSoon = tagType === "soon";
-  const isUpdated = tagType === "updated";
-  const isCustom = tagType === "community";
+export function CardTag({ tagType }: { tagType: string }) {
+  const isNew = tagType === "new"
+  const isSoon = tagType === "soon"
+  const isUpdated = tagType === "updated"
+  const isCustom = tagType === "community"
 
   if (!isNew && !isUpdated && !isSoon && !isCustom) {
-    return <></>;
+    return <></>
   }
 
   return (
@@ -18,5 +18,5 @@ export default function CardTag({ tagType }: { tagType: string }) {
     >
       {tagType}
     </span>
-  );
+  )
 }

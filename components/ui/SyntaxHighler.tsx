@@ -1,5 +1,5 @@
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { monoBlue } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import SyntaxHighlighter from "react-syntax-highlighter"
+import { monoBlue } from "react-syntax-highlighter/dist/esm/styles/hljs"
 
 export function SyntaxHighler({ code }: { code: string }) {
   return (
@@ -12,5 +12,5 @@ export function SyntaxHighler({ code }: { code: string }) {
     >
       {code}
     </SyntaxHighlighter>
-  );
+  )
 }

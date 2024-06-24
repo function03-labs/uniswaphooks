@@ -1,7 +1,8 @@
-import { BlogPost } from "@/types/post";
-import BlogCard from "@/components/showcase/blog/BlogCard";
+import { BlogPost } from "@/types/post"
 
-export default function BlogGrid({ blogPosts }: { blogPosts: BlogPost[] }) {
+import { BlogCard } from "@/components/showcase/blog/BlogCard"
+
+export function BlogGrid({ blogPosts }: { blogPosts: BlogPost[] }) {
   return (
     <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {blogPosts.map((blogPost) => (
@@ -10,5 +11,5 @@ export default function BlogGrid({ blogPosts }: { blogPosts: BlogPost[] }) {
         </li>
       ))}
     </ul>
-  );
+  )
 }

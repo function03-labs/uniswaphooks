@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
-import { nextui } from "@nextui-org/react";
+import { nextui } from "@nextui-org/react"
+import type { Config } from "tailwindcss"
 
 const config = {
   darkMode: ["class"],
@@ -103,6 +103,6 @@ const config = {
     require("tailwind-scrollbar"),
     nextui(),
   ],
-} satisfies Config;
+} satisfies Config
 
-export default config;
+export default config

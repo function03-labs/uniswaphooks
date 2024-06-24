@@ -1,13 +1,15 @@
-"use client";
-import * as z from "zod";
-import { useState, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client"
 
-import { useToast } from "@hooks/use-toast";
-import { manageAvatar } from "@lib/storage";
-import { userSchema } from "@config/schema";
+import { useRef, useState } from "react"
+import { userSchema } from "@config/schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useToast } from "@hooks/use-toast"
+import { manageAvatar } from "@lib/storage"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar"
+import { Button } from "@/components/ui/Button"
 import {
   Form,
   FormControl,
@@ -15,17 +17,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@component/ui/Form";
-import { Input } from "@component/ui/Input";
-import { Button } from "@component/ui/Button";
-import { Avatar, AvatarFallback, AvatarImage } from "@component/ui/Avatar";
+} from "@/components/ui/Form"
+import { Input } from "@/components/ui/Input"
 
-export default function ProfileForm({ user }: { user: any }) {
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState(user.image);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+export function ProfileForm({ user }: { user: any }) {
+  const { toast } = useToast()
+  const [loading, setLoading] = useState(false)
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(user.image)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
@@ -33,33 +33,33 @@ export default function ProfileForm({ user }: { user: any }) {
       name: user.name || "",
       email: user.email,
     },
-  });
+  })
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
 
     if (file && file.size < 1000000) {
-      setSelectedImage(file);
-      setImagePreviewUrl(URL.createObjectURL(file));
+      setSelectedImage(file)
+      setImagePreviewUrl(URL.createObjectURL(file))
     } else {
       toast({
         title: "Image size too large",
         description: "Please select an image smaller than 1MB.",
         variant: "destructive",
-      });
+      })
 
-      e.target.value = "";
-      setSelectedImage(null);
+      e.target.value = ""
+      setSelectedImage(null)
     }
-  };
+  }
 
   async function onSubmit(values: z.infer<typeof userSchema>) {
-    setLoading(true);
+    setLoading(true)
 
-    let imageUrl;
+    let imageUrl
     if (selectedImage) {
-      imageUrl = await manageAvatar(selectedImage, user.id);
-      setImagePreviewUrl(imageUrl);
+      imageUrl = await manageAvatar(selectedImage, user.id)
+      setImagePreviewUrl(imageUrl)
     }
 
     try {
@@ -69,28 +69,28 @@ export default function ProfileForm({ user }: { user: any }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ ...values, image: imageUrl }),
-      });
+      })
       toast({
         title: "Profile updated",
         description: "Your profile has been updated successfully.",
-      });
+      })
     } catch (error) {
-      console.error(error);
+      console.error(error)
       toast({
         title: "Failed to update profile",
         description: "Something went wrong. Please try again.",
         variant: "destructive",
-      });
+      })
     }
 
-    setLoading(false);
+    setLoading(false)
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="py-4 px-2 space-y-4 md:w-1/2 lg:w-1/3"
+        className="space-y-4 px-2 py-4 md:w-1/2 lg:w-1/3"
       >
         <FormLabel>Profile image</FormLabel>
         <input
@@ -155,5 +155,5 @@ export default function ProfileForm({ user }: { user: any }) {
         )}
       </form>
     </Form>
-  );
+  )
 }

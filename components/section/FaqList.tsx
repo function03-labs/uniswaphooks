@@ -1,18 +1,18 @@
-'use client'
+"use client"
 
-import { faqItems } from '@data/faqs'
+import { faqItems } from "@data/faqs"
 
-export default function FaqList() {
+export function FaqList() {
   const schemaData = {
-    '@context': 'http://schema.org',
-    '@type': 'FAQPage',
+    "@context": "http://schema.org",
+    "@type": "FAQPage",
     mainEntity: [
       faqItems.map((faqItem) => {
         return {
-          '@type': 'Question',
+          "@type": "Question",
           name: faqItem.question,
           acceptedAnswer: {
-            '@type': 'Answer',
+            "@type": "Answer",
             text: faqItem.answer,
           },
         }

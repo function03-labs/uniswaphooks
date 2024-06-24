@@ -1,9 +1,9 @@
-import Container from "@component/overall/Container";
+import { Container } from "@/components/overall/Container"
 
 export const metadata = {
   title: "Acknowledgements",
   description: "Acknowledgements for UniswapHooks",
-};
+}
 
 export default async function Page() {
   return (
@@ -40,5 +40,5 @@ export default async function Page() {
         </ul>
       </article>
     </Container>
-  );
+  )
 }

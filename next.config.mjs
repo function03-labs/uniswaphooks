@@ -11,6 +11,6 @@ const nextConfig = {
       "assets.coingecko.com",
     ],
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

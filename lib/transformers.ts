@@ -4,8 +4,8 @@ export function componentPreviewHtml(
   isDarkMode = false,
   isRtl = false
 ) {
-  const htmlClass = isDarkMode ? "dark" : "relative";
-  const htmlDirection = isRtl ? "rtl" : "ltr";
+  const htmlClass = isDarkMode ? "dark" : "relative"
+  const htmlDirection = isRtl ? "rtl" : "ltr"
 
   return `
     <html class="${htmlClass}" dir="${htmlDirection}">
@@ -22,46 +22,46 @@ export function componentPreviewHtml(
         ${componentHtml}
       </body>
     </html>
-  `;
+  `
 }
 
 export function componentPreviewJsx(componentHtml: string) {
-  let clonedHtml = componentHtml;
+  let clonedHtml = componentHtml
 
-  clonedHtml = clonedHtml.replace(/class=/g, "className=");
-  clonedHtml = clonedHtml.replace(/for=/g, "htmlFor=");
-  clonedHtml = clonedHtml.replace(/viewBox=/g, "viewBox=");
-  clonedHtml = clonedHtml.replace(/fill-rule=/g, "fillRule=");
-  clonedHtml = clonedHtml.replace(/fill-opacity=/g, "fillOpacity=");
-  clonedHtml = clonedHtml.replace(/clip-rule=/g, "clipRule=");
-  clonedHtml = clonedHtml.replace(/stroke-linecap=/g, "strokeLinecap=");
-  clonedHtml = clonedHtml.replace(/stroke-linejoin=/g, "strokeLinejoin=");
-  clonedHtml = clonedHtml.replace(/stroke-width=/g, "strokeWidth=");
-  clonedHtml = clonedHtml.replace(/stroke-dasharray=/g, "strokeDasharray=");
-  clonedHtml = clonedHtml.replace(/stroke-dashoffset=/g, "strokeDashoffset=");
-  clonedHtml = clonedHtml.replace(/stroke-miterlimit=/g, "strokeMiterlimit=");
-  clonedHtml = clonedHtml.replace(/stroke-opacity=/g, "strokeOpacity=");
-  clonedHtml = clonedHtml.replace(/tabindex=/g, "tabIndex=");
-  clonedHtml = clonedHtml.replace(/<!--/g, "{/*");
-  clonedHtml = clonedHtml.replace(/-->/g, "*/}");
+  clonedHtml = clonedHtml.replace(/class=/g, "className=")
+  clonedHtml = clonedHtml.replace(/for=/g, "htmlFor=")
+  clonedHtml = clonedHtml.replace(/viewBox=/g, "viewBox=")
+  clonedHtml = clonedHtml.replace(/fill-rule=/g, "fillRule=")
+  clonedHtml = clonedHtml.replace(/fill-opacity=/g, "fillOpacity=")
+  clonedHtml = clonedHtml.replace(/clip-rule=/g, "clipRule=")
+  clonedHtml = clonedHtml.replace(/stroke-linecap=/g, "strokeLinecap=")
+  clonedHtml = clonedHtml.replace(/stroke-linejoin=/g, "strokeLinejoin=")
+  clonedHtml = clonedHtml.replace(/stroke-width=/g, "strokeWidth=")
+  clonedHtml = clonedHtml.replace(/stroke-dasharray=/g, "strokeDasharray=")
+  clonedHtml = clonedHtml.replace(/stroke-dashoffset=/g, "strokeDashoffset=")
+  clonedHtml = clonedHtml.replace(/stroke-miterlimit=/g, "strokeMiterlimit=")
+  clonedHtml = clonedHtml.replace(/stroke-opacity=/g, "strokeOpacity=")
+  clonedHtml = clonedHtml.replace(/tabindex=/g, "tabIndex=")
+  clonedHtml = clonedHtml.replace(/<!--/g, "{/*")
+  clonedHtml = clonedHtml.replace(/-->/g, "*/}")
 
-  return clonedHtml;
+  return clonedHtml
 }
 
 export function componentPreviewVue(componentHtml: string) {
-  const newComponentHtml = `<template>\n${componentHtml}</template>`;
+  const newComponentHtml = `<template>\n${componentHtml}</template>`
   const formattedComponentHtml = newComponentHtml
     .split("\n")
     .map((codeLine) => {
       if (codeLine.includes("<template>") || codeLine.includes("</template>")) {
-        return codeLine.trim();
+        return codeLine.trim()
       }
 
-      return `  ${codeLine}`;
+      return `  ${codeLine}`
     })
-    .join("\n");
+    .join("\n")
 
-  return formattedComponentHtml;
+  return formattedComponentHtml
 }
 
 export function blogPreviewHtml(
@@ -69,7 +69,7 @@ export function blogPreviewHtml(
   componentContainer = "relative",
   isDarkMode = false
 ) {
-  const htmlClass = isDarkMode ? "dark" : "relative";
+  const htmlClass = isDarkMode ? "dark" : "relative"
 
   return `
     <html class="${htmlClass}">
@@ -86,5 +86,5 @@ export function blogPreviewHtml(
         ${componentHtml}
       </body>
     </html>
-  `;
+  `
 }

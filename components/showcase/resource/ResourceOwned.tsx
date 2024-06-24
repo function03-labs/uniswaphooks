@@ -1,22 +1,18 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { ResourcePost } from "@/types/post";
-import ShowMoreText from "react-show-more-text";
+import Link from "next/link"
+import ShowMoreText from "react-show-more-text"
 
-import { Badge } from "@component/ui/Badge";
+import { ResourcePost } from "@/types/post"
 
-import { PreviewConfig } from "@component/overall/preview/PreviewCopy";
-import { PreviewStatus } from "@component/overall/preview/PreviewStatus";
+import { Badge } from "@/components/ui/Badge"
+import { PreviewConfig } from "@/components/overall/preview/PreviewCopy"
+import { PreviewStatus } from "@/components/overall/preview/PreviewStatus"
 
-export default function ResourceCard({
-  resourcePost,
-}: {
-  resourcePost: ResourcePost;
-}) {
+export function ResourceCard({ resourcePost }: { resourcePost: ResourcePost }) {
   return (
     <div>
-      <div className="flex tems-start justify-between gap-2 w-full py-2">
+      <div className="tems-start flex w-full justify-between gap-2 py-2">
         <div className="flex flex-wrap items-end gap-2">
           <PreviewConfig type="resource" componentData={resourcePost} />
         </div>
@@ -34,7 +30,7 @@ export default function ResourceCard({
           id={resourcePost.id}
           className="group relative block h-full bg-white before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:border-gray-900"
         >
-          <div className="h-full rounded-lg border-2 border-gray-900 bg-white transition group-hover:-translate-y-2 group-hover:-translate-x-2">
+          <div className="h-full rounded-lg border-2 border-gray-900 bg-white transition group-hover:-translate-x-2 group-hover:-translate-y-2">
             <div className="p-4 sm:p-6 lg:p-8">
               <div className="mt-16 sm:mt-20 lg:mt-24">
                 <span
@@ -68,5 +64,5 @@ export default function ResourceCard({
         </section>
       </Link>
     </div>
-  );
+  )
 }

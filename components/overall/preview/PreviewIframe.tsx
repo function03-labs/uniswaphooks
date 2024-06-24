@@ -1,8 +1,9 @@
-import Link from "next/link";
-import ShowMoreText from "react-show-more-text";
-import { PreviewIframeProps } from "@/types/preview";
+import Link from "next/link"
+import ShowMoreText from "react-show-more-text"
 
-export default function PreviewIframe({
+import { PreviewIframeProps } from "@/types/preview"
+
+export function PreviewIframe({
   showPreview,
   componentHtml,
   componentId,
@@ -13,7 +14,7 @@ export default function PreviewIframe({
   refIframe,
   previewDark,
 }: PreviewIframeProps) {
-  const iframeTheme = previewDark ? "bg-gray-950" : "bg-white";
+  const iframeTheme = previewDark ? "bg-gray-950" : "bg-white"
 
   return (
     <div
@@ -63,5 +64,5 @@ export default function PreviewIframe({
         </div>
       </div>
     </div>
-  );
+  )
 }

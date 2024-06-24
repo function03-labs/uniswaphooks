@@ -1,10 +1,12 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
+import { Button } from "@/components/ui/Button"
+import { CopyOutput } from "@/components/ui/CopyOutput"
 import {
   Form,
   FormControl,
@@ -13,34 +15,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@component/ui/Form";
-import { Button } from "@component/ui/Button";
-import { Input } from "@component/ui/Input";
-
-import CopyOutput from "@component/ui/CopyOutput";
-import { Icons } from "@/components/overall/Icons";
+} from "@/components/ui/Form"
+import { Input } from "@/components/ui/Input"
+import { Icons } from "@/components/overall/Icons"
 
 const formSchema = z.object({
   tokenOne: z.string(),
   tokenTwo: z.string(),
   sqrtPrice: z.string(),
-});
+})
 
-export default function SquareRootPrice() {
-  const [calculatedPrice, setCalculatedPrice] = useState("");
+export function SquareRootPrice() {
+  const [calculatedPrice, setCalculatedPrice] = useState("")
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const univ3prices = require("@thanpolas/univ3prices");
+    const univ3prices = require("@thanpolas/univ3prices")
 
     const price = univ3prices(
       [values.tokenOne, values.tokenTwo],
       values.sqrtPrice
-    ).toAuto();
+    ).toAuto()
 
-    setCalculatedPrice(price);
+    setCalculatedPrice(price)
   }
   return (
     <Form {...form}>
@@ -126,5 +125,5 @@ export default function SquareRootPrice() {
         </div>
       </form>
     </Form>
-  );
+  )
 }

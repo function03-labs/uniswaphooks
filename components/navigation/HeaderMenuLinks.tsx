@@ -1,14 +1,14 @@
-import Link from "next/link";
-import { MainNavItem } from "@/types";
+import Link from "next/link"
+import { MainNavItem } from "@/types"
 
-export default function HeaderMenuLinks({
+export function HeaderMenuLinks({
   menuLinks,
   navClass,
   ulClass,
 }: {
-  menuLinks: MainNavItem[];
-  navClass?: string;
-  ulClass?: string;
+  menuLinks: MainNavItem[]
+  navClass?: string
+  ulClass?: string
 }) {
   return (
     <nav aria-label="Global" className={navClass && navClass}>
@@ -23,9 +23,9 @@ export default function HeaderMenuLinks({
                 {menuLink.title}
               </Link>
             </li>
-          );
+          )
         })}
       </ul>
     </nav>
-  );
+  )
 }

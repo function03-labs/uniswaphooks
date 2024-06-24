@@ -1,27 +1,28 @@
-import { join } from "path";
-import matter from "gray-matter";
-import { promises as fs } from "fs";
-import { Metadata } from "next";
+import { promises as fs } from "fs"
+import { join } from "path"
 
-import Container from "@component/overall/Container";
-import CollectionLinks from "@component/ui/CollectionLinks";
-import ToolForm from "@component/showcase/tool/ToolForm";
+import { Metadata } from "next"
+import matter from "gray-matter"
+
+import { CollectionLinks } from "@/components/ui/CollectionLinks"
+import { Container } from "@/components/overall/Container"
+import { ToolForm } from "@/components/showcase/tool/ToolForm"
 
 interface PageProps {
   params: {
-    slug: string;
-  };
+    slug: string
+  }
 }
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   try {
-    const data = await getToolData(params);
+    const data = await getToolData(params)
 
     if (!data) {
       return {
         title: "Not Found",
-      };
+      }
     }
 
     return {
@@ -35,30 +36,30 @@ export async function generateMetadata({
         title: `${data.title} | UniswapHooks`,
         description: data.description,
       },
-    };
+    }
   } catch (error) {
-    console.error("Error generating metadata:", error);
+    console.error("Error generating metadata:", error)
     return {
       title: "Internal Server Error",
-    };
+    }
   }
 }
 
 async function getToolData(params: { slug: string }, _preview?: boolean) {
-  const toolPosts = await getTools();
-  return toolPosts.find((toolPost) => toolPost.id === params.slug[0]);
+  const toolPosts = await getTools()
+  return toolPosts.find((toolPost) => toolPost.id === params.slug[0])
 }
 
 async function getTools() {
-  const toolsPath = join(process.cwd(), "/data/tools");
-  const toolSlugs = await fs.readdir(toolsPath);
+  const toolsPath = join(process.cwd(), "/data/tools")
+  const toolSlugs = await fs.readdir(toolsPath)
 
   const toolPosts = await Promise.all(
     toolSlugs.map(async (toolSlug) => {
-      const postPath = join(toolsPath, toolSlug);
-      const toolItem = await fs.readFile(postPath, "utf-8");
+      const postPath = join(toolsPath, toolSlug)
+      const toolItem = await fs.readFile(postPath, "utf-8")
 
-      const { data: toolData } = matter(toolItem);
+      const { data: toolData } = matter(toolItem)
 
       return {
         id: toolData.id,
@@ -68,28 +69,28 @@ async function getTools() {
         tag: toolData?.tag,
         emoji: toolData.emoji,
         category: toolData.category,
-      };
+      }
     })
-  );
+  )
 
-  return toolPosts;
+  return toolPosts
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const data = await getToolData(params);
+  const data = await getToolData(params)
 
   if (!data) {
     return {
       status: 404,
-    };
+    }
   }
 
-  const tools = await getTools();
+  const tools = await getTools()
 
   const activeCategory = {
     category: data.category,
     emoji: "🔧",
-  };
+  }
 
   return (
     <Container classNames="py-8 lg:py-12 space-y-8 lg:space-y-12">
@@ -103,5 +104,5 @@ export default async function Page({ params }: { params: { slug: string } }) {
         <ToolForm toolPost={data} params={params} />
       </div>
     </Container>
-  );
+  )
 }

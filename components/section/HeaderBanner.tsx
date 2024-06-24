@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { siteConfig } from "@config/site";
+import Link from "next/link"
+import { siteConfig } from "@config/site"
 
-import Container from "@component/overall/Container";
+import { Container } from "@/components/overall/Container"
 
 export default function HeaderBanner() {
   return (
@@ -23,5 +23,5 @@ export default function HeaderBanner() {
         </Link>
       </Container>
     </section>
-  );
+  )
 }

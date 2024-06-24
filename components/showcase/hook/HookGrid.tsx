@@ -1,17 +1,18 @@
-import { HookType, CategoryType } from "@/types/hook";
-import HookCard from "@/components/showcase/hook/HookCard";
-import HookOwned from "@/components/showcase/hook/HookOwned";
+import { CategoryType, HookType } from "@/types/hook"
 
-export default function HookGrid({
+import { ComponentPreview } from "@/components/showcase/hook/HookCard"
+import { HookOwned } from "@/components/showcase/hook/HookOwned"
+
+export function HookGrid({
   hookPosts,
   owned,
   role,
   categories,
 }: {
-  hookPosts: HookType[];
-  owned: boolean;
-  role: string;
-  categories?: CategoryType[];
+  hookPosts: HookType[]
+  owned: boolean
+  role: string
+  categories?: CategoryType[]
 }) {
   return (
     <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -31,11 +32,11 @@ export default function HookGrid({
         <>
           {hookPosts.map((hookPost) => (
             <li key={hookPost.id}>
-              <HookCard componentData={hookPost} />
+              <ComponentPreview componentData={hookPost} />
             </li>
           ))}
         </>
       )}
     </ul>
-  );
+  )
 }

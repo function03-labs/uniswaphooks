@@ -1,23 +1,24 @@
-import Link from "next/link";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
+import Image from "next/image"
+import Link from "next/link"
 
-import { Icons } from "@component/overall/Icons";
-import { Skeleton } from "@component/ui/Skeleton";
-import AddressCopy from "@component/ui/AddressCopy";
+import { DeploymentType, StatusesType } from "@/types/deployment"
+import { HookType } from "@/types/hook"
 
-import { HookType } from "@/types/hook";
-import { DeploymentType, StatusesType } from "@/types/deployment";
+import { cn } from "@/lib/utils"
+
+import { AddressCopy } from "@/components/ui/AddressCopy"
+import { Skeleton } from "@/components/ui/Skeleton"
+import { Icons } from "@/components/overall/Icons"
 
 const statuses: StatusesType = {
   true: "text-green-700 bg-green-50 ring-green-600/20",
   false: "text-red-700 bg-red-50 ring-red-600/10",
-};
+}
 
-export default function DeploymentDetails({
+export function DeploymentDetails({
   deployment,
 }: {
-  deployment: DeploymentType;
+  deployment: DeploymentType
 }) {
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200">
@@ -37,7 +38,7 @@ export default function DeploymentDetails({
         <div
           className={cn(
             statuses[deployment.verified.toString()],
-            "rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset"
+            "rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
           )}
         >
           {deployment.verified ? "Deployed" : "Not deployed"}
@@ -70,7 +71,7 @@ export default function DeploymentDetails({
 
             <div className="flex justify-between gap-x-4 py-3">
               <dt className="text-gray-500">Compiler</dt>
-              <dd className="text-gray-700 font-mono text-sm border border-gray-200 rounded-md px-2 py-1 truncate">
+              <dd className="truncate rounded-md border border-gray-200 px-2 py-1 font-mono text-sm text-gray-700">
                 {deployment.contract.compilerVersion}
               </dd>
             </div>
@@ -85,25 +86,25 @@ export default function DeploymentDetails({
           </dl>
         )}
     </div>
-  );
+  )
 }
 
 export function DeployedDetail({
   deployment,
   hook,
 }: {
-  deployment: DeploymentType;
-  hook: HookType;
+  deployment: DeploymentType
+  hook: HookType
 }) {
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200">
       <div className="flex items-center justify-between gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
         <div className="flex items-center gap-x-4">
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <div
               className={cn(
                 statuses[deployment.verified.toString()],
-                "rounded-full border max-w-fit border-gray-300 px-2.5 py-0.5 text-xs font-medium"
+                "max-w-fit rounded-full border border-gray-300 px-2.5 py-0.5 text-xs font-medium"
               )}
             >
               {deployment.verified ? "Deployed" : "Not deployed"}
@@ -119,9 +120,9 @@ export function DeployedDetail({
             <Link
               href={hook.filePath}
               target="_blank"
-              className="flex items-end justify-center p-1 rounded-md hover:bg-gray-100"
+              className="flex items-end justify-center rounded-md p-1 hover:bg-gray-100"
             >
-              <Icons.gitHub className="w-4 h-4 text-gray-500" />
+              <Icons.gitHub className="h-4 w-4 text-gray-500" />
             </Link>
           </div>
         )}
@@ -134,7 +135,7 @@ export function DeployedDetail({
           <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
             <div className="flex justify-between gap-x-4 py-3">
               <dt className="text-gray-500">Network</dt>
-              <dd className="text-gray-700 font-mono text-sm  px-2 py-1 truncate">
+              <dd className="truncate px-2 py-1  font-mono text-sm text-gray-700">
                 {hook.network.name}
               </dd>
             </div>
@@ -159,7 +160,7 @@ export function DeployedDetail({
 
             <div className="flex justify-between gap-x-4 py-3">
               <dt className="text-gray-500">Compiler</dt>
-              <dd className="text-gray-700 font-mono text-sm border border-gray-200 rounded-md px-2 py-1 truncate">
+              <dd className="truncate rounded-md border border-gray-200 px-2 py-1 font-mono text-sm text-gray-700">
                 {deployment.contract.compilerVersion}
               </dd>
             </div>
@@ -174,7 +175,7 @@ export function DeployedDetail({
           </dl>
         )}
     </div>
-  );
+  )
 }
 
 export function DeployedDetailSkeleton() {
@@ -205,5 +206,5 @@ export function DeployedDetailSkeleton() {
         </div>
       </dl>
     </div>
-  );
+  )
 }

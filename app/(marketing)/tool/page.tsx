@@ -1,25 +1,26 @@
-import { join } from "path";
-import matter from "gray-matter";
-import { promises as fs } from "fs";
+import { promises as fs } from "fs"
+import { join } from "path"
 
-import Container from "@component/overall/Container";
-import HeroBanner from "@component/section/HeroBanner";
-import ToolGrid from "@component/showcase/tool/ToolGrid";
+import matter from "gray-matter"
+
+import { Container } from "@/components/overall/Container"
+import { HeroBanner } from "@/components/section/HeroBanner"
+import { ToolGrid } from "@/components/showcase/tool/ToolGrid"
 
 export const metadata = {
   title: "Tools",
-};
+}
 
 async function getTools() {
-  const toolsPath = join(process.cwd(), "/data/tools");
-  const toolSlugs = await fs.readdir(toolsPath);
+  const toolsPath = join(process.cwd(), "/data/tools")
+  const toolSlugs = await fs.readdir(toolsPath)
 
   const toolPosts = await Promise.all(
     toolSlugs.map(async (toolSlug) => {
-      const postPath = join(toolsPath, toolSlug);
-      const toolItem = await fs.readFile(postPath, "utf-8");
+      const postPath = join(toolsPath, toolSlug)
+      const toolItem = await fs.readFile(postPath, "utf-8")
 
-      const { data: toolData } = matter(toolItem);
+      const { data: toolData } = matter(toolItem)
 
       return {
         id: toolData.id,
@@ -28,15 +29,15 @@ async function getTools() {
         tag: toolData?.tag,
         emoji: toolData.emoji,
         category: toolData.category,
-      };
+      }
     })
-  );
+  )
 
-  return toolPosts;
+  return toolPosts
 }
 
 export default async function Page() {
-  const toolPosts = await getTools();
+  const toolPosts = await getTools()
 
   return (
     <>
@@ -49,5 +50,5 @@ export default async function Page() {
         <ToolGrid tools={toolPosts} />
       </Container>
     </>
-  );
+  )
 }

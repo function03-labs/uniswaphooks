@@ -1,7 +1,8 @@
-import Container from "@component/overall/Container";
-import SplashButton from "@component/ui/SplashButton";
-import HookOwned from "@component/showcase/hook/HookOwned";
-import { CategoryType } from "@/types/hook";
+import { CategoryType } from "@/types/hook"
+
+import { SplashButton } from "@/components/ui/SplashButton"
+import { Container } from "@/components/overall/Container"
+import { HookOwned } from "@/components/showcase/hook/HookOwned"
 
 async function getHook(id: string) {
   const hookFetch = await fetch(
@@ -13,24 +14,24 @@ async function getHook(id: string) {
         "Cache-Control": "no-cache",
       },
     }
-  );
+  )
 
   if (!hookFetch.ok) {
-    throw new Error("Failed to fetch hooks");
+    throw new Error("Failed to fetch hooks")
   }
 
-  const hook = await hookFetch.json();
-  return hook;
+  const hook = await hookFetch.json()
+  return hook
 }
 
-export default async function HookSubbmission({
+export async function HookSubbmission({
   id,
   categories,
 }: {
-  id: string;
-  categories: CategoryType[];
+  id: string
+  categories: CategoryType[]
 }) {
-  const hook = await getHook(id);
+  const hook = await getHook(id)
 
   return (
     <Container classNames="-mx-2 flex flex-col justify-center items-center">
@@ -40,5 +41,5 @@ export default async function HookSubbmission({
         <span>🏠</span> Back to home
       </SplashButton>
     </Container>
-  );
+  )
 }

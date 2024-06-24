@@ -1,24 +1,22 @@
-import { cleanFiles } from "@lib/utils";
-import { supabase } from "@lib/supabase";
+import { supabase } from "@lib/supabase"
+import { cleanFiles } from "@lib/utils"
 
 interface NamedBlob extends Blob {
-  name: string;
+  name: string
 }
 
 export async function uploadAvatar(file: File, userId: string) {
   return await supabase.storage
     .from("avatars")
-    .upload(userId + "/avatar.png", file);
+    .upload(userId + "/avatar.png", file)
 }
 
 export async function deleteAvatar(userId: string) {
-  return await supabase.storage
-    .from("avatars")
-    .remove([userId + "/avatar.png"]);
+  return await supabase.storage.from("avatars").remove([userId + "/avatar.png"])
 }
 
 export async function getAvatarDownloadUrl(userId: string) {
-  return await supabase.storage.from("avatars").list(userId);
+  return await supabase.storage.from("avatars").list(userId)
 }
 
 export async function manageAvatar(file: File, userId: string) {
@@ -27,14 +25,14 @@ export async function manageAvatar(file: File, userId: string) {
       (res) => res.data && res.data.length > 0
     )
   ) {
-    deleteAvatar(userId);
+    deleteAvatar(userId)
   }
 
-  await uploadAvatar(file, userId);
+  await uploadAvatar(file, userId)
 
-  const { data, error } = await getAvatarDownloadUrl(userId);
+  const { data, error } = await getAvatarDownloadUrl(userId)
   if (error) {
-    throw error;
+    throw error
   }
 
   return (
@@ -42,18 +40,18 @@ export async function manageAvatar(file: File, userId: string) {
     "/storage/v1/object/public/avatars/" +
     userId +
     "/avatar.png"
-  );
+  )
 }
 
 export async function uploadFiles(files: NamedBlob[], folderName: string) {
-  console.log(files);
+  console.log(files)
   const uploadPromises = files.map((file) => {
-    const filePath = `${folderName}/${file.name}`;
-    return supabase.storage.from("repositories").upload(filePath, file);
-  });
+    const filePath = `${folderName}/${file.name}`
+    return supabase.storage.from("repositories").upload(filePath, file)
+  })
 
-  const uploadResults = await Promise.all(uploadPromises);
-  console.log(uploadResults);
+  const uploadResults = await Promise.all(uploadPromises)
+  console.log(uploadResults)
 
   const filePaths = uploadResults.map((result) => {
     if (result.data) {
@@ -63,12 +61,12 @@ export async function uploadFiles(files: NamedBlob[], folderName: string) {
         folderName +
         "/" +
         result.data.path
-      );
+      )
     }
-    return null;
-  });
+    return null
+  })
 
-  console.log(filePaths);
+  console.log(filePaths)
 
-  return filePaths;
+  return filePaths
 }

@@ -1,26 +1,27 @@
-import { join } from "path";
-import matter from "gray-matter";
-import { promises as fs } from "fs";
+import { promises as fs } from "fs"
+import { join } from "path"
 
-import BlogGrid from "@/components/showcase/blog/BlogGrid";
-import Container from "@component/overall/Container";
-import HeroBanner from "@component/section/HeroBanner";
+import matter from "gray-matter"
+
+import { Container } from "@/components/overall/Container"
+import { HeroBanner } from "@/components/section/HeroBanner"
+import { BlogGrid } from "@/components/showcase/blog/BlogGrid"
 
 export const metadata = {
   title: "Blogs",
-};
+}
 
-const postsPath = join(process.cwd(), "/data/blogs");
+const postsPath = join(process.cwd(), "/data/blogs")
 
 async function getPosts() {
-  const blogSlugs = await fs.readdir(postsPath);
+  const blogSlugs = await fs.readdir(postsPath)
 
   const blogPosts = await Promise.all(
     blogSlugs.map(async (blogSlug) => {
-      const postPath = join(postsPath, blogSlug);
-      const blogItem = await fs.readFile(postPath, "utf-8");
+      const postPath = join(postsPath, blogSlug)
+      const blogItem = await fs.readFile(postPath, "utf-8")
 
-      const { data: blogData } = matter(blogItem);
+      const { data: blogData } = matter(blogItem)
 
       return {
         title: blogData.title,
@@ -28,20 +29,20 @@ async function getPosts() {
         emoji: blogData.emoji,
         tag: blogData.tag,
         slug: blogSlug.replace(".mdx", ""),
-      };
+      }
     })
-  );
+  )
 
   return blogPosts.sort((blogA, blogB) => {
-    const dateA = new Date(blogA.date);
-    const dateB = new Date(blogB.date);
+    const dateA = new Date(blogA.date)
+    const dateB = new Date(blogB.date)
 
-    return dateB.getTime() - dateA.getTime();
-  });
+    return dateB.getTime() - dateA.getTime()
+  })
 }
 
 export default async function Page() {
-  const blogPosts = await getPosts();
+  const blogPosts = await getPosts()
 
   return (
     <main>
@@ -54,5 +55,5 @@ export default async function Page() {
         <BlogGrid blogPosts={blogPosts} />
       </Container>
     </main>
-  );
+  )
 }

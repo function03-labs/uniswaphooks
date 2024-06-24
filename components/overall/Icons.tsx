@@ -1,44 +1,44 @@
+import Image from "next/image"
 import {
   AlertTriangle,
   ArrowRight,
-  ChevronDown,
+  BookCheck,
+  BookOpenText,
   Check,
+  Check as CheckIcon,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Command,
+  Copy,
   CreditCard,
+  Equal,
   File,
   FileText,
+  FolderClosed,
+  FolderOpen,
+  GithubIcon as Github,
   HelpCircle,
   Image as ImageIcon,
   Laptop,
+  LibrarySquare,
+  Link,
   Loader2,
+  LucideIcon,
   Moon,
+  MoreHorizontal,
   MoreVertical,
   Pizza,
   Plus,
+  Search,
   Settings,
   SunMedium,
   Trash,
-  X,
-  Search,
-  BookOpenText,
-  LucideIcon,
-  GithubIcon as Github,
-  MoreHorizontal,
-  Equal,
-  Copy,
-  Check as CheckIcon,
-  BookCheck,
   UserRound,
-  LibrarySquare,
-  Link,
-  FolderClosed,
-  FolderOpen,
-} from "lucide-react";
-import Image from "next/image";
+  X,
+} from "lucide-react"
 
-export type Icon = LucideIcon;
+export type Icon = LucideIcon
 
 export const Icons = {
   logo: Command,
@@ -77,8 +77,8 @@ export const Icons = {
   library: LibrarySquare,
   link: Link,
   folder: FolderClosed,
-  folderOpen: FolderOpen
-};
+  folderOpen: FolderOpen,
+}
 
 export function IconMenu() {
   return (
@@ -96,7 +96,7 @@ export function IconMenu() {
         d="M4 6h16M4 12h16M4 18h16"
       />
     </svg>
-  );
+  )
 }
 
 export function Logo({ className }: { className?: string }) {
@@ -109,7 +109,7 @@ export function Logo({ className }: { className?: string }) {
       height={64}
       quality={100}
     />
-  );
+  )
 }
 
 export function LogoImage({ className }: { className?: string }) {
@@ -122,5 +122,5 @@ export function LogoImage({ className }: { className?: string }) {
       height={64}
       quality={100}
     />
-  );
+  )
 }

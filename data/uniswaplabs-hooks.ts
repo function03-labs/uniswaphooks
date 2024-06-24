@@ -47,4 +47,4 @@ export const uniswaplabs = [
       "https://github.com/Uniswap/v4-periphery/blob/main/contracts/hooks/examples/VolatilityOracle.sol",
     categoryId: "uniswap-labs",
   },
-];
+]

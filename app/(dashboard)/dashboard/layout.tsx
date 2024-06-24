@@ -1,25 +1,24 @@
-import { redirect } from "next/navigation";
+import { redirect } from "next/navigation"
+import { dashboardConfig } from "@config/dashboard"
+import { getCurrentUser } from "@lib/session"
 
-import { getCurrentUser } from "@lib/session";
-import { dashboardConfig } from "@config/dashboard";
-
-import { Badge } from "@component/ui/Badge";
-import SplashButton from "@component/ui/SplashButton";
-import { MainNav } from "@component/navigation/DashboardNav";
-import { DashboardNav } from "@component/dashboard/Navigation";
-import { UserAccountNav } from "@component/dashboard/UserAccountNav";
+import { Badge } from "@/components/ui/Badge"
+import { SplashButton } from "@/components/ui/SplashButton"
+import { DashboardNav } from "@/components/dashboard/Navigation"
+import { UserAccountNav } from "@/components/dashboard/UserAccountNav"
+import { MainNav } from "@/components/navigation/DashboardNav"
 
 interface DashboardLayoutProps {
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser()
 
   if (!user) {
-    redirect("/login");
+    redirect("/login")
   }
 
   return (
@@ -29,7 +28,7 @@ export default async function DashboardLayout({
           <MainNav items={dashboardConfig.mainNav} />
           <div className="flex items-center justify-end gap-2 sm:gap-4">
             {user.role === "admin" && (
-              <Badge className="hidden sm:block bg-red-200 text-red-700 hover:bg-red-400">
+              <Badge className="hidden bg-red-200 text-red-700 hover:bg-red-400 sm:block">
                 Admin
               </Badge>
             )}
@@ -54,5 +53,5 @@ export default async function DashboardLayout({
       </header>
       <main className="container overflow-hidden py-2">{children}</main>
     </div>
-  );
+  )
 }

@@ -1,13 +1,14 @@
-import { supabase } from "@lib/supabase";
-import { getItemType } from "@lib/utils";
-import { TreeType } from "@/types/tree";
+import { supabase } from "@lib/supabase"
+import { getItemType } from "@lib/utils"
+
+import { TreeType } from "@/types/tree"
 
 async function getRepository({
   github,
   path,
 }: {
-  github: string;
-  path?: string;
+  github: string
+  path?: string
 }) {
   const repoFetch = await fetch(
     `https://api.github.com/repos/${github.split("/")[3]}/${
@@ -20,25 +21,25 @@ async function getRepository({
         Authorization: `token ${process.env.GITHUB_TOKEN}`,
       },
     }
-  );
+  )
 
   if (!repoFetch.ok) {
-    throw new Error("Failed to fetch repo");
+    throw new Error("Failed to fetch repo")
   }
 
-  const repoContent = await repoFetch.json();
+  const repoContent = await repoFetch.json()
 
-  return repoContent;
+  return repoContent
 }
 
 export async function buildTreeGithub({
   github,
   path,
 }: {
-  github: string;
-  path: string;
+  github: string
+  path: string
 }) {
-  const contents = await getRepository({ github, path });
+  const contents = await getRepository({ github, path })
   const tree = await Promise.all(
     contents.map(async (item: any) => {
       if (item.type === "dir") {
@@ -47,7 +48,7 @@ export async function buildTreeGithub({
           name: item.name,
           path: item.path,
           files: await buildTreeGithub({ github, path: item.path }),
-        };
+        }
       } else {
         return {
           type: "file",
@@ -55,26 +56,26 @@ export async function buildTreeGithub({
           path: item.path,
           download_url: item.download_url,
           extra: `${Math.floor(item.size / 102.4) / 10} kb`,
-        };
+        }
       }
     })
-  );
+  )
 
-  return tree;
+  return tree
 }
 
 async function fetchFilesAndDirectories({
   bucketName,
   path,
 }: {
-  bucketName: string;
-  path: string;
+  bucketName: string
+  path: string
 }) {
   try {
-    const { data, error } = await supabase.storage.from(bucketName).list(path);
+    const { data, error } = await supabase.storage.from(bucketName).list(path)
 
     if (error) {
-      throw error;
+      throw error
     }
 
     const filesAndDirectories = data.map((item) => {
@@ -82,18 +83,18 @@ async function fetchFilesAndDirectories({
         name: item.name,
         type: getItemType(item),
         path: path.includes("/")
-        ? `${path.split("/").slice(1).join("/")}/${item.name}`
-        : item.name,
+          ? `${path.split("/").slice(1).join("/")}/${item.name}`
+          : item.name,
         size: item.metadata?.size
           ? `${Math.floor(item.metadata.size / 102.4) / 10} kb`
           : undefined,
-      };
-    });
+      }
+    })
 
-    return filesAndDirectories;
+    return filesAndDirectories
   } catch (error) {
-    console.error("Error fetching files and directories:", error);
-    throw error;
+    console.error("Error fetching files and directories:", error)
+    throw error
   }
 }
 
@@ -101,21 +102,21 @@ export async function buildTreeNode(parentPath: string, bucketName: string) {
   const filesAndDirectories = await fetchFilesAndDirectories({
     bucketName,
     path: parentPath,
-  });
+  })
 
-  const treeNode: TreeType[] = [];
+  const treeNode: TreeType[] = []
   for (const item of filesAndDirectories) {
-    const currentPath = parentPath ? `${parentPath}/${item.name}` : item.name;
+    const currentPath = parentPath ? `${parentPath}/${item.name}` : item.name
 
     if (item.type === "directory") {
-      const childNodes = await buildTreeNode(currentPath, bucketName);
+      const childNodes = await buildTreeNode(currentPath, bucketName)
 
       treeNode.push({
         type: "directory",
         name: item.name,
         path: currentPath,
         files: childNodes,
-      });
+      })
     } else {
       treeNode.push({
         type: "file",
@@ -128,9 +129,9 @@ export async function buildTreeNode(parentPath: string, bucketName: string) {
         ).replace(/%2F/g, "/")}`,
 
         extra: item.size,
-      });
+      })
     }
   }
 
-  return treeNode;
+  return treeNode
 }

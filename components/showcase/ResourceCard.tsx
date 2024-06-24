@@ -1,15 +1,16 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { ResourcePost } from "@/types/post";
-import ShowMoreText from "react-show-more-text";
+import Link from "next/link"
+import ShowMoreText from "react-show-more-text"
 
-import { Badge } from "@component/ui/Badge";
+import { ResourcePost } from "@/types/post"
+
+import { Badge } from "@/components/ui/Badge"
 
 export default function ResourceCard({
   resourcePost,
 }: {
-  resourcePost: ResourcePost;
+  resourcePost: ResourcePost
 }) {
   return (
     <Link target="_blank" href={resourcePost.resourceUrl}>
@@ -17,7 +18,7 @@ export default function ResourceCard({
         id={resourcePost.id}
         className="group relative block h-full bg-white before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:border-gray-900"
       >
-        <div className="h-full rounded-lg border-2 border-gray-900 bg-white transition group-hover:-translate-y-2 group-hover:-translate-x-2">
+        <div className="h-full rounded-lg border-2 border-gray-900 bg-white transition group-hover:-translate-x-2 group-hover:-translate-y-2">
           <div className="p-4 sm:p-6 lg:p-8">
             <div className="mt-16 sm:mt-20 lg:mt-24">
               <span
@@ -50,5 +51,5 @@ export default function ResourceCard({
         </div>
       </section>
     </Link>
-  );
+  )
 }

@@ -1,15 +1,15 @@
-import data from '@emoji-mart/data'
-import Picker from '@emoji-mart/react'
+import data from "@emoji-mart/data"
+import Picker from "@emoji-mart/react"
 
-import { SelectableComponentProps } from '@component/emoji-picker/SelectableComponentProps'
+import { SelectableComponentProps } from "@/components/emoji-picker/SelectableComponentProps"
 
-declare module 'styled-components' {
+declare module "styled-components" {
   export interface DefaultTheme {
     name: string
   }
 }
 
-const EmojiPicker = ({ onSelect }: SelectableComponentProps<string>) => {
+export function EmojiPicker({ onSelect }: SelectableComponentProps<string>) {
   return (
     <Picker
       autoFocus
@@ -25,5 +25,3 @@ const EmojiPicker = ({ onSelect }: SelectableComponentProps<string>) => {
     />
   )
 }
-
-export default EmojiPicker

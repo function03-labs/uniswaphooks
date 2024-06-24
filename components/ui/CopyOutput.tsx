@@ -1,14 +1,14 @@
-"use client";
+"use client"
 
-import { Copy } from "lucide-react";
+import { Copy } from "lucide-react"
 
-export default function CopyOutput({ value }: { value: string }) {
+export function CopyOutput({ value }: { value: string }) {
   return (
     <Copy
       onClick={() => {
-        navigator.clipboard.writeText(value);
+        navigator.clipboard.writeText(value)
       }}
       width={20}
     />
-  );
+  )
 }

@@ -1,12 +1,14 @@
-"use client";
+"use client"
 
-import * as z from "zod";
+import { hookSchema } from "@config/schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useToast } from "@hooks/use-toast"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
-import { useForm } from "react-hook-form";
-import { hookSchema } from "@config/schema";
-import { useToast } from "@hooks/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { HookType } from "@/types/hook"
 
+import { Button } from "@/components/ui/Button"
 import {
   Form,
   FormControl,
@@ -14,24 +16,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@component/ui/Form";
+} from "@/components/ui/Form"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@component/ui/Select";
-import { Button } from "@component/ui/Button";
+} from "@/components/ui/Select"
 
-import { HookType } from "@/types/hook";
-
-export default function ReviewHook({ hook }: { hook: HookType }) {
-  const { toast } = useToast();
+export function ReviewHook({ hook }: { hook: HookType }) {
+  const { toast } = useToast()
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
     defaultValues: hook,
-  });
+  })
 
   async function onSubmit(data: z.infer<typeof hookSchema>) {
     try {
@@ -43,23 +42,23 @@ export default function ReviewHook({ hook }: { hook: HookType }) {
         body: JSON.stringify({
           status: data.status,
         }),
-      });
+      })
 
       if (!updatedHook.ok) {
-        throw new Error("Failed to update hook");
+        throw new Error("Failed to update hook")
       }
 
       toast({
         title: "Hook updated",
         description: "The hook has been updated.",
-      });
+      })
     } catch (error) {
-      console.log(error);
+      console.log(error)
       toast({
         title: "Failed to update hook",
         description: "Please try again",
         variant: "destructive",
-      });
+      })
     }
   }
 
@@ -97,5 +96,5 @@ export default function ReviewHook({ hook }: { hook: HookType }) {
         </Button>
       </form>
     </Form>
-  );
+  )
 }

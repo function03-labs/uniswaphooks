@@ -1,11 +1,11 @@
-import ButtonStyle from "@component/ui/ButtonStyle";
+import { ButtonStyle } from "@/components/ui/ButtonStyle"
 
-export default function PreviewView({
+export function PreviewView({
   showPreview,
   handleSetShowPreview,
 }: {
-  showPreview: boolean;
-  handleSetShowPreview: any;
+  showPreview: boolean
+  handleSetShowPreview: any
 }) {
   return (
     <button onClick={() => handleSetShowPreview(!showPreview)}>
@@ -17,5 +17,5 @@ export default function PreviewView({
         classAdd={""}
       />
     </button>
-  );
+  )
 }

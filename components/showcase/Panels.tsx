@@ -1,4 +1,4 @@
-import { Icons } from "@component/overall/Icons";
+import { Icons } from "@/components/overall/Icons"
 
 function CurrentStep({ step }: { step: (typeof stepse)[0] }) {
   return (
@@ -13,7 +13,7 @@ function CurrentStep({ step }: { step: (typeof stepse)[0] }) {
         {step.name}
       </span>
     </div>
-  );
+  )
 }
 
 function UpcomingStep({ step }: { step: (typeof stepse)[0] }) {
@@ -30,7 +30,7 @@ function UpcomingStep({ step }: { step: (typeof stepse)[0] }) {
         </span>
       </span>
     </div>
-  );
+  )
 }
 
 function CompleteStep({ step }: { step: (typeof stepse)[0] }) {
@@ -45,26 +45,26 @@ function CompleteStep({ step }: { step: (typeof stepse)[0] }) {
         </span>
       </span>
     </div>
-  );
+  )
 }
 
 const stepse = [
   { id: 1, name: "Hook details", status: "" },
-  { id: 2, name: "Upload", status: ""},
+  { id: 2, name: "Upload", status: "" },
   { id: 3, name: "Deployment", status: "" },
   { id: 4, name: "Submission", status: "" },
-];
+]
 
-export default function Panels({ currentStep }: { currentStep: number }) {
+export function Panels({ currentStep }: { currentStep: number }) {
   const steps = stepse.map((s) => {
     if (s.id === currentStep) {
-      return { ...s, status: "current" };
+      return { ...s, status: "current" }
     } else if (s.id < currentStep) {
-      return { ...s, status: "complete" };
+      return { ...s, status: "complete" }
     } else {
-      return { ...s, status: "upcoming" };
+      return { ...s, status: "upcoming" }
     }
-  });
+  })
 
   return (
     <nav aria-label="Progress">
@@ -108,5 +108,5 @@ export default function Panels({ currentStep }: { currentStep: number }) {
         ))}
       </ol>
     </nav>
-  );
+  )
 }

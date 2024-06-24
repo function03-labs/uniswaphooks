@@ -1,8 +1,8 @@
-import nodemailer from "nodemailer";
-import { selectMailOptions } from "@lib/email-template";
+import { selectMailOptions } from "@lib/email-template"
+import nodemailer from "nodemailer"
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  const body = await req.json()
 
   if (
     !process.env.EMAIL_SENDER ||
@@ -14,8 +14,8 @@ export async function POST(req: Request) {
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
-      },
-    );
+      }
+    )
   }
 
   const mailTransporter = nodemailer.createTransport({
@@ -25,23 +25,23 @@ export async function POST(req: Request) {
       user: process.env.EMAIL_SENDER,
       pass: process.env.EMAIL_SERVER_PASSWORD,
     },
-  } as nodemailer.TransportOptions);
+  } as nodemailer.TransportOptions)
 
   try {
-    const mailOptions = selectMailOptions(body.type, body);
-    await mailTransporter.sendMail(mailOptions);
+    const mailOptions = selectMailOptions(body.type, body)
+    await mailTransporter.sendMail(mailOptions)
     return new Response(
       JSON.stringify({ message: "Email sent successfully" }),
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
-      },
-    );
+      }
+    )
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return new Response(JSON.stringify({ error: "Failed to send email" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
-    });
+    })
   }
 }
