@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,

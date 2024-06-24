@@ -7,9 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { formatDeploymentDetails } from "@lib/utils"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+
 import { CategoryType, HookType } from "@/types/hook"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
   DialogContent,
   DialogDescription,

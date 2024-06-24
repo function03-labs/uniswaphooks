@@ -4,7 +4,7 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 
-import { buttonVariants } from "@/components/ui/Button"
+import { buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "@/components/form/UserAuth"
 import { SponsorLink } from "@/components/overall/SponsorLink"
 import { Icons, Logo } from "@/components/shared/icons"

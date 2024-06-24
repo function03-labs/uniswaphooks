@@ -5,7 +5,7 @@ import { findFile, formatDeploymentDetails } from "@lib/utils"
 import { HookType } from "@/types/hook"
 import { TreeFile, TreeType } from "@/types/tree"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,

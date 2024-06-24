@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { CollectionLinksProps } from "@/types"
 
-import { ButtonStyle } from "@/components/ui/ButtonStyle"
+import { ButtonStyle } from "@/components/ui/buttonStyle"
 
 // activateCategory is an object with two properties: category and emoji
 // e.g. { category: 'hooks', emoji: '🪝' }

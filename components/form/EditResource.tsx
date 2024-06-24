@@ -9,9 +9,10 @@ import { cn } from "@lib/utils"
 import { Check, ChevronsUpDown, SmilePlus } from "lucide-react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+
 import { ResourcePost } from "@/types/post"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,

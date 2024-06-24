@@ -1,11 +1,12 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useCopyToClipboard } from "react-use"
+
 import { CategoryType, HookType } from "@/types/hook"
 import { ResourcePost } from "@/types/post"
 
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/AlertDialog"
-import { ButtonStyle } from "@/components/ui/ButtonStyle"
+import { ButtonStyle } from "@/components/ui/buttonStyle"
 import { Dialog, DialogTrigger } from "@/components/ui/Dialog"
 import {
   DropdownMenu,

@@ -4,7 +4,7 @@ import Link from "next/link"
 
 import { TreeFile } from "@/types/tree"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { Card, CardTitle } from "@/components/ui/Card"
 import { useSelectedPath } from "@/components/config/FileSelected"
 import { Icons } from "@/components/shared/icons"
