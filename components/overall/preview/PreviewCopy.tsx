@@ -6,7 +6,7 @@ import { CategoryType, HookType } from "@/types/hook"
 import { ResourcePost } from "@/types/post"
 
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/AlertDialog"
-import { ButtonStyle } from "@/components/ui/buttonStyle"
+import { ButtonStyle } from "@/components/ui/ButtonStyle"
 import { Dialog, DialogTrigger } from "@/components/ui/Dialog"
 import {
   DropdownMenu,

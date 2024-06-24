@@ -7,12 +7,13 @@ export const marketingConfig: MarketingConfig = {
       href: "/chains",
     },
     {
-      title: "Tools",
-      href: "/tool",
+      title: "Community",
+      href: "/community",
+      active: true,
     },
     {
-      title: "Community Hub",
-      href: "/community",
+      title: "Tool",
+      href: "/tool",
     },
     {
       title: "Blog",

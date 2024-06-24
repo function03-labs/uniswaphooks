@@ -32,6 +32,7 @@ import {
   Plus,
   Search,
   Settings,
+  StarIcon,
   SunMedium,
   Trash,
   UserRound,
@@ -78,6 +79,7 @@ export const Icons = {
   link: Link,
   folder: FolderClosed,
   folderOpen: FolderOpen,
+  star: StarIcon,
 }
 
 export function IconMenu() {
@@ -115,8 +117,8 @@ export function Logo({ className }: { className?: string }) {
 export function LogoImage({ className }: { className?: string }) {
   return (
     <Image
-      src="/uniswap-hooks-logo.png"
-      alt="UniswapHooks Logo"
+      src="/uniswap-hooks-text.png"
+      alt="UniswapHooks Text Logo"
       className={className}
       width={64}
       height={64}

@@ -1,4 +1,4 @@
-import { ButtonStyle } from "@/components/ui/buttonStyle"
+import { ButtonStyle } from "@/components/ui/ButtonStyle"
 
 export function PreviewView({
   showPreview,
