@@ -25,7 +25,6 @@ export async function generateMetadata({
   }
 }) {
   const { blogData } = await getPost(params)
-
   return {
     title: `${blogData.title}`,
     description: blogData.description,
@@ -40,9 +39,9 @@ export async function generateMetadata({
   }
 }
 
-export async function generateStaticParams() {
+/* export async function generateStaticParams() {
   return await fs.readdir(postsPath)
-}
+} */
 
 async function getPost(params: { slug: string }) {
   const postPath = join(postsPath, `${params.slug}.mdx`)
