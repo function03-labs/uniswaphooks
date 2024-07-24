@@ -1,30 +1,29 @@
-import "@styles/globals.css";
+import "@styles/globals.css"
 
-import Script from "next/script";
-import type { Viewport, Metadata } from "next";
-import localFont from "next/font/local";
-import { Inter as FontSans } from "next/font/google";
+import type { Metadata, Viewport } from "next"
+import { Inter as FontSans } from "next/font/google"
+import localFont from "next/font/local"
+import Script from "next/script"
+import { siteConfig } from "@config/site"
+import { cn } from "@lib/utils"
 
-import { cn } from "@lib/utils";
-import { siteConfig } from "@config/site";
-
-import { Toaster } from "@/components/ui/Toaster";
-import { Analytics } from "@component/config/Analytics";
-import GeistProviderUI from "@component/config/GeistProviderUI";
-import { TailwindIndicator } from "@component/config/TailwindIndicator";
+import { Toaster } from "@/components/ui/Toaster"
+import { Analytics } from "@/components/config/Analytics"
+import { GeistProviderUI } from "@/components/config/GeistProviderUI"
+import { TailwindIndicator } from "@/components/config/TailwindIndicator"
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-});
+})
 
 const fontHeading = localFont({
   src: "../assets/fonts/CalSans-SemiBold.woff2",
   variable: "--font-heading",
-});
+})
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export const viewport: Viewport = {
@@ -35,7 +34,7 @@ export const viewport: Viewport = {
   maximumScale: 5,
   userScalable: false,
   viewportFit: "cover",
-};
+}
 
 export const metadata: Metadata = {
   title: {
@@ -83,7 +82,7 @@ export const metadata: Metadata = {
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
   metadataBase: new URL(siteConfig.url),
-};
+}
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
@@ -114,5 +113,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <TailwindIndicator />
       </body>
     </html>
-  );
+  )
 }

@@ -1,11 +1,11 @@
-import Link from "next/link";
+import Link from "next/link"
 
-export default function PreviewTitle({
+export function PreviewTitle({
   componentTitle,
   componentId,
 }: {
-  componentTitle: string;
-  componentId: string;
+  componentTitle: string
+  componentId: string
 }) {
   return (
     <Link
@@ -14,7 +14,7 @@ export default function PreviewTitle({
     >
       <span
         aria-hidden="true"
-        className="hidden group-hover:opacity-25 text-xl lg:inline-block lg:-ml-4 lg:mr-2 lg:mt-0 lg:opacity-0 lg:transition"
+        className="hidden text-xl group-hover:opacity-25 lg:-ml-4 lg:mr-2 lg:mt-0 lg:inline-block lg:opacity-0 lg:transition"
       >
         #
       </span>
@@ -22,5 +22,5 @@ export default function PreviewTitle({
         {componentTitle}
       </h2>
     </Link>
-  );
+  )
 }

@@ -1,15 +1,16 @@
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Suspense } from "react";
+import { Suspense } from "react"
+import Link from "next/link"
 
-import { Logo } from "@component/overall/Icons";
-import { buttonVariants } from "@component/ui/Button";
-import { UserAuthForm } from "@component/form/UserAuth";
+import { cn } from "@/lib/utils"
+
+import { buttonVariants } from "@/components/ui/Button"
+import { UserAuthForm } from "@/components/form/UserAuth"
+import { Logo } from "@/components/overall/Icons"
 
 export const metadata = {
   title: "Create an account",
   description: "Create an account to get started.",
-};
+}
 
 export default function RegisterPage() {
   return (
@@ -58,5 +59,5 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

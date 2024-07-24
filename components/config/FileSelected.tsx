@@ -1,44 +1,44 @@
-"use client";
+"use client"
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react"
 
 interface SelectedPathContextProps {
-  selectedPaths: string[];
-  addSelectedPath: (path: string) => void;
-  removeSelectedPath: (path: string) => void;
+  selectedPaths: string[]
+  addSelectedPath: (path: string) => void
+  removeSelectedPath: (path: string) => void
 }
 
 const SelectedPathContext = createContext<SelectedPathContextProps | undefined>(
   undefined
-);
+)
 
 export const useSelectedPath = () => {
-  const context = useContext(SelectedPathContext);
+  const context = useContext(SelectedPathContext)
 
   if (context === undefined) {
     throw new Error(
       "useSelectedPath must be used within a SelectedPathProvider"
-    );
+    )
   }
 
-  return context;
-};
+  return context
+}
 
 export function FileSelected({ children }: { children: React.ReactNode }) {
-  const [selectedPaths, setSelectedPaths] = useState<string[]>([]);
+  const [selectedPaths, setSelectedPaths] = useState<string[]>([])
 
   const addSelectedPath = (path: string) => {
     setSelectedPaths((prevPaths) => {
       if (!prevPaths.includes(path)) {
-        return [...prevPaths, path];
+        return [...prevPaths, path]
       }
-      return prevPaths;
-    });
-  };
+      return prevPaths
+    })
+  }
 
   const removeSelectedPath = (path: string) => {
-    setSelectedPaths((prevPaths) => prevPaths.filter((p) => p !== path));
-  };
+    setSelectedPaths((prevPaths) => prevPaths.filter((p) => p !== path))
+  }
 
   return (
     <SelectedPathContext.Provider
@@ -46,5 +46,5 @@ export function FileSelected({ children }: { children: React.ReactNode }) {
     >
       {children}
     </SelectedPathContext.Provider>
-  );
+  )
 }

@@ -1,60 +1,59 @@
-"use client";
+"use client"
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"
+import { blogPreviewHtml } from "@lib/transformers"
+import { useInView } from "react-intersection-observer"
 
-import { useInView } from "react-intersection-observer";
+import { BlogPreview as BlogPreviewType } from "@/types/post"
 
-import { BlogPreview } from "@/types/post";
-import { blogPreviewHtml } from "@lib/transformers";
+import { PreviewCode } from "@/components/overall/preview/PreviewCode"
+import { PreviewCopy } from "@/components/overall/preview/PreviewCopy"
+import { PreviewIframe } from "@/components/overall/preview/PreviewIframe"
+import { PreviewView } from "@/components/overall/preview/PreviewView"
 
-import PreviewView from "@component/overall/preview/PreviewView";
-import PreviewCode from "@component/overall/preview/PreviewCode";
-import PreviewCopy from "@component/overall/preview/PreviewCopy";
-import PreviewIframe from "@component/overall/preview/PreviewIframe";
-
-export default function BlogPreview({
+export function BlogPreview({
   previewId,
   previewTitle,
   previewContainer,
-}: BlogPreview) {
-  const refIframe = useRef(null);
+}: BlogPreviewType) {
+  const refIframe = useRef(null)
 
-  const [previewCode, setPreviewCode] = useState("");
-  const [previewHtml, setPreviewHtml] = useState("");
-  const [showPreview, setShowPreview] = useState(true);
-  const [isDarkMode] = useState(false);
+  const [previewCode, setPreviewCode] = useState("")
+  const [previewHtml, setPreviewHtml] = useState("")
+  const [showPreview, setShowPreview] = useState(true)
+  const [isDarkMode] = useState(false)
 
   const { ref, inView } = useInView({
     threshold: 0,
     triggerOnce: true,
-  });
+  })
 
   useEffect(() => {
     if (inView) {
-      fetchHtml();
+      fetchHtml()
     }
-  }, [fetchHtml, inView]);
+  }, [fetchHtml, inView])
 
   useEffect(() => {
     if (inView) {
-      fetchHtml();
+      fetchHtml()
     }
-  }, [fetchHtml, inView, isDarkMode]);
+  }, [fetchHtml, inView, isDarkMode])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function fetchHtml() {
-    const previewUrl = `/blogs/${previewId}.html`;
+    const previewUrl = `/blogs/${previewId}.html`
 
-    const fetchResponse = await fetch(previewUrl);
-    const textResponse = await fetchResponse.text();
+    const fetchResponse = await fetch(previewUrl)
+    const textResponse = await fetchResponse.text()
     const transformedHtml = blogPreviewHtml(
       textResponse,
       previewContainer,
       isDarkMode
-    );
+    )
 
-    setPreviewCode(textResponse);
-    setPreviewHtml(transformedHtml);
+    setPreviewCode(textResponse)
+    setPreviewHtml(transformedHtml)
   }
 
   return (
@@ -92,5 +91,5 @@ export default function BlogPreview({
         </div>
       </div>
     </div>
-  );
+  )
 }

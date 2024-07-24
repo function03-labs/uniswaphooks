@@ -1,13 +1,23 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { sections } from "@config/community"
+import { resourceSchema } from "@config/schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { cn } from "@lib/utils"
+import { Check, ChevronsUpDown, SmilePlus } from "lucide-react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
-import { cn } from "@lib/utils";
-
+import { Button } from "@/components/ui/Button"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/Command"
 import {
   Form,
   FormControl,
@@ -16,42 +26,29 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@component/ui/Form";
+} from "@/components/ui/Form"
+import { Input } from "@/components/ui/Input"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/Popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/Command";
-import { Input } from "@component/ui/Input";
-import { Button } from "@component/ui/Button";
-import { Textarea } from "@/components/ui/Textarea";
-import EmojiPicker from "@component/emoji-picker/EmojiPicker";
+} from "@/components/ui/Popover"
+import { Textarea } from "@/components/ui/Textarea"
+import { EmojiPicker } from "@/components/emoji-picker/EmojiPicker"
 
-import { sections } from "@config/community";
-import { resourceSchema } from "@config/schema";
-
-import { Check, ChevronsUpDown, SmilePlus } from "lucide-react";
-
-export default function NewResourceForm({ user }: { user: any }) {
-  const router = useRouter();
+export function NewResourceForm({ user }: { user: any }) {
+  const router = useRouter()
   const form = useForm<z.infer<typeof resourceSchema>>({
     resolver: zodResolver(resourceSchema),
-  });
+  })
 
-  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null)
 
   async function onSubmit(values: z.infer<typeof resourceSchema>) {
     if (!values.emoji) {
       values.emoji = sections.find(
         (section) => section.id === values.section
-      )?.emoji;
+      )?.emoji
     }
 
     try {
@@ -61,11 +58,11 @@ export default function NewResourceForm({ user }: { user: any }) {
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
 
-      const response = await requestResource.json();
+      const response = await requestResource.json()
 
-      router.push("/dashboard/thank-you");
+      router.push("/dashboard/thank-you")
 
       await fetch("/api/mailer", {
         method: "POST",
@@ -78,10 +75,10 @@ export default function NewResourceForm({ user }: { user: any }) {
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
     } catch (error) {
-      console.log("Submission error:", error);
-      router.push("/error");
+      console.log("Submission error:", error)
+      router.push("/error")
     }
   }
 
@@ -115,8 +112,8 @@ export default function NewResourceForm({ user }: { user: any }) {
                       <PopoverContent className="w-full bg-transparent p-0">
                         <EmojiPicker
                           onSelect={(emoji) => {
-                            setSelectedEmoji(emoji);
-                            form.setValue("emoji", emoji);
+                            setSelectedEmoji(emoji)
+                            form.setValue("emoji", emoji)
                           }}
                         />
                       </PopoverContent>
@@ -176,7 +173,7 @@ export default function NewResourceForm({ user }: { user: any }) {
                             key={section.id}
                             value={section.title}
                             onSelect={() => {
-                              form.setValue("section", section.id);
+                              form.setValue("section", section.id)
                             }}
                           >
                             <Check
@@ -252,5 +249,5 @@ export default function NewResourceForm({ user }: { user: any }) {
         </Button>
       </form>
     </Form>
-  );
+  )
 }

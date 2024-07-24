@@ -1,33 +1,33 @@
-"use client";
+"use client"
 
-import { useRef, useState } from "react";
+import { useRef, useState } from "react"
+import { useInView } from "react-intersection-observer"
 
-import { useInView } from "react-intersection-observer";
+import { HookType } from "@/types/hook"
 
-import PreviewCopy, {
-  PreviewWebsite,
-  PreviewGithub,
+import {
+  PreviewCopy,
   PreviewFolder,
-} from "@component/overall/preview/PreviewCopy";
-import PreviewCreator from "@component/overall/preview/PreviewCreator";
-import PreviewIframe from "@component/overall/preview/PreviewIframe";
-import PreviewTitle from "@component/overall/preview/PreviewTitle";
-import { HookType } from "@/types/hook";
+  PreviewGithub,
+} from "@/components/overall/preview/PreviewCopy"
+import { PreviewCreator } from "@/components/overall/preview/PreviewCreator"
+import { PreviewIframe } from "@/components/overall/preview/PreviewIframe"
+import { PreviewTitle } from "@/components/overall/preview/PreviewTitle"
 
-export default function ComponentPreview({
+export function ComponentPreview({
   componentData,
 }: {
-  componentData: HookType;
+  componentData: HookType
 }) {
-  const refIframe = useRef(null);
+  const refIframe = useRef(null)
 
-  const [previewWidth, setPreviewWidth] = useState("100%");
-  const [showPreview, setShowPreview] = useState(true);
+  const [previewWidth, setPreviewWidth] = useState("100%")
+  const [showPreview, setShowPreview] = useState(true)
 
   const { ref, inView } = useInView({
     threshold: 0,
     triggerOnce: true,
-  });
+  })
 
   const {
     id: componentId,
@@ -35,7 +35,7 @@ export default function ComponentPreview({
     description: componentDescription,
     website: componentWebsite,
     creatorName: componentCreator,
-  } = componentData;
+  } = componentData
 
   return (
     <div ref={ref} id={componentId.toString()} className="max-w-md p-2">
@@ -78,5 +78,5 @@ export default function ComponentPreview({
         )}
       </div>
     </div>
-  );
+  )
 }

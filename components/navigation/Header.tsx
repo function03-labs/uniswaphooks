@@ -1,24 +1,21 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { marketingConfig } from "@config/marketing"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { SplashButton } from "@/components/ui/SplashButton"
+import { HeaderMenu } from "@/components/navigation/HeaderMenu"
+import { HeaderMenuLinks } from "@/components/navigation/HeaderMenuLinks"
+import { BrandLogo } from "@/components/overall/BrandLogo"
+import { Container } from "@/components/overall/Container"
 
-import Container from "@component/overall/Container";
-import BrandLogo from "@component/overall/BrandLogo";
-import HeaderMenu from "@component/navigation/HeaderMenu";
-import HeaderMenuLinks from "@component/navigation/HeaderMenuLinks";
+export function Header({ user }: { user: any }) {
+  const routerPathname = usePathname()
 
-import SplashButton from "@component/ui/SplashButton";
-
-import { marketingConfig } from "@config/marketing";
-
-export default function Header({ user }: { user: any }) {
-  const routerPathname = usePathname();
-
-  const [showMenu, setShowMenu] = useState(false);
-  useEffect(() => setShowMenu(false), [routerPathname]);
+  const [showMenu, setShowMenu] = useState(false)
+  useEffect(() => setShowMenu(false), [routerPathname])
 
   return (
     <header className="sticky inset-x-0 top-0 z-50 border-b border-gray-200 bg-white">
@@ -44,7 +41,7 @@ export default function Header({ user }: { user: any }) {
           <SplashButton
             id="submit-button"
             href={user ? "/dashboard" : "/register"}
-            className="bg-black text-white border-black hover:bg-white hover:text-black hover:border-black"
+            className="border-black bg-black text-white hover:border-black hover:bg-white hover:text-black"
           >
             <span className="mr-2">🔒</span>
             {user ? "Dashboard" : "Register"}
@@ -58,5 +55,5 @@ export default function Header({ user }: { user: any }) {
         </div>
       </Container>
     </header>
-  );
+  )
 }

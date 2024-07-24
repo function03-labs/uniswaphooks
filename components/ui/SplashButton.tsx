@@ -1,31 +1,31 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { cn } from "@lib/utils";
+import Link from "next/link"
+import { cn } from "@lib/utils"
+import { emojisplosion } from "emojisplosion"
 
-import { emojisplosion } from "emojisplosion";
-import { SplashButtonProps } from "@/types/splash-button";
+import { SplashButtonProps } from "@/types/splash-button"
 
-export default function SplashButton(props: SplashButtonProps) {
+export function SplashButton(props: SplashButtonProps) {
   const handleClick = () => {
-    const element = document.getElementById(props.id);
-    setTimeout(() => {}, 500);
+    const element = document.getElementById(props.id)
+    setTimeout(() => {}, 500)
 
     if (element instanceof HTMLElement) {
       let cumulativeOffset = function (element: HTMLElement): {
-        top: number;
-        left: number;
+        top: number
+        left: number
       } {
         let top = 0,
-          left = 0;
+          left = 0
         do {
-          top += element.offsetTop || 0;
-          left += element.offsetLeft || 0;
-          element = element.offsetParent as HTMLElement;
-        } while (element);
+          top += element.offsetTop || 0
+          left += element.offsetLeft || 0
+          element = element.offsetParent as HTMLElement
+        } while (element)
 
-        return { top, left };
-      };
+        return { top, left }
+      }
 
       emojisplosion({
         physics: {
@@ -36,17 +36,17 @@ export default function SplashButton(props: SplashButtonProps) {
         },
         emojis: ["🪝", "🦄"],
         position() {
-          const offset = cumulativeOffset(element);
+          const offset = cumulativeOffset(element)
           return {
             x: offset.left + element.clientWidth / 2,
             y: offset.top + element.clientHeight / 2,
-          };
+          }
         },
-      });
+      })
     } else {
-      console.error("Element not found");
+      console.error("Element not found")
     }
-  };
+  }
 
   return (
     <div className="flex justify-center">
@@ -58,11 +58,11 @@ export default function SplashButton(props: SplashButtonProps) {
         id={props.id}
         href={props.href}
         onClick={() => {
-          handleClick();
+          handleClick()
         }}
       >
         {props.children}
       </Link>
     </div>
-  );
+  )
 }

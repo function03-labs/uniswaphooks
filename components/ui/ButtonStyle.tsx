@@ -1,6 +1,6 @@
-import { StyledButtonProps } from "@/types/splash-button";
+import { StyledButtonProps } from "@/types/splash-button"
 
-export default function ButtonStyle({
+export function ButtonStyle({
   buttonEmoji,
   buttonText,
   buttonActive,
@@ -16,9 +16,9 @@ export default function ButtonStyle({
     darkButton: `border-gray-800 text-white ${
       buttonActive ? "bg-gray-800" : "bg-gray-900 hover:bg-gray-800"
     }`,
-  };
+  }
 
-  const buttonClass = isDark ? buttonClasses.darkButton : buttonClasses.DEFAULT;
+  const buttonClass = isDark ? buttonClasses.darkButton : buttonClasses.DEFAULT
 
   return (
     <span
@@ -30,5 +30,5 @@ export default function ButtonStyle({
 
       <span className="text-xs font-medium">{buttonText}</span>
     </span>
-  );
+  )
 }

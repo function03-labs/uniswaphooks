@@ -1,34 +1,34 @@
-"use client";
+"use client"
 
-import { SidebarNavItem } from "@/types";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"
+import { SidebarNavItem } from "@/types"
+import { Tabs } from "@geist-ui/core"
 
-import { Tabs } from "@geist-ui/core";
-import { Icons } from "@component/overall/Icons";
+import { Icons } from "@/components/overall/Icons"
 
 interface DashboardNavProps {
-  items: SidebarNavItem[];
+  items: SidebarNavItem[]
 }
 
 export function DashboardNav({ items }: DashboardNavProps) {
-  const path = usePathname();
-  const router = useRouter();
+  const path = usePathname()
+  const router = useRouter()
 
   if (!items?.length) {
-    return null;
+    return null
   }
 
-  let activeIndex;
+  let activeIndex
   switch (path) {
     case "/dashboard/hook/submit":
-      activeIndex = 0;
-      break;
+      activeIndex = 0
+      break
     case "/dashboard/resources/submit":
-      activeIndex = 1;
-      break;
+      activeIndex = 1
+      break
     default:
-      activeIndex = items.findIndex((item) => item.href === path);
-      break;
+      activeIndex = items.findIndex((item) => item.href === path)
+      break
   }
 
   return (
@@ -36,12 +36,12 @@ export function DashboardNav({ items }: DashboardNavProps) {
       initialValue={activeIndex.toString()}
       activeClassName="font-semibold"
       onChange={(value) => {
-        const item = items[parseInt(value)];
-        router.push(item.href!);
+        const item = items[parseInt(value)]
+        router.push(item.href!)
       }}
     >
       {items.map((item, index) => {
-        const Icon = Icons[item.icon as keyof typeof Icons];
+        const Icon = Icons[item.icon as keyof typeof Icons]
         return (
           <Tabs.Item
             key={index}
@@ -52,8 +52,8 @@ export function DashboardNav({ items }: DashboardNavProps) {
               </>
             }
           />
-        );
+        )
       })}
     </Tabs>
-  );
+  )
 }

@@ -1,11 +1,10 @@
-import { CategoryType, HookType } from "@/types/hook";
+import { CategoryType, HookType } from "@/types/hook"
 
-import Container from "@component/overall/Container";
-import HeroBanner from "@component/section/HeroBanner";
-
-import HeaderSearch from "@component/showcase/HeaderSearch";
-import VerifiedHooks from "@component/showcase/VerifiedHooks";
-import CollectionCard from "@component/showcase/CollectionCard";
+import { Container } from "@/components/overall/Container"
+import { HeroBanner } from "@/components/section/HeroBanner"
+import { CollectionCard } from "@/components/showcase/CollectionCard"
+import { HeaderSearch } from "@/components/showcase/HeaderSearch"
+import { VerifiedHooks } from "@/components/showcase/VerifiedHooks"
 
 async function getHooks() {
   const hooksFetch = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hook`, {
@@ -13,18 +12,18 @@ async function getHooks() {
     next: {
       revalidate: 0,
     },
-  });
+  })
 
   if (!hooksFetch.ok) {
-    throw new Error("Failed to fetch hooks");
+    throw new Error("Failed to fetch hooks")
   }
 
-  const hooks = await hooksFetch.json();
+  const hooks = await hooksFetch.json()
   hooks.data = hooks.data.filter(
     (hook: HookType) => hook.status === "published"
-  );
+  )
 
-  return hooks.data;
+  return hooks.data
 }
 
 async function getCategories(hooks: HookType[]) {
@@ -36,19 +35,19 @@ async function getCategories(hooks: HookType[]) {
         revalidate: 15,
       },
     }
-  );
+  )
 
   if (!categoriesFetch.ok) {
-    throw new Error("Failed to fetch categories");
+    throw new Error("Failed to fetch categories")
   }
 
-  const categories = await categoriesFetch.json();
+  const categories = await categoriesFetch.json()
 
   categories.data.forEach((category: CategoryType) => {
     category.count = hooks.filter(
       (hook: any) => hook.category.id === category.id
-    ).length;
-  });
+    ).length
+  })
 
   categories.data.push({
     id: "community",
@@ -57,14 +56,14 @@ async function getCategories(hooks: HookType[]) {
     emoji: "🌱",
     category: "articles",
     tag: "community",
-  });
+  })
 
-  return categories.data;
+  return categories.data
 }
 
 export default async function Page() {
-  const hooks = (await getHooks()) as HookType[];
-  const categories = await getCategories(hooks);
+  const hooks = (await getHooks()) as HookType[]
+  const categories = await getCategories(hooks)
 
   return (
     <main>
@@ -97,10 +96,10 @@ export default async function Page() {
                 <li className="space-y-4" key={collection.id}>
                   <CollectionCard componentData={collection} />
                 </li>
-              );
+              )
             })}
         </ul>
       </Container>
     </main>
-  );
+  )
 }

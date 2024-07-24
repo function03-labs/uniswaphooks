@@ -1,4 +1,4 @@
-const activeVersion = "v3.3.3";
+const activeVersion = "v3.3.3"
 
 export const faqItems = [
   {
@@ -51,4 +51,4 @@ export const faqItems = [
     answer:
       "While a developer can specify a hook when setting up a liquidity pool, users and liquidity providers should be cautious and ensure the safety and integrity of these hooks before interacting.",
   },
-];
+]

@@ -1,22 +1,23 @@
-import { HookType } from "@/types/hook";
-import { notFound } from "next/navigation";
-import { getCurrentUser } from "@lib/session";
-import { formatDeploymentDetails } from "@lib/utils";
+import { notFound } from "next/navigation"
+import { getCurrentUser } from "@lib/session"
+import { formatDeploymentDetails } from "@lib/utils"
 
-import ReviewHook from "@component/form/ReviewHook";
-import Container from "@component/overall/Container";
-import HeroBanner from "@component/section/HeroBanner";
-import HookOwned from "@component/showcase/hook/HookOwned";
-import DeploymentDetails from "@component/showcase/DeploymentDetails";
+import { HookType } from "@/types/hook"
+
+import { ReviewHook } from "@/components/form/ReviewHook"
+import { Container } from "@/components/overall/Container"
+import { HeroBanner } from "@/components/section/HeroBanner"
+import { DeploymentDetails } from "@/components/showcase/DeploymentDetails"
+import { HookOwned } from "@/components/showcase/hook/HookOwned"
 
 async function fetchCategories() {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/category`);
-    const response = await data.json();
+    const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/category`)
+    const response = await data.json()
 
-    return response.data;
+    return response.data
   } catch (error) {
-    console.error("Category fetch error:", error);
+    console.error("Category fetch error:", error)
   }
 }
 
@@ -30,31 +31,31 @@ async function getHook({ hookId }: { hookId: string }) {
         "Cache-Control": "no-cache",
       },
     }
-  );
+  )
 
   if (!hookFetch.ok) {
-    throw new Error("Failed to fetch hook");
+    throw new Error("Failed to fetch hook")
   }
 
-  const hook = await hookFetch.json();
+  const hook = await hookFetch.json()
 
-  return hook;
+  return hook
 }
 
 export default async function ReviewPage({
   params,
 }: {
-  params: { hookId: string };
+  params: { hookId: string }
 }) {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser()
 
   if (!user || !(user.role === "admin")) {
-    return notFound();
+    return notFound()
   }
 
-  const categories = await fetchCategories();
-  const hook = (await getHook({ hookId: params.hookId })) as HookType;
-  const deploymentDetails = formatDeploymentDetails(hook);
+  const categories = await fetchCategories()
+  const hook = (await getHook({ hookId: params.hookId })) as HookType
+  const deploymentDetails = formatDeploymentDetails(hook)
 
   return (
     <Container classNames="max-w-md lg:px-48 pb-8 lg:pb-12">
@@ -70,5 +71,5 @@ export default async function ReviewPage({
       <DeploymentDetails deployment={deploymentDetails} />
       <ReviewHook hook={hook} />
     </Container>
-  );
+  )
 }

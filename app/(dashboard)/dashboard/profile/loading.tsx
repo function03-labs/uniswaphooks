@@ -1,6 +1,6 @@
-import { PostItem } from "@component/dashboard/PostItem";
-import { DashboardShell } from "@component/dashboard/Shell";
-import { DashboardHeader } from "@component/dashboard/Header";
+import { DashboardHeader } from "@/components/dashboard/Header"
+import { PostItem } from "@/components/dashboard/PostItem"
+import { DashboardShell } from "@/components/dashboard/Shell"
 
 export default function DashboardLoading() {
   return (
@@ -14,5 +14,5 @@ export default function DashboardLoading() {
         <PostItem.Skeleton />
       </ul>
     </DashboardShell>
-  );
+  )
 }

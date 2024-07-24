@@ -1,6 +1,5 @@
-import * as React from "react";
-
-import { cn } from "@lib/utils";
+import * as React from "react"
+import { cn } from "@lib/utils"
 
 interface EmptyPlaceholderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -21,7 +20,7 @@ export function EmptyPlaceholder({
         {children}
       </div>
     </div>
-  );
+  )
 }
 
 interface EmptyPlacholderTitleProps
@@ -33,8 +32,8 @@ EmptyPlaceholder.Title = function EmptyPlaceholderTitle({
 }: EmptyPlacholderTitleProps) {
   return (
     <h2 className={cn("mt-6 text-xl font-semibold", className)} {...props} />
-  );
-};
+  )
+}
 
 interface EmptyPlacholderDescriptionProps
   extends React.HTMLAttributes<HTMLParagraphElement> {}
@@ -51,5 +50,5 @@ EmptyPlaceholder.Description = function EmptyPlaceholderDescription({
       )}
       {...props}
     />
-  );
-};
+  )
+}

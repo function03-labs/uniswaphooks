@@ -1,24 +1,23 @@
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@lib/session";
+import { redirect } from "next/navigation"
+import { getCurrentUser } from "@lib/session"
 
-import Container from "@component/overall/Container";
-import { DashboardHeader } from "@component/dashboard/Header";
-import ResourceGrid from "@component/showcase/resource/ResourceGrid";
-
-import SplashButton from "@component/ui/SplashButton";
-import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@/components/ui/EmptyPlaceholder"
+import { SplashButton } from "@/components/ui/SplashButton"
+import { DashboardHeader } from "@/components/dashboard/Header"
+import { Container } from "@/components/overall/Container"
+import { ResourceGrid } from "@/components/showcase/resource/ResourceGrid"
 
 export const metadata = {
   title: "Resources",
   description: "Where your resources are.",
-};
+}
 
 async function getResources({
   id,
   isAdmin,
 }: {
-  id?: string | null | undefined;
-  isAdmin: boolean;
+  id?: string | null | undefined
+  isAdmin: boolean
 }) {
   const resourceFetch = await fetch(
     `${process.env.NEXT_PUBLIC_URL}/api/resource`,
@@ -28,36 +27,36 @@ async function getResources({
         revalidate: 0,
       },
     }
-  );
+  )
 
   if (!resourceFetch.ok) {
-    throw new Error("Failed to fetch Resources");
+    throw new Error("Failed to fetch Resources")
   }
 
-  const resources = await resourceFetch.json();
+  const resources = await resourceFetch.json()
 
   if (isAdmin) {
-    return resources.data;
+    return resources.data
   }
 
   const userResources = resources.data.filter(
     (resource: any) => resource.userId === id
-  );
+  )
 
-  return userResources;
+  return userResources
 }
 
 export default async function Resources() {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser()
 
   if (!user) {
-    return redirect("/login");
+    return redirect("/login")
   }
 
   const resources = await getResources({
     id: user.id,
     isAdmin: user.role === "admin",
-  });
+  })
 
   return (
     <main>
@@ -92,5 +91,5 @@ export default async function Resources() {
         )}
       </Container>
     </main>
-  );
+  )
 }

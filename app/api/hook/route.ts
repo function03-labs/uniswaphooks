@@ -1,13 +1,13 @@
-import { db } from "@lib/prisma";
-import { authOptions } from "@lib/auth";
-import { getServerSession } from "next-auth";
+import { authOptions } from "@lib/auth"
+import { db } from "@lib/prisma"
+import { getServerSession } from "next-auth"
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    let { title, description, website, categoryId } = body;
+    const body = await req.json()
+    let { title, description, website, categoryId } = body
 
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions)
 
     if (!session || !session.user) {
       return new Response(
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
             "Content-Type": "application/json",
           },
         }
-      );
+      )
     }
 
     const newHook = await db.hook.create({
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         userId: session.user.id,
         categoryId,
       },
-    });
+    })
 
     return new Response(
       JSON.stringify({
@@ -44,9 +44,9 @@ export async function POST(req: Request) {
           "Content-Type": "application/json",
         },
       }
-    );
+    )
   } catch (err: any) {
-    console.log(err);
+    console.log(err)
     return new Response(
       JSON.stringify({
         message: "Something went wrong",
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
           "Content-Type": "application/json",
         },
       }
-    );
+    )
   }
 }
 
@@ -72,7 +72,7 @@ export async function GET() {
         contract: true,
         deploymentDate: true,
       },
-    });
+    })
     return new Response(
       JSON.stringify({
         message: "Hooks fetched successfully",
@@ -84,7 +84,7 @@ export async function GET() {
           "Content-Type": "application/json",
         },
       }
-    );
+    )
   } catch (err: any) {
     return new Response(
       JSON.stringify({
@@ -97,6 +97,6 @@ export async function GET() {
           "Content-Type": "application/json",
         },
       }
-    );
+    )
   }
 }

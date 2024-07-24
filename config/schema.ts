@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from "zod"
 
 export const resourceSchema = z.object({
   emoji: z.string().optional(),
@@ -24,11 +24,11 @@ export const resourceSchema = z.object({
     message: "You need to enter a valid URL for the resource.",
   }),
   status: z.string().optional(),
-});
+})
 
 export const userAuthSchema = z.object({
   email: z.string().email(),
-});
+})
 
 export const hookSchema = z.object({
   title: z.string().min(2).max(50),
@@ -36,10 +36,10 @@ export const hookSchema = z.object({
   website: z.string().optional(),
   status: z.string().optional(),
   categoryId: z.string().optional(),
-});
+})
 
 const githubUrlRegex =
-  /^https?:\/\/github\.com\/(?<username>[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})\/(?<repository>[a-z\d_\-]{1,100})(?:\.git)?$/i;
+  /^https?:\/\/github\.com\/(?<username>[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})\/(?<repository>[a-z\d_\-]{1,100})(?:\.git)?$/i
 
 export const hookEditSchema = z.object({
   id: z.string().optional(),
@@ -88,7 +88,7 @@ export const hookEditSchema = z.object({
 
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
-});
+})
 
 export const deployHookSchema = z.object({
   deploymentAddress: z
@@ -96,9 +96,9 @@ export const deployHookSchema = z.object({
     .regex(/^0x[a-fA-F0-9]{40}$/)
     .optional(),
   network: z.string().min(1).optional(),
-});
+})
 
 export const userSchema = z.object({
   name: z.string().min(2).max(50).optional(),
   email: z.string().email(),
-});
+})

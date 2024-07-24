@@ -1,7 +1,13 @@
-import Link from "next/link";
-import { useState } from "react";
-import { useCopyToClipboard } from "react-use";
+import { useState } from "react"
+import Link from "next/link"
+import { useCopyToClipboard } from "react-use"
 
+import { CategoryType, HookType } from "@/types/hook"
+import { ResourcePost } from "@/types/post"
+
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/AlertDialog"
+import { ButtonStyle } from "@/components/ui/ButtonStyle"
+import { Dialog, DialogTrigger } from "@/components/ui/Dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,44 +15,36 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@component/ui/DropdownMenu";
-import ButtonStyle from "@component/ui/ButtonStyle";
-import { Dialog, DialogTrigger } from "@component/ui/Dialog";
-import { AlertDialog, AlertDialogTrigger } from "@component/ui/AlertDialog";
+} from "@/components/ui/DropdownMenu"
+import { DeleteHook } from "@/components/form/DeleteHook"
+import { DeleteResource } from "@/components/form/DeleteResource"
+import { EditHook } from "@/components/form/EditHook"
+import { EditResource } from "@/components/form/EditResource"
 
-import EditHook from "@component/form/EditHook";
-import DeleteHook from "@component/form/DeleteHook";
+export function PreviewCopy({ componentCode = "" }) {
+  const [buttonText, setButtonText] = useState("Copy")
+  const [buttonEmoji, setButtonEmoji] = useState("📋")
+  const [copyStatus, copyToClipboard] = useCopyToClipboard()
 
-import EditResource from "@component/form/EditResource";
-import DeleteResource from "@component/form/DeleteResource";
-
-import { ResourcePost } from "@/types/post";
-import { CategoryType, HookType } from "@/types/hook";
-
-export default function PreviewCopy({ componentCode = "" }) {
-  const [buttonText, setButtonText] = useState("Copy");
-  const [buttonEmoji, setButtonEmoji] = useState("📋");
-  const [copyStatus, copyToClipboard] = useCopyToClipboard();
-
-  const buttonActive = buttonText === "Copied";
+  const buttonActive = buttonText === "Copied"
 
   function handleCopyToClipboard() {
-    copyToClipboard(componentCode);
+    copyToClipboard(componentCode)
 
     if (copyStatus.error) {
-      setButtonText("Error");
-      setButtonEmoji("🚨");
+      setButtonText("Error")
+      setButtonEmoji("🚨")
 
-      return;
+      return
     }
 
-    setButtonText("Copied");
-    setButtonEmoji("🎉");
+    setButtonText("Copied")
+    setButtonEmoji("🎉")
 
     setTimeout(() => {
-      setButtonText("Copy");
-      setButtonEmoji("📋");
-    }, 3000);
+      setButtonText("Copy")
+      setButtonEmoji("📋")
+    }, 3000)
   }
 
   return (
@@ -59,15 +57,15 @@ export default function PreviewCopy({ componentCode = "" }) {
         classAdd={""}
       />
     </button>
-  );
+  )
 }
 
 export function PreviewGithub({ repoUrl = "" }) {
-  const [buttonText, setButtonText] = useState("GitHub");
-  const [buttonEmoji, setButtonEmoji] = useState("👨‍💻");
+  const [buttonText, setButtonText] = useState("GitHub")
+  const [buttonEmoji, setButtonEmoji] = useState("👨‍💻")
 
   function handleButtonClick() {
-    window.open(repoUrl, "_blank");
+    window.open(repoUrl, "_blank")
   }
 
   return (
@@ -80,15 +78,15 @@ export function PreviewGithub({ repoUrl = "" }) {
         classAdd={""}
       />
     </button>
-  );
+  )
 }
 
 export function PreviewWebsite({ websiteUrl = "" }) {
-  const [buttonText, setButtonText] = useState("Website");
-  const [buttonEmoji, setButtonEmoji] = useState("🌐");
+  const [buttonText, setButtonText] = useState("Website")
+  const [buttonEmoji, setButtonEmoji] = useState("🌐")
 
   function handleButtonClick() {
-    window.open(websiteUrl, "_blank");
+    window.open(websiteUrl, "_blank")
   }
 
   return (
@@ -101,7 +99,7 @@ export function PreviewWebsite({ websiteUrl = "" }) {
         classAdd={""}
       />
     </button>
-  );
+  )
 }
 
 export function PreviewConfig({
@@ -109,12 +107,12 @@ export function PreviewConfig({
   type,
   categories,
 }: {
-  componentData: HookType | ResourcePost;
-  type: string;
-  categories?: CategoryType[];
+  componentData: HookType | ResourcePost
+  type: string
+  categories?: CategoryType[]
 }) {
-  const [buttonText, setButtonText] = useState("Menu");
-  const [buttonEmoji, setButtonEmoji] = useState("🔁");
+  const [buttonText, setButtonText] = useState("Menu")
+  const [buttonEmoji, setButtonEmoji] = useState("🔁")
 
   if (type === "hook" && categories) {
     return (
@@ -169,7 +167,7 @@ export function PreviewConfig({
           categories={categories}
         />
       </Dialog>
-    );
+    )
   } else {
     return (
       <Dialog>
@@ -219,16 +217,16 @@ export function PreviewConfig({
         </AlertDialog>
         <EditResource resourceData={componentData as ResourcePost} />
       </Dialog>
-    );
+    )
   }
 }
 
 export function PreviewFolder({ url = "" }) {
-  const [buttonText, setButtonText] = useState("Files");
-  const [buttonEmoji, setButtonEmoji] = useState("📂");
+  const [buttonText, setButtonText] = useState("Files")
+  const [buttonEmoji, setButtonEmoji] = useState("📂")
 
   function handleButtonClick() {
-    window.open(url);
+    window.open(url)
   }
 
   return (
@@ -241,5 +239,5 @@ export function PreviewFolder({ url = "" }) {
         classAdd={""}
       />
     </button>
-  );
+  )
 }

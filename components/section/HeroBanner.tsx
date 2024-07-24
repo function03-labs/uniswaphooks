@@ -1,13 +1,13 @@
-import Container from "@component/overall/Container";
+import { Container } from "@/components/overall/Container"
 
-export default function HeroBanner({
+export function HeroBanner({
   children,
   subtitle,
   title,
 }: {
-  children?: React.ReactNode;
-  subtitle: string;
-  title: string;
+  children?: React.ReactNode
+  subtitle: string
+  title: string
 }) {
   return (
     <section className="bg-white text-center">
@@ -25,5 +25,5 @@ export default function HeroBanner({
         </div>
       </Container>
     </section>
-  );
+  )
 }

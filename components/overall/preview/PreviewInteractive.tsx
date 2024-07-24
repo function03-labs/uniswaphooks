@@ -1,11 +1,11 @@
-import ButtonStyle from "@component/ui/ButtonStyle";
+import { ButtonStyle } from "@/components/ui/ButtonStyle"
 
-export default function PreviewInteractive({
+export function PreviewInteractive({
   isInteractive,
   handleSetIsInteractive,
 }: {
-  isInteractive: boolean;
-  handleSetIsInteractive: (isInteractive: boolean) => void;
+  isInteractive: boolean
+  handleSetIsInteractive: (isInteractive: boolean) => void
 }) {
   return (
     <button onClick={() => handleSetIsInteractive(!isInteractive)}>
@@ -17,5 +17,5 @@ export default function PreviewInteractive({
         classAdd={""}
       />
     </button>
-  );
+  )
 }

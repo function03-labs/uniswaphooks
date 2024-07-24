@@ -1,56 +1,56 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
 type HeadingItem = {
-  itemText: string | null;
-  itemId: string;
-};
+  itemText: string | null
+  itemId: string
+}
 
-type HeadingGroup = [HeadingItem, HeadingGroup[]];
+type HeadingGroup = [HeadingItem, HeadingGroup[]]
 
-export default function BlogTableContent() {
-  const [contentHeadings, setContentHeadings] = useState<HeadingGroup[]>([]);
+export function BlogTableContent() {
+  const [contentHeadings, setContentHeadings] = useState<HeadingGroup[]>([])
 
   useEffect(() => {
-    const headingItems = document.querySelectorAll("h2, h3, h4");
-    const headingItemsArray = Array.from(headingItems);
+    const headingItems = document.querySelectorAll("h2, h3, h4")
+    const headingItemsArray = Array.from(headingItems)
 
     const contentHeadings: HeadingGroup[] = headingItemsArray.reduce<
       HeadingGroup[]
     >((headingItems, headingItem) => {
-      const itemLevel = headingItem.tagName.slice(1);
+      const itemLevel = headingItem.tagName.slice(1)
 
       const newItem = {
         itemText: headingItem.textContent,
         itemId: headingItem.id,
-      };
+      }
 
       if (itemLevel === "2") {
-        headingItems.push([newItem, []]);
+        headingItems.push([newItem, []])
       }
 
       if (itemLevel === "3") {
-        const lastHeadingItem = headingItems[headingItems.length - 1];
+        const lastHeadingItem = headingItems[headingItems.length - 1]
 
-        lastHeadingItem[1].push([newItem, []]);
+        lastHeadingItem[1].push([newItem, []])
       }
 
       if (itemLevel === "4") {
-        const lastHeadingItem = headingItems[headingItems.length - 1];
+        const lastHeadingItem = headingItems[headingItems.length - 1]
         const lastChildHeadingItem =
-          lastHeadingItem[1][lastHeadingItem[1].length - 1];
+          lastHeadingItem[1][lastHeadingItem[1].length - 1]
 
-        lastChildHeadingItem[1].push([newItem, []]);
+        lastChildHeadingItem[1].push([newItem, []])
       }
 
-      return headingItems;
-    }, []);
+      return headingItems
+    }, [])
 
-    setContentHeadings(contentHeadings);
-  }, []);
+    setContentHeadings(contentHeadings)
+  }, [])
 
-  const hasHeadings = contentHeadings.length > 0;
+  const hasHeadings = contentHeadings.length > 0
 
   return hasHeadings ? (
     <details className="mt-4">
@@ -62,18 +62,18 @@ export default function BlogTableContent() {
         <HeadingsGroup groupItem={contentHeadings} />
       </div>
     </details>
-  ) : null;
+  ) : null
 }
 
 function HeadingsGroup({ groupItem }: { groupItem: any }) {
   return (
     <ul>
       {groupItem.map((itemData: any) => {
-        const [firstItem, childItems] = itemData;
+        const [firstItem, childItems] = itemData
 
-        const { itemText, itemId } = firstItem;
+        const { itemText, itemId } = firstItem
 
-        const itemHasChildren = childItems.length > 0;
+        const itemHasChildren = childItems.length > 0
 
         return (
           <li key={itemId}>
@@ -81,8 +81,8 @@ function HeadingsGroup({ groupItem }: { groupItem: any }) {
 
             {itemHasChildren && <HeadingsGroup groupItem={[...childItems]} />}
           </li>
-        );
+        )
       })}
     </ul>
-  );
+  )
 }

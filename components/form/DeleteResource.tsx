@@ -6,19 +6,19 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@component/ui/AlertDialog";
+} from "@/components/ui/AlertDialog"
 
-export default function DeleteResource({ id }: { id: string }) {
+export function DeleteResource({ id }: { id: string }) {
   const deleteResource = async () => {
     await fetch(`/api/resource/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-    });
-    window.location.reload();
-  };
-  
+    })
+    window.location.reload()
+  }
+
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
@@ -35,5 +35,5 @@ export default function DeleteResource({ id }: { id: string }) {
         </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
-  );
+  )
 }

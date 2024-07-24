@@ -1,21 +1,22 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import Link from "next/link";
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { hookEditSchema } from "@config/schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { formatDeploymentDetails } from "@lib/utils"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
-import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { CategoryType, HookType } from "@/types/hook"
 
-import { hookEditSchema } from "@config/schema";
-import { formatDeploymentDetails } from "@lib/utils";
-
+import { Button } from "@/components/ui/Button"
 import {
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@component/ui/Dialog";
+} from "@/components/ui/Dialog"
 import {
   Form,
   FormControl,
@@ -24,40 +25,37 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@component/ui/Form";
+} from "@/components/ui/Form"
+import { Input } from "@/components/ui/Input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@component/ui/Select";
-import { Input } from "@component/ui/Input";
-import { Button } from "@component/ui/Button";
-import { Textarea } from "@component/ui/Textarea";
-import DeploymentDetails from "@component/showcase/DeploymentDetails";
+} from "@/components/ui/Select"
+import { Textarea } from "@/components/ui/Textarea"
+import { DeploymentDetails } from "@/components/showcase/DeploymentDetails"
 
-import { HookType, CategoryType } from "@/types/hook";
-
-export default function EditHook({
+export function EditHook({
   hookData,
   categories,
 }: {
-  hookData: HookType;
-  categories: CategoryType[];
+  hookData: HookType
+  categories: CategoryType[]
 }) {
-  const [loading, setLoading] = useState(false);
-  const deploymentDetails = formatDeploymentDetails(hookData);
+  const [loading, setLoading] = useState(false)
+  const deploymentDetails = formatDeploymentDetails(hookData)
   const form = useForm<z.infer<typeof hookEditSchema>>({
     resolver: zodResolver(hookEditSchema),
     defaultValues: {
       ...hookData,
       status: "pending",
     },
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof hookEditSchema>) {
-    setLoading(true);
+    setLoading(true)
     try {
       await fetch(`/api/hook/${hookData.id}`, {
         method: "PUT",
@@ -67,13 +65,13 @@ export default function EditHook({
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
 
-      window.location.href = "/dashboard";
+      window.location.href = "/dashboard"
     } catch (error) {
-      console.error("Submission error:", error);
+      console.error("Submission error:", error)
     }
-    setLoading(false);
+    setLoading(false)
   }
 
   return (
@@ -86,12 +84,12 @@ export default function EditHook({
       <Form {...form}>
         <form
           onSubmit={(e) => {
-            e.preventDefault();
-            form.handleSubmit(onSubmit)();
+            e.preventDefault()
+            form.handleSubmit(onSubmit)()
           }}
           className="space-y-8"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-auto h-[80vh] md:h-auto">
+          <div className="grid h-[80vh] grid-cols-1 gap-4 overflow-auto md:h-auto md:grid-cols-2">
             <div>
               <FormField
                 control={form.control}
@@ -189,7 +187,7 @@ export default function EditHook({
                 <Link
                   href={`/dashboard/hook/submit?id=${hookData.id}&step=deployment`}
                 >
-                  <Button className="py-2 w-full">📋Deploy now</Button>
+                  <Button className="w-full py-2">📋Deploy now</Button>
                 </Link>
               )}
               {hookData.storageType === "github" && (
@@ -237,5 +235,5 @@ export default function EditHook({
         </form>
       </Form>
     </DialogContent>
-  );
+  )
 }

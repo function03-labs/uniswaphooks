@@ -1,11 +1,12 @@
-import { notFound } from "next/navigation";
-import { ResourcePost } from "@/types/post";
-import { getCurrentUser } from "@lib/session";
+import { notFound } from "next/navigation"
+import { getCurrentUser } from "@lib/session"
 
-import Container from "@component/overall/Container";
-import HeroBanner from "@component/section/HeroBanner";
-import ReviewResource from "@component/form/ReviewResource";
-import ResourceOwned from "@component/showcase/resource/ResourceOwned";
+import { ResourcePost } from "@/types/post"
+
+import { ReviewResource } from "@/components/form/ReviewResource"
+import { Container } from "@/components/overall/Container"
+import { HeroBanner } from "@/components/section/HeroBanner"
+import { ResourceCard } from "@/components/showcase/resource/ResourceOwned"
 
 async function getResource({ resourceId }: { resourceId: string }) {
   const ResourceFetch = await fetch(
@@ -17,27 +18,31 @@ async function getResource({ resourceId }: { resourceId: string }) {
         "Cache-Control": "no-cache",
       },
     }
-  );
+  )
 
   if (!ResourceFetch.ok) {
-    throw new Error("Failed to fetch Resource");
+    throw new Error("Failed to fetch Resource")
   }
 
-  const Resource = await ResourceFetch.json();
+  const Resource = await ResourceFetch.json()
 
-  return Resource;
+  return Resource
 }
 
-export default async function ReviewPage({ params }: { params: { resourceId: string } }) {
-  const user = await getCurrentUser();
+export default async function ReviewPage({
+  params,
+}: {
+  params: { resourceId: string }
+}) {
+  const user = await getCurrentUser()
 
   if (!user || !(user.role === "admin")) {
-    return notFound();
+    return notFound()
   }
 
   const resource = (await getResource({
     resourceId: params.resourceId,
-  })) as ResourcePost;
+  })) as ResourcePost
 
   return (
     <Container classNames="max-w-md lg:px-48 pb-8 lg:pb-12">
@@ -45,8 +50,8 @@ export default async function ReviewPage({ params }: { params: { resourceId: str
         title="Review Resource"
         subtitle="Review the Resource and approve or reject it."
       />
-      <ResourceOwned resourcePost={resource} />
+      <ResourceCard resourcePost={resource} />
       <ReviewResource resource={resource} />
     </Container>
-  );
+  )
 }

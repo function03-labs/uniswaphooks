@@ -1,27 +1,28 @@
-import { join } from "path";
-import matter from "gray-matter";
-import { promises as fs } from "fs";
+import { promises as fs } from "fs"
+import { join } from "path"
 
-import Container from "@component/overall/Container";
-import HeroBanner from "@component/section/HeroBanner";
-import ChainGrid from "@/components/showcase/chain/ChainGrid";
-import CollectionLinks from "@component/ui/CollectionLinks";
+import matter from "gray-matter"
+
+import { CollectionLinks } from "@/components/ui/CollectionLinks"
+import { Container } from "@/components/overall/Container"
+import { HeroBanner } from "@/components/section/HeroBanner"
+import { ChainGrid } from "@/components/showcase/chain/ChainGrid"
 
 export const metadata = {
   title: "Chains",
-};
+}
 
-const chainsPath = join(process.cwd(), "/data/chains");
+const chainsPath = join(process.cwd(), "/data/chains")
 
 async function getChains() {
-  const chainSlugs = await fs.readdir(chainsPath);
+  const chainSlugs = await fs.readdir(chainsPath)
 
   const chainPosts = await Promise.all(
     chainSlugs.map(async (chainSlug) => {
-      const postPath = join(chainsPath, chainSlug);
-      const chainItem = await fs.readFile(postPath, "utf-8");
+      const postPath = join(chainsPath, chainSlug)
+      const chainItem = await fs.readFile(postPath, "utf-8")
 
-      const { data: chainData } = matter(chainItem);
+      const { data: chainData } = matter(chainItem)
 
       return {
         title: chainData.title,
@@ -35,30 +36,31 @@ async function getChains() {
         slug: chainSlug.replace(".mdx", ""),
         tags: chainData.tags,
         docs: chainData.docs,
-      };
+        poolInitializeTest: chainData.poolInitializeTest,
+      }
     })
-  );
+  )
 
   return chainPosts.sort((a, b) =>
     a.chainID === 111 ? -1 : b.chainID === 111 ? 1 : 0
-  );
+  )
 }
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const chainPosts = await getChains();
-  const showNew = searchParams.dencun !== "false";
+  const chainPosts = await getChains()
+  const showNew = searchParams.dencun !== "false"
 
-  const newChains = chainPosts.filter((chain) => chain.tags?.includes("new"));
-  const oldChains = chainPosts.filter((chain) => !chain.tags?.includes("new"));
+  const newChains = chainPosts.filter((chain) => chain.tags?.includes("new"))
+  const oldChains = chainPosts.filter((chain) => !chain.tags?.includes("new"))
 
   const activeCategory = {
     category: "Chains",
     emoji: "🔗",
-  };
+  }
   const sections = [
     {
       id: "true",
@@ -74,7 +76,7 @@ export default async function Page({
       description: "Chains that have been around for a while.",
       emoji: "🕰",
     },
-  ];
+  ]
 
   return (
     <>
@@ -94,5 +96,5 @@ export default async function Page({
         <ChainGrid chainPosts={showNew ? newChains : oldChains} />
       </Container>
     </>
-  );
+  )
 }

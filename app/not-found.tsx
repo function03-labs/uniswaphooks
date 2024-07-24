@@ -1,5 +1,6 @@
-import Link from "next/link";
-import { Icons, Logo } from "@component/overall/Icons";
+import Link from "next/link"
+
+import { Icons, Logo } from "@/components/overall/Icons"
 
 const links = [
   {
@@ -27,14 +28,14 @@ const links = [
       "Filled with resources to help you get started with Uniswap v4.",
     icon: Icons.book,
   },
-];
+]
 
 export default function Notfound() {
   return (
     <div className="bg-white">
       <main className="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 lg:px-8">
         <Logo className="mx-auto h-8 w-auto" />
-        <div className="mx-auto max-w-2xl text-center mt-6">
+        <div className="mx-auto mt-6 max-w-2xl text-center">
           <p className="text-base font-semibold leading-8 text-violet-600">
             404
           </p>
@@ -98,5 +99,5 @@ export default function Notfound() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

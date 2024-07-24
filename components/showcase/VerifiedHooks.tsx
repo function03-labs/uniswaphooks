@@ -1,11 +1,11 @@
-import Link from "next/link";
-import { Badge } from "@/components/ui/Badge";
-import { Icons } from "@component/overall/Icons";
+import Link from "next/link"
+import { uniswaplabs } from "@data/uniswaplabs-hooks"
 
-import { uniswaplabs } from "@data/uniswaplabs-hooks";
+import { Badge } from "@/components/ui/Badge"
+import { Icons } from "@/components/overall/Icons"
 
-export default function VerifiedHooks() {
-  const hooks = uniswaplabs.sort(() => Math.random() - 0.5);
+export function VerifiedHooks() {
+  const hooks = uniswaplabs.sort(() => Math.random() - 0.5)
 
   return (
     <>
@@ -18,10 +18,10 @@ export default function VerifiedHooks() {
       ))}
       <Link href="/hooks/collection/uniswap-labs">
         <Badge variant="default" className="mb-1 mr-1">
-          <Icons.more className="w-5 h-5 pr-2 -mt-2 pt-2" />
+          <Icons.more className="-mt-2 h-5 w-5 pr-2 pt-2" />
           View more
         </Badge>
       </Link>
     </>
-  );
+  )
 }

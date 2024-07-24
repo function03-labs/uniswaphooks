@@ -6,18 +6,18 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@component/ui/AlertDialog";
+} from "@/components/ui/AlertDialog"
 
-export default function DeleteHook({ id }: { id: string }) {
+export function DeleteHook({ id }: { id: string }) {
   async function deleteHook() {
     try {
       await fetch(`/api/hook/${id}`, {
         method: "DELETE",
-      });
+      })
 
-      window.location.reload();
+      window.location.reload()
     } catch (error) {
-      console.log("Error deleting hook", error);
+      console.log("Error deleting hook", error)
     }
   }
 
@@ -35,5 +35,5 @@ export default function DeleteHook({ id }: { id: string }) {
         <AlertDialogAction onClick={deleteHook}>Continue</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
-  );
+  )
 }

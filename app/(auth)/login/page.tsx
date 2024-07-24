@@ -1,17 +1,18 @@
-import Link from "next/link";
-import { Metadata } from "next";
-import { cn } from "@/lib/utils";
-import { Suspense } from "react";
+import { Suspense } from "react"
+import { Metadata } from "next"
+import Link from "next/link"
 
-import { Icons, Logo } from "@component/overall/Icons";
-import { buttonVariants } from "@component/ui/Button";
-import { UserAuthForm } from "@component/form/UserAuth";
-import SponsorLink from "@/components/overall/SponsorLink";
+import { cn } from "@/lib/utils"
+
+import { buttonVariants } from "@/components/ui/Button"
+import { UserAuthForm } from "@/components/form/UserAuth"
+import { Icons, Logo } from "@/components/overall/Icons"
+import { SponsorLink } from "@/components/overall/SponsorLink"
 
 export const metadata: Metadata = {
   title: "Login",
   description: "Login to your account",
-};
+}
 
 export default function LoginPage() {
   return (
@@ -41,7 +42,7 @@ export default function LoginPage() {
         <Suspense fallback={null}>
           <UserAuthForm />
         </Suspense>
-        
+
         <p className="px-8 text-center text-sm text-muted-foreground">
           <Link
             href="/register"
@@ -55,5 +56,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

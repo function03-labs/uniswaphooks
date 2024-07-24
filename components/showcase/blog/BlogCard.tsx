@@ -1,13 +1,14 @@
-import Link from "next/link";
-import { BlogPost } from "@/types/post";
+import Link from "next/link"
 
-export default function BlogCard({ blogPost }: { blogPost: BlogPost }) {
+import { BlogPost } from "@/types/post"
+
+export function BlogCard({ blogPost }: { blogPost: BlogPost }) {
   return (
     <div>
       {blogPost.tag === "blog" && (
         <Link href="/blog/[slug]" as={`/blog/${blogPost.slug}`}>
           <div className="group relative block h-full bg-white before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:border-gray-900">
-            <div className="h-full rounded-lg border-2 border-gray-900 bg-white transition group-hover:-translate-y-2 group-hover:-translate-x-2">
+            <div className="h-full rounded-lg border-2 border-gray-900 bg-white transition group-hover:-translate-x-2 group-hover:-translate-y-2">
               <div className="p-4 sm:p-6 lg:p-8">
                 <div className="mt-16 sm:mt-20 lg:mt-24">
                   <span
@@ -32,5 +33,5 @@ export default function BlogCard({ blogPost }: { blogPost: BlogPost }) {
         </Link>
       )}
     </div>
-  );
+  )
 }

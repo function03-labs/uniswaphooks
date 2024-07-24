@@ -1,18 +1,13 @@
-import Container from "@component/overall/Container";
-import { PostItem } from "@component/dashboard/PostItem";
-import { DashboardShell } from "@component/dashboard/Shell";
-
+import { Card, CardContent, CardHeader } from "@/components/ui/Card"
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@component/ui/Resizable";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@component/ui/Card";
-import { DeployedDetailSkeleton } from "@component/showcase/DeploymentDetails";
+} from "@/components/ui/Resizable"
+import { PostItem } from "@/components/dashboard/PostItem"
+import { DashboardShell } from "@/components/dashboard/Shell"
+import { Container } from "@/components/overall/Container"
+import { DeployedDetailSkeleton } from "@/components/showcase/DeploymentDetails"
 
 export default function DashboardLoading() {
   return (
@@ -47,5 +42,5 @@ export default function DashboardLoading() {
         </ResizablePanelGroup>
       </Card>
     </Container>
-  );
+  )
 }

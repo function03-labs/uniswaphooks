@@ -1,12 +1,14 @@
-"use client";
+"use client"
 
-import * as z from "zod";
+import { resourceSchema } from "@config/schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useToast } from "@hooks/use-toast"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
-import { useForm } from "react-hook-form";
-import { useToast } from "@hooks/use-toast";
-import { resourceSchema } from "@config/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ResourcePost } from "@/types/post"
 
+import { Button } from "@/components/ui/Button"
 import {
   Form,
   FormControl,
@@ -14,28 +16,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@component/ui/Form";
+} from "@/components/ui/Form"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@component/ui/Select";
-import { Button } from "@component/ui/Button";
+} from "@/components/ui/Select"
 
-import { ResourcePost } from "@/types/post";
-
-export default function ReviewResource({
-  resource,
-}: {
-  resource: ResourcePost;
-}) {
-  const { toast } = useToast();
+export function ReviewResource({ resource }: { resource: ResourcePost }) {
+  const { toast } = useToast()
   const form = useForm<z.infer<typeof resourceSchema>>({
     resolver: zodResolver(resourceSchema),
     defaultValues: resource,
-  });
+  })
 
   async function onSubmit(data: z.infer<typeof resourceSchema>) {
     try {
@@ -48,22 +43,22 @@ export default function ReviewResource({
           ...resource,
           status: data.status,
         }),
-      });
+      })
 
       if (!updatedResource.ok) {
-        throw new Error("Failed to update Resource");
+        throw new Error("Failed to update Resource")
       }
 
       toast({
         title: "Resource updated",
         description: "The Resource has been updated.",
-      });
+      })
     } catch (error) {
       toast({
         title: "Failed to update Resource",
         description: "Please try again",
         variant: "destructive",
-      });
+      })
     }
   }
 
@@ -101,5 +96,5 @@ export default function ReviewResource({
         </Button>
       </form>
     </Form>
-  );
+  )
 }

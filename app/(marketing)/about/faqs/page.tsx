@@ -1,10 +1,10 @@
-import FAQ from "@component/section/FaqList";
-import Container from "@component/overall/Container";
+import { Container } from "@/components/overall/Container"
+import { FaqList } from "@/components/section/FaqList"
 
 export const metadata = {
   title: "FAQs",
   description: "Find out more about UniswapHooks with these handy FAQs.",
-};
+}
 
 export default async function Page() {
   return (
@@ -16,8 +16,8 @@ export default async function Page() {
           Find out more about UniswapHooks with these handy FAQs.
         </p>
 
-        <FAQ />
+        <FaqList />
       </article>
     </Container>
-  );
+  )
 }

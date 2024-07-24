@@ -1,10 +1,6 @@
 //TODO: Direct to either Hook website, or website from USer
 
-export default function PreviewCreator({
-  creatorGithub,
-}: {
-  creatorGithub: string;
-}) {
+export function PreviewCreator({ creatorGithub }: { creatorGithub: string }) {
   return (
     <div>
       <p className="text-sm text-gray-500">
@@ -19,5 +15,5 @@ export default function PreviewCreator({
         </a>
       </p>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import ButtonStyle from "@component/ui/ButtonStyle";
+import Link from "next/link"
+import { CollectionLinksProps } from "@/types"
 
-import { CollectionLinksProps } from "@/types";
+import { ButtonStyle } from "@/components/ui/ButtonStyle"
 
 // activateCategory is an object with two properties: category and emoji
 // e.g. { category: 'hooks', emoji: '🪝' }
@@ -29,9 +29,9 @@ async function HooksCollection({
       <ul className="mt-4 flex flex-wrap gap-1 ">
         {componentsData.map((componentData) => {
           const buttonText =
-            componentData.title + " (" + componentData.count + ")";
+            componentData.title + " (" + componentData.count + ")"
 
-          const isActive = activeCollection === componentData.id;
+          const isActive = activeCollection === componentData.id
 
           return (
             <li key={componentData.id} className="shrink-0 md:shrink">
@@ -45,11 +45,11 @@ async function HooksCollection({
                 />
               </Link>
             </li>
-          );
+          )
         })}
       </ul>
     </div>
-  );
+  )
 }
 
 async function ChainCollection({
@@ -59,25 +59,12 @@ async function ChainCollection({
 }: CollectionLinksProps) {
   return (
     <div>
-      {/* <ul className="flex gap-4">
-        <li className="inline-flex items-center gap-1.5">
-          <span aria-hidden="true" role="img" className="text-sm">
-            {activeCategory.emoji}
-          </span>
-
-          <span className="text-xs font-medium text-gray-900">
-            {activeCategory.category.charAt(0).toUpperCase() +
-              activeCategory.category.slice(1)}
-          </span>
-        </li>
-      </ul> */}
-
       <ul className="mt-4 flex flex-wrap gap-1 ">
         {componentsData.map((componentData) => {
           const buttonText =
-            componentData.title + " (" + componentData.count + ")";
+            componentData.title + " (" + componentData.count + ")"
 
-          const isActive = activeCollection === componentData.id;
+          const isActive = activeCollection === componentData.id
 
           return (
             <li key={componentData.id} className="shrink-0 md:shrink">
@@ -91,14 +78,14 @@ async function ChainCollection({
                 />
               </Link>
             </li>
-          );
+          )
         })}
       </ul>
     </div>
-  );
+  )
 }
 
-export default async function CollectionLinks({
+export async function CollectionLinks({
   activeCategory,
   activeCollection,
   componentsData,
@@ -125,13 +112,13 @@ export default async function CollectionLinks({
         {componentsData.map((componentData) => {
           const buttonText = componentData.count
             ? `${componentData.title} (${componentData.count})`
-            : componentData.title;
+            : componentData.title
 
           const isActive =
             (activeCategory.category === "hooks" &&
               activeCollection === componentData.id) ||
             (activeCategory.category === "Educational Resources" &&
-              activeCollection === componentData.id);
+              activeCollection === componentData.id)
 
           return (
             <li key={componentData.id} className="shrink-0 md:shrink">
@@ -160,9 +147,9 @@ export default async function CollectionLinks({
                   </Link>
                 )}
             </li>
-          );
+          )
         })}
       </ul>
     </div>
-  );
+  )
 }

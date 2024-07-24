@@ -1,7 +1,8 @@
-import { ToolPost } from "@/types/tool";
-import ToolCard from "@/components/showcase/tool/ToolCard";
+import { ToolPost } from "@/types/tool"
 
-export default function ToolGrid({ tools }: { tools: ToolPost[] }) {
+import { ToolCard } from "@/components/showcase/tool/ToolCard"
+
+export function ToolGrid({ tools }: { tools: ToolPost[] }) {
   return (
     <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {tools.map((toolPost) => (
@@ -10,5 +11,5 @@ export default function ToolGrid({ tools }: { tools: ToolPost[] }) {
         </li>
       ))}
     </ul>
-  );
+  )
 }

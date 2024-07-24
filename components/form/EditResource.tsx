@@ -1,13 +1,31 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { sections } from "@config/community"
+import { resourceSchema } from "@config/schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { cn } from "@lib/utils"
+import { Check, ChevronsUpDown, SmilePlus } from "lucide-react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
-import { cn } from "@lib/utils";
+import { ResourcePost } from "@/types/post"
 
+import { Button } from "@/components/ui/Button"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/Command"
+import {
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/Dialog"
 import {
   Form,
   FormControl,
@@ -16,43 +34,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@component/ui/Form";
+} from "@/components/ui/Form"
+import { Input } from "@/components/ui/Input"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/Popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/Command";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@component/ui/Dialog";
-import { Input } from "@component/ui/Input";
-import { Button } from "@component/ui/Button";
-import { Textarea } from "@/components/ui/Textarea";
-import EmojiPicker from "@component/emoji-picker/EmojiPicker";
+} from "@/components/ui/Popover"
+import { Textarea } from "@/components/ui/Textarea"
+import { EmojiPicker } from "@/components/emoji-picker/EmojiPicker"
 
-import { ResourcePost } from "@/types/post";
-import { sections } from "@config/community";
-import { resourceSchema } from "@config/schema";
-
-import { Check, ChevronsUpDown, SmilePlus } from "lucide-react";
-
-export default function EditResource({
-  resourceData,
-}: {
-  resourceData: ResourcePost;
-}) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
+export function EditResource({ resourceData }: { resourceData: ResourcePost }) {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
   const form = useForm<z.infer<typeof resourceSchema>>({
     resolver: zodResolver(resourceSchema),
     defaultValues: {
@@ -62,16 +56,16 @@ export default function EditResource({
       description: resourceData.description,
       resourceUrl: resourceData.resourceUrl,
     },
-  });
+  })
 
-  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null)
 
   async function onSubmit(values: z.infer<typeof resourceSchema>) {
-    setLoading(true);
+    setLoading(true)
     if (!values.emoji) {
       values.emoji = sections.find(
         (section) => section.id === values.section
-      )?.emoji;
+      )?.emoji
     }
 
     try {
@@ -84,15 +78,14 @@ export default function EditResource({
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
 
-      window.location.reload();
-
+      window.location.reload()
     } catch (error) {
-      console.log("Submission error:", error);
-      router.push("/error");
+      console.log("Submission error:", error)
+      router.push("/error")
     }
-    setLoading(false);
+    setLoading(false)
   }
 
   return (
@@ -129,8 +122,8 @@ export default function EditResource({
                       <PopoverContent className="w-full bg-transparent p-0">
                         <EmojiPicker
                           onSelect={(emoji) => {
-                            setSelectedEmoji(emoji);
-                            form.setValue("emoji", emoji);
+                            setSelectedEmoji(emoji)
+                            form.setValue("emoji", emoji)
                           }}
                         />
                       </PopoverContent>
@@ -190,7 +183,7 @@ export default function EditResource({
                             key={section.id}
                             value={section.title}
                             onSelect={() => {
-                              form.setValue("section", section.id);
+                              form.setValue("section", section.id)
                             }}
                           >
                             <Check
@@ -276,5 +269,5 @@ export default function EditResource({
         </form>
       </Form>
     </DialogContent>
-  );
+  )
 }

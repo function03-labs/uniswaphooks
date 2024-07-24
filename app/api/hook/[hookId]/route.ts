@@ -1,21 +1,20 @@
-import * as z from "zod";
-import { getServerSession } from "next-auth";
-
-import { db } from "@lib/prisma";
-import { authOptions } from "@lib/auth";
+import { authOptions } from "@lib/auth"
+import { db } from "@lib/prisma"
+import { getServerSession } from "next-auth"
+import * as z from "zod"
 
 const routeContextSchema = z.object({
   params: z.object({
     hookId: z.string(),
   }),
-});
+})
 
 export async function GET(
   req: Request,
   context: z.infer<typeof routeContextSchema>
 ) {
   try {
-    const { params } = routeContextSchema.parse(context);
+    const { params } = routeContextSchema.parse(context)
 
     const hook = await db.hook.findUnique({
       where: {
@@ -26,19 +25,19 @@ export async function GET(
         contract: true,
         deploymentDate: true,
       },
-    });
+    })
 
     if (!hook) {
-      return new Response(null, { status: 404 });
+      return new Response(null, { status: 404 })
     }
 
     return new Response(JSON.stringify(hook), {
       headers: {
         "content-type": "application/json",
       },
-    });
+    })
   } catch (error) {
-    return new Response(null, { status: 500 });
+    return new Response(null, { status: 500 })
   }
 }
 
@@ -47,25 +46,25 @@ export async function DELETE(
   context: z.infer<typeof routeContextSchema>
 ) {
   try {
-    const { params } = routeContextSchema.parse(context);
+    const { params } = routeContextSchema.parse(context)
 
     if (!(await verifyCurrentUserHasAccessToPost(params.hookId))) {
-      return new Response(null, { status: 403 });
+      return new Response(null, { status: 403 })
     }
 
     await db.hook.delete({
       where: {
         id: params.hookId,
       },
-    });
+    })
 
-    return new Response(null, { status: 204 });
+    return new Response(null, { status: 204 })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), { status: 422 });
+      return new Response(JSON.stringify(error.issues), { status: 422 })
     }
 
-    return new Response(null, { status: 500 });
+    return new Response(null, { status: 500 })
   }
 }
 
@@ -74,7 +73,7 @@ export async function PUT(
   context: z.infer<typeof routeContextSchema>
 ) {
   try {
-    const { params } = routeContextSchema.parse(context);
+    const { params } = routeContextSchema.parse(context)
     const {
       title,
       description,
@@ -87,10 +86,10 @@ export async function PUT(
       network,
       contract,
       deploymentDate,
-    } = await req.json();
+    } = await req.json()
 
     if (!(await verifyCurrentUserHasAccessToPost(params.hookId))) {
-      return new Response(null, { status: 403 });
+      return new Response(null, { status: 403 })
     }
 
     await db.hook.update({
@@ -126,24 +125,24 @@ export async function PUT(
             }
           : {}),
       },
-    });
+    })
 
-    return new Response(null, { status: 204 });
+    return new Response(null, { status: 204 })
   } catch (error) {
-    console.log("Error", error);
+    console.log("Error", error)
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), { status: 422 });
+      return new Response(JSON.stringify(error.issues), { status: 422 })
     }
 
-    return new Response(null, { status: 500 });
+    return new Response(null, { status: 500 })
   }
 }
 
 async function verifyCurrentUserHasAccessToPost(hookId: string) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
 
   if (!session) {
-    return false;
+    return false
   }
 
   const count = await db.hook.count({
@@ -151,7 +150,7 @@ async function verifyCurrentUserHasAccessToPost(hookId: string) {
       id: hookId,
       userId: session.user.id,
     },
-  });
+  })
 
-  return count > 0 || session.user.role === "admin";
+  return count > 0 || session.user.role === "admin"
 }

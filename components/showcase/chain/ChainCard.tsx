@@ -1,46 +1,48 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import Image from "next/image";
-import React, { useState } from "react";
-import { ChainPost } from "@/types/chain";
+import React, { useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
+
+import { ChainPost } from "@/types/chain"
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@component/ui/Accordion";
-import { Icons } from "@component/overall/Icons";
+} from "@/components/ui/Accordion"
+import { Icons } from "@/components/overall/Icons"
 
 function InputCard({
   name,
   value,
   copy,
 }: {
-  name: string;
-  value: string;
-  copy?: boolean;
+  name: string
+  value: string
+  copy?: boolean
 }) {
-  const [isCopied, setIsCopied] = useState(false);
+  const [isCopied, setIsCopied] = useState(false)
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(value);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
+      await navigator.clipboard.writeText(value)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
     } catch (error) {
-      console.error("Copy failed", error);
-      setIsCopied(false);
+      console.error("Copy failed", error)
+      setIsCopied(false)
     }
-  };
+  }
   return (
     <div className="mt-4 flex w-full items-center justify-center gap-2 self-center ">
-      <div className="flex w-3/4 items-center justify-between rounded-md border border-gray-800 bg-white px-2 py-3 text-sm font-mono text-gray-800">
-        <span className="font-semibold w-[50%] overflow-hidden text-ellipsis  text-nowrap text-slate-600 shrink-0 pr-2 border-r-2">
+      <div className="flex w-3/4 items-center justify-between rounded-md border border-gray-800 bg-white px-2 py-3 font-mono text-sm text-gray-800">
+        <span className="w-[50%] shrink-0 overflow-hidden text-ellipsis  text-nowrap border-r-2 pr-2 font-semibold text-slate-600">
           {name}
         </span>
 
-        <span className="flex-1 overflow-hidden pl-2 text-ellipsis whitespace-nowrap">
+        <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pl-2">
           {value}
         </span>
       </div>
@@ -48,7 +50,7 @@ function InputCard({
       {copy && (
         <button
           onClick={handleCopy}
-          className="flex max-w-1/4 items-center rounded-md border border-gray-800 justify-center px-4 p-2 text-gray-800 duration-200 hover:text-gray-400 active:text-gray-600"
+          className="max-w-1/4 flex items-center justify-center rounded-md border border-gray-800 p-2 px-4 text-gray-800 duration-200 hover:text-gray-400 active:text-gray-600"
         >
           {isCopied ? (
             <Icons.checkIcon width={20} />
@@ -58,7 +60,7 @@ function InputCard({
         </button>
       )}
     </div>
-  );
+  )
 }
 
 function SliderCard(chainPost: ChainPost) {
@@ -74,20 +76,16 @@ function SliderCard(chainPost: ChainPost) {
         value={chainPost.poolSwapTest}
         copy={true}
       />
-      <InputCard
-        name="Quoter"
-        value={chainPost.quoter}
-        copy={true}
-      />
+      <InputCard name="Quoter" value={chainPost.quoter} copy={true} />
     </div>
-  );
+  )
 }
 
-export default function ChainCard(chainPost: ChainPost) {
+export function ChainCard(chainPost: ChainPost) {
   return (
     <div className="group  relative block h-full w-full bg-white font-sans before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed  before:border-gray-900">
       <div className="h-full overflow-auto rounded-lg border-2 border-gray-900 bg-white transition group-hover:-translate-y-2 ltr:group-hover:-translate-x-2 rtl:group-hover:translate-x-2">
-        <div className="overflow-auto p-8 xs:p-2 sm:p-6 lg:p-4">
+        <div className="xs:p-2 overflow-auto p-8 sm:p-6 lg:p-4">
           {chainPost.docs ? (
             <Link href={chainPost.docs} target="_blank">
               <span className="absolute right-3 flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700">
@@ -126,7 +124,7 @@ export default function ChainCard(chainPost: ChainPost) {
           </div>
 
           <div className="mt-4 flex items-center justify-center px-28">
-            <p className="sm:text-md px-4 flex flex-col items-center gap-2 text-sm">
+            <p className="sm:text-md flex flex-col items-center gap-2 px-4 text-sm">
               <span className="text-md font-semibold text-slate-600">
                 ChainID
               </span>
@@ -155,8 +153,8 @@ export default function ChainCard(chainPost: ChainPost) {
             chainPost.poolSwapTest ? (
               <Accordion type="single" collapsible className="w-full ">
                 <AccordionItem value="item-1">
-                  <AccordionTrigger className="flex items-center justify-center h-8 hover:bg-gray-200/30 hover:rounded-md">
-                    <span className="text-md font-semibold text-slate-600 px-2">
+                  <AccordionTrigger className="flex h-8 items-center justify-center hover:rounded-md hover:bg-gray-200/30">
+                    <span className="text-md px-2 font-semibold text-slate-600">
                       See more
                     </span>
                     <Icons.chevronDown className="h-5 w-5 shrink-0 transition-transform duration-200" />
@@ -171,5 +169,5 @@ export default function ChainCard(chainPost: ChainPost) {
         </div>
       </div>
     </div>
-  );
+  )
 }

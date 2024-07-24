@@ -1,37 +1,35 @@
-import { findFile } from "@lib/utils";
-import { HookType } from "@/types/hook";
-import { notFound } from "next/navigation";
-import { TreeFile, TreeType } from "@/types/tree";
+import { notFound } from "next/navigation"
+import { buildTreeGithub, buildTreeNode } from "@lib/file-explorer"
+import { findFile, formatDeploymentDetails } from "@lib/utils"
 
-import { formatDeploymentDetails } from "@lib/utils";
-import { FileSelected } from "@component/config/FileSelected";
-import { buildTreeGithub, buildTreeNode } from "@lib/file-explorer";
+import { HookType } from "@/types/hook"
+import { TreeFile, TreeType } from "@/types/tree"
 
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@component/ui/Resizable";
+import { Button } from "@/components/ui/Button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@component/ui/Card";
-import { FileTree } from "@component/ui/Tree";
-import { Button } from "@component/ui/Button";
-import { Icons } from "@component/overall/Icons";
-import { Separator } from "@component/ui/Separator";
-import { SyntaxHighler } from "@component/ui/SyntaxHighler";
-import { Drawer, DrawerTrigger } from "@component/ui/Drawer";
-import { EmptyPlaceholder } from "@component/ui/EmptyPlaceholder";
-
-import Container from "@component/overall/Container";
-import { CopyButtons } from "@component/showcase/CopyButtons";
-import { FileExplorer } from "@component/showcase/FileExplorer";
-import { SelectedFiles } from "@component/showcase/SelectedFiles";
-import { DeployedDetail } from "@component/showcase/DeploymentDetails";
+} from "@/components/ui/Card"
+import { Drawer, DrawerTrigger } from "@/components/ui/Drawer"
+import { EmptyPlaceholder } from "@/components/ui/EmptyPlaceholder"
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/Resizable"
+import { Separator } from "@/components/ui/Separator"
+import { SyntaxHighler } from "@/components/ui/SyntaxHighler"
+import { FileTree } from "@/components/ui/Tree"
+import { FileSelected } from "@/components/config/FileSelected"
+import { Container } from "@/components/overall/Container"
+import { Icons } from "@/components/overall/Icons"
+import { CopyButtons } from "@/components/showcase/CopyButtons"
+import { DeployedDetail } from "@/components/showcase/DeploymentDetails"
+import { FileExplorer } from "@/components/showcase/FileExplorer"
+import { SelectedFiles } from "@/components/showcase/SelectedFiles"
 
 async function getHook({ hookId }: { hookId: string }) {
   const hookFetch = await fetch(
@@ -42,67 +40,67 @@ async function getHook({ hookId }: { hookId: string }) {
         revalidate: 0,
       },
     }
-  );
+  )
 
   if (!hookFetch.ok) {
-    throw new Error("Failed to fetch hook");
+    throw new Error("Failed to fetch hook")
   }
 
-  const hook = await hookFetch.json();
+  const hook = await hookFetch.json()
 
-  return hook;
+  return hook
 }
 
 export default async function ViewHook({
   params,
   searchParams,
 }: {
-  params: { hookId: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: { hookId: string }
+  searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const hook = (await getHook({ hookId: params.hookId })) as HookType;
+  const hook = (await getHook({ hookId: params.hookId })) as HookType
 
   if (!hook) {
-    return notFound();
+    return notFound()
   }
 
   if (hook.status !== "published") {
-    return notFound();
+    return notFound()
   }
 
-  let tree;
-  let file = {} as TreeFile;
+  let tree
+  let file = {} as TreeFile
 
-  const deploymentDetails = formatDeploymentDetails(hook);
+  const deploymentDetails = formatDeploymentDetails(hook)
   if (hook.storageType === "github") {
-    tree = await buildTreeGithub({ github: hook.filePath, path: "" });
+    tree = await buildTreeGithub({ github: hook.filePath, path: "" })
 
     if (searchParams.path) {
-      const fileFound = findFile(tree, searchParams.path as string);
-      file = fileFound as TreeFile;
+      const fileFound = findFile(tree, searchParams.path as string)
+      file = fileFound as TreeFile
       if (fileFound) {
         try {
-          const fileFetch = await fetch(fileFound.download_url);
-          file.code = await fileFetch.text();
+          const fileFetch = await fetch(fileFound.download_url)
+          file.code = await fileFetch.text()
         } catch (error) {
-          console.error("Failed to fetch file content:", error);
+          console.error("Failed to fetch file content:", error)
         }
       }
     }
   } else if (hook.storageType === "storage") {
-    tree = await buildTreeNode(params.hookId, "repositories");
-    console.log(tree);
+    tree = await buildTreeNode(params.hookId, "repositories")
+    console.log(tree)
     if (searchParams.path) {
-      const fileFound = findFile(tree, searchParams.path as string);
-      console.log(fileFound);
-      console.log(tree);
-      file = fileFound as TreeFile;
+      const fileFound = findFile(tree, searchParams.path as string)
+      console.log(fileFound)
+      console.log(tree)
+      file = fileFound as TreeFile
       if (fileFound) {
         try {
-          const fileFetch = await fetch(fileFound.download_url);
-          file.code = await fileFetch.text();
+          const fileFetch = await fetch(fileFound.download_url)
+          file.code = await fileFetch.text()
         } catch (error) {
-          console.log("Failed to fetch file content:", error);
+          console.log("Failed to fetch file content:", error)
         }
       }
     }
@@ -118,7 +116,7 @@ export default async function ViewHook({
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel
               defaultSize={18}
-              className="m-0 md:m-4 hidden md:block"
+              className="m-0 hidden md:m-4 md:block"
               minSize={18}
             >
               <Card>
@@ -144,14 +142,14 @@ export default async function ViewHook({
             >
               <Card>
                 <CardHeader className="block md:hidden">
-                  <CardTitle className="flex justify-between items-center py-2">
+                  <CardTitle className="flex items-center justify-between py-2">
                     <div>File explorer</div>
 
                     <DrawerTrigger>
                       <Button
                         size="icon"
                         variant="outline"
-                        className="w-5 h-5 ml-auto"
+                        className="ml-auto h-5 w-5"
                       >
                         <Icons.orderbook />
                       </Button>
@@ -166,7 +164,7 @@ export default async function ViewHook({
                 </CardHeader>
 
                 {!file.code && (
-                  <div className="flex items-center justify-center h-[665px]">
+                  <div className="flex h-[665px] items-center justify-center">
                     <EmptyPlaceholder className="text-center">
                       <EmptyPlaceholder.Title>
                         Open a file
@@ -182,7 +180,7 @@ export default async function ViewHook({
                 {file.code && (
                   <div>
                     <CardHeader>
-                      <CardTitle className="flex justify-between items-center">
+                      <CardTitle className="flex items-center justify-between">
                         <SelectedFiles
                           link={`/hooks/hook/${hook.id}/`}
                           selected={file}
@@ -205,5 +203,5 @@ export default async function ViewHook({
         </Drawer>
       </Container>
     </FileSelected>
-  );
+  )
 }

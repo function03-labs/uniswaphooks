@@ -1,14 +1,15 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { hookSchema } from "@config/schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 
-import { hookSchema } from "@config/schema";
-import { CategoryType } from "@/types/hook";
+import { CategoryType } from "@/types/hook"
 
+import { Button } from "@/components/ui/Button"
 import {
   Form,
   FormControl,
@@ -17,34 +18,29 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@component/ui/Form";
+} from "@/components/ui/Form"
+import { Input } from "@/components/ui/Input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@component/ui/Select";
-import { Input } from "@component/ui/Input";
-import { Button } from "@component/ui/Button";
-import { Textarea } from "@component/ui/Textarea";
+} from "@/components/ui/Select"
+import { Textarea } from "@/components/ui/Textarea"
 
-export default function NewHookForm({
-  categories,
-}: {
-  categories: CategoryType[];
-}) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
+export function NewHookForm({ categories }: { categories: CategoryType[] }) {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
   const form = useForm<z.infer<typeof hookSchema>>({
     resolver: zodResolver(hookSchema),
     defaultValues: {
       categoryId: "from-the-community",
     },
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof hookSchema>) {
-    setLoading(true);
+    setLoading(true)
 
     try {
       const data = await fetch("/api/hook", {
@@ -55,22 +51,22 @@ export default function NewHookForm({
         headers: {
           "Content-Type": "application/json",
         },
-      });
-      const response = await data.json();
+      })
+      const response = await data.json()
 
-      router.push(`/dashboard/hook/submit?id=${response.data.id}&step=upload`);
+      router.push(`/dashboard/hook/submit?id=${response.data.id}&step=upload`)
     } catch (error) {
-      console.error("Submission error:", error);
-      router.push("/error");
+      console.error("Submission error:", error)
+      router.push("/error")
     }
 
-    setLoading(false);
+    setLoading(false)
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="md:flex md:items-center md:space-x-2 xs:space-y-4">
+        <div className="xs:space-y-4 md:flex md:items-center md:space-x-2">
           <FormField
             control={form.control}
             name="title"
@@ -177,5 +173,5 @@ export default function NewHookForm({
         )}
       </form>
     </Form>
-  );
+  )
 }

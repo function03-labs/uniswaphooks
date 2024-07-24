@@ -1,16 +1,16 @@
-import { IconMenu } from "@component/overall/Icons";
-import MenuLinks from "@component/navigation/HeaderMenuLinks";
+import { MainNavItem } from "@/types"
 
-import { MainNavItem } from "@/types";
+import { HeaderMenuLinks } from "@/components/navigation/HeaderMenuLinks"
+import { IconMenu } from "@/components/overall/Icons"
 
-export default function HeaderMenu({
+export function HeaderMenu({
   showMenu,
   handleSetShowMenu,
   menuLinks,
 }: {
-  showMenu: boolean;
-  handleSetShowMenu: (showMenu: boolean) => void;
-  menuLinks: MainNavItem[];
+  showMenu: boolean
+  handleSetShowMenu: (showMenu: boolean) => void
+  menuLinks: MainNavItem[]
 }) {
   return (
     <div className="flex items-center lg:hidden">
@@ -25,7 +25,7 @@ export default function HeaderMenu({
 
       {showMenu && (
         <div className="absolute inset-x-0 top-14 px-2">
-          <MenuLinks
+          <HeaderMenuLinks
             menuLinks={menuLinks}
             navClass="bg-white border p-4 border-gray-200 shadow-lg rounded-lg"
             ulClass="space-y-4"
@@ -33,5 +33,5 @@ export default function HeaderMenu({
         </div>
       )}
     </div>
-  );
+  )
 }

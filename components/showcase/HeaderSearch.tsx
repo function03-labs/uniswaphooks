@@ -1,24 +1,23 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import Fuse from "fuse.js"
+import { useClickAway, useDebounce } from "react-use"
 
-import Fuse from "fuse.js";
-import { useClickAway, useDebounce } from "react-use";
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import { HookType } from "@/types/hook"
 
-import { HookType } from "@/types/hook";
+export function HeaderSearch({ hooks }: { hooks: HookType[] }) {
+  const routerPathname = usePathname()
 
-export default function HeaderSearch({ hooks }: { hooks: HookType[] }) {
-  const routerPathname = usePathname();
+  const refDropdown = useRef(null)
 
-  const refDropdown = useRef(null);
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [fuse, setFuse] = useState<Fuse<any> | null>(null);
-  const [searchResults, setSearchResults] = useState<HookType[]>(hooks);
-  const [searchQueryDebounced, setSearchQueryDebounced] = useState("");
+  const [searchQuery, setSearchQuery] = useState("")
+  const [showDropdown, setShowDropdown] = useState(false)
+  const [fuse, setFuse] = useState<Fuse<any> | null>(null)
+  const [searchResults, setSearchResults] = useState<HookType[]>(hooks)
+  const [searchQueryDebounced, setSearchQueryDebounced] = useState("")
 
   const fuseOptions = useMemo(
     () => ({
@@ -26,40 +25,40 @@ export default function HeaderSearch({ hooks }: { hooks: HookType[] }) {
       keys: ["title"],
     }),
     []
-  );
+  )
 
   useEffect(() => {
     const getSearchResults = async () => {
-      const fuseInstance = new Fuse(hooks, fuseOptions);
-      setFuse(fuseInstance);
-    };
+      const fuseInstance = new Fuse(hooks, fuseOptions)
+      setFuse(fuseInstance)
+    }
 
-    getSearchResults();
-  }, [fuseOptions, hooks]);
+    getSearchResults()
+  }, [fuseOptions, hooks])
 
   useEffect(() => {
     if (!searchQuery) {
-      setSearchResults(hooks.slice(0, 4));
-      return;
+      setSearchResults(hooks.slice(0, 4))
+      return
     }
 
     if (fuse) {
       const filteredResults = fuse
         .search(searchQuery.trim())
         .map((result) => result.item)
-        .slice(0, 4);
-      setSearchResults(filteredResults);
+        .slice(0, 4)
+      setSearchResults(filteredResults)
     }
-  }, [searchQueryDebounced, fuse, searchQuery, hooks]);
+  }, [searchQueryDebounced, fuse, searchQuery, hooks])
 
   useEffect(() => {
-    setSearchQuery("");
-    setShowDropdown(false);
-  }, [routerPathname]);
+    setSearchQuery("")
+    setShowDropdown(false)
+  }, [routerPathname])
 
-  useClickAway(refDropdown, () => setShowDropdown(false));
+  useClickAway(refDropdown, () => setShowDropdown(false))
 
-  useDebounce(() => setSearchQueryDebounced(searchQuery), 500, [searchQuery]);
+  useDebounce(() => setSearchQueryDebounced(searchQuery), 500, [searchQuery])
 
   return (
     <div ref={refDropdown} className="relative flex h-16 items-center py-8">
@@ -111,5 +110,5 @@ export default function HeaderSearch({ hooks }: { hooks: HookType[] }) {
         </div>
       )}
     </div>
-  );
+  )
 }
