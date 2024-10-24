@@ -12,7 +12,7 @@ export const uniswaplabs = [
     title: "Limit Order",
     website: "https://github.com/Uniswap/v4-periphery",
     github:
-      "https://github.com/Uniswap/v4-periphery/blob/main/contracts/hooks/examples/LimitOrder.sol",
+      "https://github.com/Uniswap/v4-periphery/blob/example-contracts/contracts/hooks/examples/LimitOrder.sol",
     categoryId: "uniswap-labs",
   },
   {
@@ -20,7 +20,7 @@ export const uniswaplabs = [
     title: "TWAMM",
     website: "https://github.com/Uniswap/v4-periphery",
     github:
-      "https://github.com/Uniswap/v4-periphery/blob/main/contracts/hooks/examples/TWAMM.sol",
+      "https://github.com/Uniswap/v4-periphery/blob/example-contracts/contracts/hooks/examples/TWAMM.sol",
     categoryId: "uniswap-labs",
   },
   {
@@ -28,7 +28,7 @@ export const uniswaplabs = [
     title: "Full Range",
     website: "https://github.com/Uniswap/v4-periphery",
     github:
-      "https://github.com/Uniswap/v4-periphery/blob/main/contracts/hooks/examples/FullRange.sol",
+      "https://github.com/Uniswap/v4-periphery/blob/example-contracts/contracts/hooks/examples/FullRange.sol",
     categoryId: "uniswap-labs",
   },
   {
@@ -36,7 +36,7 @@ export const uniswaplabs = [
     title: "Geomean Oracle",
     website: "https://github.com/Uniswap/v4-periphery",
     github:
-      "https://github.com/Uniswap/v4-periphery/blob/main/contracts/hooks/examples/GeomeanOracle.sol",
+      "https://github.com/Uniswap/v4-periphery/blob/example-contracts/contracts/hooks/examples/GeomeanOracle.sol",
     categoryId: "uniswap-labs",
   },
   {
@@ -44,7 +44,7 @@ export const uniswaplabs = [
     title: "Volatility Oracle",
     website: "https://github.com/Uniswap/v4-periphery",
     github:
-      "https://github.com/Uniswap/v4-periphery/blob/main/contracts/hooks/examples/VolatilityOracle.sol",
+      "https://github.com/Uniswap/v4-periphery/blob/example-contracts/contracts/hooks/examples/VolatilityOracle.sol",
     categoryId: "uniswap-labs",
   },
 ]
